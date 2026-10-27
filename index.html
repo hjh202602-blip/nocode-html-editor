@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블록 웹 편집기</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+  <!-- 탭1: 탐색기 (내 컴퓨터 폴더) -->
+  <aside id="tab1" class="panel">
+    <div class="panel-head">
+      <span class="panel-title">탐색기</span>
+      <div class="head-actions" id="ex-actions"></div>
+    </div>
+    <div class="ex-root" id="ex-root"></div>
+    <div class="ex-tree" id="ex-tree" tabindex="0"></div>
+  </aside>
+  <div class="splitter sv" data-split="w1" style="grid-area:s1" title="끌어서 크기 조절 · 두 번 클릭하면 접기/펴기"></div>
+
+  <!-- 탭2: 스타일 설정 (CSS) -->
+  <header id="tab2" class="panel">
+    <div class="inspector" id="inspector"></div>
+    <div class="tab2-actions">
+      <button class="btn" id="btn-settings"></button>
+      <button class="btn primary" id="btn-convert"></button>
+    </div>
+  </header>
+  <div class="splitter sh" data-split="h2" style="grid-area:s2" title="끌어서 크기 조절 · 두 번 클릭하면 접기/펴기"></div>
+
+  <!-- 탭3: 메인 작업 공간 (HTML) -->
+  <main id="tab3" class="panel">
+    <div class="doc-bar">
+      <div class="doc-tabs" id="doc-tabs"></div>
+      <div class="doc-tools" id="doc-tools"></div>
+    </div>
+    <div class="doc-body">
+      <div class="canvas-scroll" id="canvas-scroll">
+        <div class="canvas-frame" id="canvas-frame"><div id="canvas-host"></div></div>
+        <div class="drop-line" id="drop-line" hidden></div>
+        <div class="sel-toolbar" id="sel-toolbar" hidden></div>
+      </div>
+      <textarea class="text-editor" id="text-editor" spellcheck="false" hidden></textarea>
+      <div class="image-view" id="image-view" hidden><img alt=""></div>
+      <div class="empty-view" id="empty-view" hidden></div>
+    </div>
+    <div class="breadcrumb" id="breadcrumb"></div>
+  </main>
+  <div class="splitter sv" data-split="w5" style="grid-area:s5" title="끌어서 크기 조절 · 두 번 클릭하면 접기/펴기"></div>
+
+  <!-- 탭5: 동작 (JS 블록 코딩) — 디자인만 -->
+  <aside id="tab5" class="panel"></aside>
+  <div class="splitter sh" data-split="h4" style="grid-area:s4" title="끌어서 크기 조절 · 두 번 클릭하면 접기/펴기"></div>
+
+  <!-- 탭4: HTML 태그 -->
+  <section id="tab4" class="panel"></section>
+</div>
+
+<div id="modal-root"></div>
+<div class="ctx-menu" id="ctx-menu" hidden></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="file-picker" hidden>
+
+<script src="js/core.js"></script>
+<script src="js/blockcode.js"></script>
+<script src="js/codegen.js"></script>
+<script src="js/palette.js"></script>
+<script src="js/canvas.js"></script>
+<script src="js/inspector.js"></script>
+<script src="js/explorer.js"></script>
+<script src="js/blocks.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
