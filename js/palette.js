@@ -10,6 +10,7 @@
     '<circle cx="205" cy="74" r="14" fill="#b8c1cf"/></svg>');
 
   const li = t => N('li', { text: t });
+  const chart = (type, values, labels) => N('svg', { attrs: { 'data-chart': type, 'data-values': values, 'data-labels': labels }, style: { width: '100%', 'max-width': '480px' } });
   const cell = (tag, t) => N(tag, { text: t, style: { border: '1px solid #cccccc', padding: '8px 12px' } });
 
   WB.PALETTE = [
@@ -20,12 +21,14 @@
       { key: 'p', name: '문단', icon: '¶', desc: '여러 줄의 글', make: () => N('p', { text: '여기에 내용을 입력하세요. 두 번 클릭하면 글자를 고칠 수 있어요.' }) },
       { key: 'span', name: '짧은 글자', icon: 'T', desc: '한 줄 안에 들어가는 짧은 글자', make: () => N('span', { text: '짧은 글자' }) },
       { key: 'strong', name: '굵은 글자', icon: 'B', desc: '중요해서 굵게 보이는 글자', make: () => N('strong', { text: '중요한 글자' }) },
+      { key: 'sup', name: '위첨자', icon: 'x²', desc: '글자 오른쪽 위에 작게 (예: Work⁰⁵, m²)', make: () => N('sup', { text: '05' }) },
       { key: 'blockquote', name: '인용문', icon: '❝', desc: '다른 곳에서 가져온 말', make: () => N('blockquote', { text: '인용할 문장을 입력하세요.', style: { 'border-left': '4px solid #cbd5e1', padding: '8px 16px', margin: '16px 0', color: '#555555' } }) },
     ] },
     { cat: '레이아웃', color: '#9966ff', items: [
       { key: 'div', name: '상자', icon: '▢', desc: '여러 요소를 담는 기본 상자', make: () => N('div', { style: { padding: '16px' } }) },
       { key: 'row', name: '가로 배치', icon: '⇆', desc: '안에 넣은 요소를 옆으로 나란히', make: () => N('div', { style: { display: 'flex', 'flex-direction': 'row', gap: '12px', padding: '8px' } }) },
       { key: 'col', name: '세로 배치', icon: '⇅', desc: '안에 넣은 요소를 위아래로', make: () => N('div', { style: { display: 'flex', 'flex-direction': 'column', gap: '12px', padding: '8px' } }) },
+      { key: 'grid', name: '격자 배치', icon: '▦', desc: '표처럼 칸을 나눠 차례로 채우기 (칸 수는 위쪽 배치에서)', make: () => N('div', { style: { display: 'grid', 'grid-template-columns': 'repeat(3, 1fr)', gap: '12px', padding: '8px' } }) },
       { key: 'free', name: '자유 배치', icon: '✥', desc: '안에 넣은 요소를 마우스로 아무 위치에나 놓기', make: () => N('div', { attrs: { 'data-layout': 'free' }, style: { position: 'relative', 'min-height': '320px', 'background-color': '#f8fafc' } }) },
       { key: 'section', name: '구역', icon: '§', desc: '페이지를 나누는 큰 구역', make: () => N('section', { style: { padding: '24px 0' } }) },
       { key: 'header', name: '머리말', icon: '▔', desc: '페이지 맨 위 (로고, 메뉴)', make: () => N('header', { style: { padding: '16px 24px', 'background-color': '#f1f5f9' } }) },
@@ -72,6 +75,14 @@
       }) },
       { key: 'tr', name: '표 줄', icon: '═', desc: '표에 한 줄 더하기', make: () => N('tr', { children: ['', '', ''].map(t => cell('td', t || '내용')) }) },
       { key: 'td', name: '표 칸', icon: '□', desc: '표 줄에 칸 하나 더하기', make: () => cell('td', '내용') },
+      { key: 'th', name: '표 제목 칸', icon: '■', desc: '굵게 보이는 머리 칸', make: () => cell('th', '제목') },
+    ] },
+    { cat: '차트', color: '#f472b6', items: [
+      { key: 'chart-bar', name: '막대 그래프', icon: '▥', desc: '값을 막대로 비교 (여러 묶음 가능)', make: () => chart('bar', '38,26,34,30;22,35,45,44', '1월,2월,3월,4월') },
+      { key: 'chart-line', name: '선 그래프', icon: '⟋', desc: '시간에 따른 변화', make: () => chart('line', '10,60,25,80', '월,6월,9월,11월') },
+      { key: 'chart-area', name: '영역 그래프', icon: '◢', desc: '변화량을 면으로', make: () => chart('area', '40,90,85,100,136;20,45,65,75,110', '1월,2월,3월,4월,5월') },
+      { key: 'chart-donut', name: '도넛 그래프', icon: '◎', desc: '전체 중 비율', make: () => chart('donut', '32,24,22,22', '온라인,매장,제휴,기타') },
+      { key: 'chart-pie', name: '원 그래프', icon: '◕', desc: '전체 중 비율 (꽉 찬 원)', make: () => chart('pie', '45,30,25', 'A,B,C') },
     ] },
     { cat: '입력 양식', color: '#5cb1d6', items: [
       { key: 'form', name: '입력 양식', icon: 'form', desc: '라벨 + 입력칸 + 버튼 묶음', make: () => N('form', {
@@ -88,10 +99,17 @@
       { key: 'number', name: '숫자 칸', icon: '123', desc: '숫자만 입력', make: () => N('input', { attrs: { type: 'number', placeholder: '0' }, style: { padding: '8px' } }) },
       { key: 'checkbox', name: '체크박스', icon: '☑', desc: '켜고 끄는 네모 칸', make: () => N('input', { attrs: { type: 'checkbox' } }) },
       { key: 'radio', name: '라디오 버튼', icon: '◉', desc: '여러 개 중 하나 고르기', make: () => N('input', { attrs: { type: 'radio', name: 'choice' } }) },
+      { key: 'switch', name: '스위치', icon: '⏻', desc: '켜고 끄는 토글 (JS 없이 CSS 로). 색은 탭2 모양에서', make: () => WB.switchNode(true) },
       { key: 'textarea', name: '여러 줄 입력', icon: '¶¶', desc: '긴 글 입력', make: () => N('textarea', { attrs: { rows: '4', placeholder: '내용을 입력하세요' }, style: { width: '320px', padding: '8px' } }) },
       { key: 'select', name: '선택 목록', icon: '▾', desc: '펼쳐서 고르는 목록', make: () => N('select', { style: { padding: '6px' }, children: ['선택 1', '선택 2', '선택 3'].map(t => N('option', { text: t })) }) },
       { key: 'label', name: '라벨', icon: 'lbl', desc: '입력칸에 붙이는 이름표', make: () => N('label', { text: '라벨' }) },
     ] },
+    // 선 아이콘: 글자색을 따라가고, 크기는 너비 · 높이로. 넣은 뒤 탭2 속성에서 다른 아이콘으로 바꿀 수 있음
+    { cat: '아이콘', color: '#14b8a6', items: Object.entries(WB.ICON_SET).map(([k, [label, paths]]) => ({
+      key: 'icon-' + k, name: label, icon: '', desc: `선 아이콘 (${k})`,
+      iconHTML: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`,
+      make: () => WB.iconNode(k),
+    })) },
   ];
 
   const byKey = new Map();
@@ -112,7 +130,7 @@
     const sel = WB.selectedNode();
     if (sel) {
       const accepts = WB.ACCEPTS[sel.tag];
-      if (WB.kindOf(sel.tag) === 'container' && (!accepts || accepts.includes(node.tag))) parentId = sel.id;
+      if (WB.kindOf(sel) === 'container' && (!accepts || accepts.includes(node.tag))) parentId = sel.id;
       else {
         const f = WB.find(doc.root, sel.id);
         parentId = f.parent.id;
@@ -158,7 +176,7 @@
       const grid = h('div', { class: 'pal-items' });
       for (const it of items) {
         const b = h('button', { class: 'pal-item', draggable: 'true', 'data-key': it.key, title: `${it.desc}  <${it.tag}>` });
-        b.innerHTML = `<span class="pi-ico">${esc(it.icon)}</span><span class="pi-txt"><span class="pi-name">${esc(it.name)}</span><span class="pi-tag">&lt;${it.tag}&gt;</span></span>`;
+        b.innerHTML = `<span class="pi-ico">${it.iconHTML || esc(it.icon)}</span><span class="pi-txt"><span class="pi-name">${esc(it.name)}</span><span class="pi-tag">&lt;${it.tag}&gt;</span></span>`;
         grid.append(b);
       }
       body.append(h('div', { class: 'pal-group', style: `--gc:${g.color}` }, h('h4', {}, g.cat), grid));

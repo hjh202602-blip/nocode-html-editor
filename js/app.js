@@ -8,10 +8,15 @@
   /* =========================================================
      탭 크기 조절 (VS Code 처럼 경계선을 끌어서 조절, 두 번 클릭하면 접기/펴기)
      ========================================================= */
-  const LAYOUT_DEFAULT = { w1: 240, w5: 280, h2: 128, h4: 210 };
+  const LAYOUT_DEFAULT = { w1: 240, w5: 380, h2: 176, h4: 210 };
   const LIMITS = { w1: [140, 600], w5: [180, 600], h2: [48, 320], h4: [80, 520] };
   let layout = WB.load('wb.layout', LAYOUT_DEFAULT);
   const before = WB.load('wb.layout.prev', {});
+  if (WB.load('wb.layout.ver', 0) < 2) {
+    // 탭2 설정이 늘어나서 예전에 저장한 높이가 작으면 넓혀 줌
+    layout.h2 = Math.max(layout.h2, LAYOUT_DEFAULT.h2);
+    WB.store('wb.layout.ver', 2);
+  }
 
   function applyLayout() {
     for (const k of Object.keys(LAYOUT_DEFAULT)) app.style.setProperty('--' + k, layout[k] + 'px');
@@ -25,6 +30,15 @@
     layout = { ...LAYOUT_DEFAULT };
     applyLayout();
     saveLayout();
+  };
+  /** 블록 작업할 때 탭5 를 크게 (다시 누르면 원래대로) */
+  WB.toggleBlockMax = () => {
+    const big = Math.max(640, innerWidth - layout.w1 - 360);
+    if (layout.w5 < big - 20) { before.w5max = layout.w5; layout.w5 = Math.min(big, innerWidth - layout.w1 - 220); }
+    else layout.w5 = before.w5max || LAYOUT_DEFAULT.w5;
+    applyLayout();
+    saveLayout();
+    return layout.w5 >= big - 20;
   };
   WB.togglePanel = k => {
     if (layout[k] > 0) { before[k] = layout[k]; layout[k] = 0; }
@@ -152,6 +166,11 @@
     if (S.activeId === d.id) activate(S.docs[Math.min(i, S.docs.length - 1)]?.id || null);
     else renderTabs();
   }
+  /** 프로젝트 · 폴더를 바꿀 때: 파일에서 연 탭을 모두 닫음. 저장 안 한 것을 닫지 않겠다고 하면 false */
+  WB.closeFileDocs = () => {
+    for (const d of S.docs.filter(x => x.handle)) closeDoc(d);
+    return !S.docs.some(x => x.handle);
+  };
   WB.closeDocsUnder = path => {
     for (const d of [...S.docs]) {
       if (d.path === path || (d.path && d.path.startsWith(path + '/'))) {
@@ -178,8 +197,12 @@
       const ext = WB.extOf(node.name);
       let doc;
       if (ext === 'html' || ext === 'htm') {
-        const parsed = WB.parseHTML(await file.text());
-        doc = WB.newPageDoc({ name: node.name, handle: node.handle, path: node.path, title: parsed.title || node.name.replace(/\.html?$/i, ''), root: parsed.root, blocks: parsed.blocks });
+        const original = await file.text();
+        const dir = node.path.split('/').slice(0, -1).join('/');
+        const { html, inlined } = await inlineLocalFiles(original, dir);
+        const parsed = WB.parseHTML(html);
+        doc = WB.newPageDoc({ name: node.name, handle: node.handle, path: node.path, title: parsed.title || node.name.replace(/\.html?$/i, ''), root: parsed.root, blocks: parsed.blocks, extra: parsed.extra, foreign: parsed.foreign, original });
+        if (parsed.foreign) importNotice(node.name, parsed.report, inlined);
       } else if (IMAGE_EXT.has(ext)) {
         doc = { id: WB.newDocId(), kind: 'image', name: node.name, handle: node.handle, path: node.path, url: URL.createObjectURL(file), dirty: false };
       } else if (TEXT_EXT.has(ext) || file.type.startsWith('text/') || file.size < 512 * 1024) {
@@ -193,6 +216,59 @@
       WB.toast('파일을 열지 못했어요: ' + e.message, 'error');
     }
   };
+
+  /** 다른 곳에서 만든 페이지: 같은 프로젝트에 있는 CSS · JS 파일(<link> · <script src>)을 페이지 안으로 읽어 들임
+      (CSS 안의 url(그림) 주소는 페이지 위치 기준으로 고침). 못 읽은 것은 그대로 남아서 보존됨 */
+  async function inlineLocalFiles(html, dir) {
+    const isLocal = u => u && !/^([a-z]+:|\/\/|#)/i.test(u);
+    if (!WB.explorer.root || !/<link[^>]+stylesheet|<script[^>]+src=/i.test(html)) return { html, inlined: [] };
+    const d = new DOMParser().parseFromString(html, 'text/html');
+    const inlined = [];
+    for (const l of d.querySelectorAll('link[rel~="stylesheet"][href]')) {
+      const href = l.getAttribute('href');
+      if (!isLocal(href)) continue;
+      try {
+        const path = joinPath(dir, href.split(/[?#]/)[0]);
+        const cssDir = path.split('/').slice(0, -1).join('/');
+        const css = (await (await WB.explorer.fileAt(path)).text())
+          .replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/g, (m, q, u) => (isLocal(u) && !u.startsWith('/') ? `url("${relPath(dir, joinPath(cssDir, u))}")` : m));
+        const st = d.createElement('style');
+        st.textContent = css;
+        l.replaceWith(st);
+        inlined.push(href);
+      } catch { /* 없는 파일은 링크 그대로 */ }
+    }
+    for (const s of d.querySelectorAll('script[src]')) {
+      const src = s.getAttribute('src');
+      if (!isLocal(src) || (s.type && s.type !== 'text/javascript')) continue;
+      try {
+        s.textContent = await (await WB.explorer.fileAt(joinPath(dir, src.split(/[?#]/)[0]))).text();
+        s.removeAttribute('src');
+        inlined.push(src);
+      } catch { /* 없는 파일은 그대로 */ }
+    }
+    return { html: inlined.length ? '<!DOCTYPE html>\n' + d.documentElement.outerHTML : html, inlined };
+  }
+  /** fromDir 폴더에서 본 toPath 의 상대 주소 */
+  function relPath(fromDir, toPath) {
+    const a = fromDir.split('/').filter(Boolean), b = toPath.split('/').filter(Boolean);
+    let i = 0;
+    while (i < a.length && i < b.length - 1 && a[i] === b[i]) i++;
+    return '../'.repeat(a.length - i) + b.slice(i).join('/');
+  }
+  /** 가져온 페이지를 열 때: 무엇을 어떻게 바꿨는지 알려 줌 */
+  function importNotice(name, r, inlined) {
+    const lines = [
+      `다른 곳에서 만든 페이지라 편집기에 맞게 바꿨어요.`,
+      r.inlined ? `· CSS 규칙 ${r.inlined}개를 요소 스타일로 옮겼어요` : '',
+      r.kept ? `· :hover · 다른 화면 크기 같은 규칙 ${r.kept}개는 「가져온 CSS」로 그대로 보존해요 (설정 → 페이지)` : '',
+      r.rich ? `· 링크 · 굵게 · 그림을 담은 글자 요소 ${r.rich}개는 상자로 바꿔 안의 요소를 살렸어요` : '',
+      r.scripts ? `· 스크립트 ${r.scripts}개는 탭5 「코드」로 옮겼어요` : '',
+      inlined.length ? `· 같은 프로젝트의 ${inlined.join(', ')} 을(를) 페이지 안으로 읽어 들였어요` : '',
+      `처음 저장할 때 원본을 '${name.replace(/\.html?$/i, '')}.원본.html' 로 남겨 둘게요.`,
+    ].filter(Boolean);
+    WB.toast(lines.join('\n'), 'ok', 9000);
+  }
 
   textEditor.addEventListener('input', () => {
     const d = WB.activeDoc();
@@ -221,7 +297,22 @@
     if (!doc || doc.kind === 'image') return false;
     const content = doc.kind === 'page' ? WB.generateHTML(doc) : doc.content;
     try {
-      if (!doc.handle || saveAs) {
+      if (!doc.handle && !saveAs) {
+        // 아직 파일이 아니면 지금 프로젝트(없으면 최근 프로젝트 · 새 프로젝트)에 이름을 정해 저장
+        const root = await WB.explorer.ensureRoot();
+        let name = await WB.explorer.promptName(`'${root.name}' 에 저장할 이름`, doc.name, '예: index.html');
+        if (!name) return false;
+        if (doc.kind === 'page' && !/\.html?$/i.test(name)) name += '.html';
+        if (/[\\/:*?"<>|]/.test(name)) { WB.toast('이름에 \\ / : * ? " < > | 는 쓸 수 없어요', 'error'); return false; }
+        try {
+          await root.getFileHandle(name);
+          if (!confirm(`'${name}' 이(가) 이미 있어요. 덮어쓸까요?`)) return false;
+        } catch { /* 없으면 새로 만듦 */ }
+        doc.handle = await root.getFileHandle(name, { create: true });
+        doc.name = name;
+        doc.path = name;
+      } else if (saveAs) {
+        // 다른 이름으로 저장 (Ctrl+Shift+S): 내 컴퓨터에 파일로
         if (!window.showSaveFilePicker) {
           WB.download(doc.name, content);
           doc.dirty = false;
@@ -231,18 +322,28 @@
         }
         const handle = await window.showSaveFilePicker({
           suggestedName: doc.name,
-          startIn: WB.explorer.root || 'documents',
+          startIn: (!WB.explorer.isVirtual() && WB.explorer.root) || 'documents',
           types: doc.kind === 'page' ? [{ description: 'HTML 파일', accept: { 'text/html': ['.html', '.htm'] } }] : undefined,
         });
         doc.handle = handle;
         doc.name = handle.name;
         doc.path = await WB.explorer.pathOf(handle);
       }
+      // 다른 곳에서 만든 페이지는 처음 덮어쓰기 전에 원본을 '이름.원본.html' 로 남김
+      let backup = '';
+      if (doc.foreign && doc.original != null && doc.path != null && WB.explorer.root) {
+        backup = doc.path.replace(/\.html?$/i, '') + '.원본.html';
+        let exists = true;
+        try { await WB.explorer.fileAt(backup); } catch { exists = false; }
+        if (!exists) await WB.projects.writePath(WB.explorer.root, backup, new Blob([doc.original], { type: 'text/html' }));
+        else backup = '';
+        doc.foreign = false;
+      }
       await writeFile(doc.handle, content);
       doc.dirty = false;
       saveDrafts();
       renderTabs();
-      WB.toast(`'${doc.name}' 저장했어요`, 'ok');
+      WB.toast(`'${doc.name}' 저장했어요` + (backup ? ` (원본은 '${backup.split('/').pop()}' 로 남겨 두었어요)` : ''), 'ok', backup ? 5000 : 2400);
       if (doc.path != null) { WB.explorer.refresh(); WB.renderCanvas(); }
       return true;
     } catch (e) {
@@ -260,7 +361,7 @@
       WB.toast(`'${src}' 로 복사했어요`, 'ok');
       return src;
     }
-    if (file.size > 5 * 1024 * 1024) throw new Error('5MB 보다 큰 파일은 먼저 페이지를 폴더에 저장한 뒤 넣어 주세요');
+    if (file.size > 5 * 1024 * 1024) throw new Error('5MB 보다 큰 파일은 먼저 페이지를 프로젝트에 저장(Ctrl+S)한 뒤 넣어 주세요');
     return new Promise((res, rej) => {
       const r = new FileReader();
       r.onload = () => res(r.result);
@@ -274,7 +375,7 @@
   function saveDrafts() {
     clearTimeout(draftTimer);
     draftTimer = setTimeout(() => {
-      const drafts = S.docs.filter(d => d.kind === 'page' && !d.handle).map(d => ({ name: d.name, title: d.title, root: d.root, blocks: d.blocks }));
+      const drafts = S.docs.filter(d => d.kind === 'page' && !d.handle).map(d => ({ name: d.name, title: d.title, root: d.root, blocks: d.blocks, extra: d.extra }));
       WB.store('wb.drafts', drafts);
     }, 400);
   }
@@ -297,11 +398,17 @@
       <button class="icon-btn" data-tool="undo" title="되돌리기 (Ctrl+Z)" ${doc.undo.length ? '' : 'disabled'}>${icon('undo')}</button>
       <button class="icon-btn" data-tool="redo" title="다시 하기 (Ctrl+Y)" ${doc.redo.length ? '' : 'disabled'}>${icon('redo')}</button>
       <span class="sep"></span>
-      <button class="icon-btn ${dev === 'desktop' ? 'on' : ''}" data-tool="desktop" title="컴퓨터 화면">${icon('monitor')}</button>
+      <button class="icon-btn ${dev === 'wide' ? 'on' : ''}" data-tool="wide" title="넓은 PC 화면 (1280px 고정) — 실제 사이트처럼 보기">${icon('wide')}</button>
+      <button class="icon-btn ${dev === 'desktop' ? 'on' : ''}" data-tool="desktop" title="작업 공간 폭에 맞추기">${icon('monitor')}</button>
       <button class="icon-btn ${dev === 'tablet' ? 'on' : ''}" data-tool="tablet" title="태블릿 화면 (768px)">${icon('tablet')}</button>
-      <button class="icon-btn ${dev === 'mobile' ? 'on' : ''}" data-tool="mobile" title="휴대폰 화면 (390px)">${icon('phone')}</button>
+      <button class="icon-btn ${dev === 'mobile' ? 'on' : ''}" data-tool="mobile" title="휴대폰 화면 (390px) — 여기서 고친 스타일은 휴대폰에서만 적용돼요">${icon('phone')}</button>
+      <span class="sep"></span>
+      <button class="icon-btn" data-tool="zoomOut" title="작게 보기 (Ctrl + 휠)">−</button>
+      <button class="icon-btn zoom-val" data-tool="zoomFit" title="눌러서 작업 공간 폭에 맞추기 · 두 번 누르면 100%">${Math.round((WB.settings.zoom || 1) * 100)}%</button>
+      <button class="icon-btn" data-tool="zoomIn" title="크게 보기 (Ctrl + 휠)">+</button>
       <span class="sep"></span>
       <button class="icon-btn ${WB.settings.guides ? 'on' : ''}" data-tool="guides" title="요소 윤곽선 보기">${icon('guides')}</button>
+      <button class="icon-btn ${WB.settings.rulers ? 'on' : ''}" data-tool="rulers" title="눈금자 · 여백 보기 (고른 요소의 바깥 여백은 주황, 안쪽 여백은 초록)">${icon('ruler')}</button>
       <button class="icon-btn" data-tool="preview" title="새 창에서 미리보기">${icon('eye')}</button>
       <button class="icon-btn" data-tool="save" title="저장 (Ctrl+S)">${icon('save')}</button>`
       : WB.activeDoc() && WB.activeDoc().kind === 'text'
@@ -314,7 +421,14 @@
     else if (t === 'redo') WB.redo();
     else if (t === 'preview') preview();
     else if (t === 'save') WB.saveDoc();
-    else if (t === 'guides') {
+    else if (t === 'zoomIn' || t === 'zoomOut') WB.setZoom((WB.settings.zoom || 1) * (t === 'zoomIn' ? 1.25 : 0.8));
+    else if (t === 'zoomFit') WB.setZoom(e.detail > 1 ? 1 : 'fit'); // 한 번: 폭에 맞추기 · 두 번: 100%
+    else if (t === 'rulers') {
+      WB.settings.rulers = !WB.settings.rulers;
+      WB.saveSettings();
+      WB.emit('rulers');
+      renderTools();
+    } else if (t === 'guides') {
       WB.settings.guides = !WB.settings.guides;
       WB.saveSettings();
       WB.renderCanvas();
@@ -327,19 +441,74 @@
     }
   });
 
-  function preview() {
+  WB.on('zoom', renderTools);
+  /* 색 고르기 칸에 페이지 색 팔레트를 추천으로 (<datalist id="wb-palette">) */
+  const paletteList = h('datalist', { id: 'wb-palette' });
+  document.body.append(paletteList);
+  const renderPaletteList = () => paletteList.replaceChildren(...(WB.canvasDoc()?.extra?.vars || []).filter(v => /^#[0-9a-f]{6}$/i.test(v.value)).map(v => h('option', { value: v.value })));
+  WB.on('doc', renderPaletteList);
+
+  WB.preview = preview;
+  async function preview() {
     const doc = WB.canvasDoc();
     if (!doc) return;
-    const url = URL.createObjectURL(new Blob([WB.generateHTML(doc)], { type: 'text/html;charset=utf-8' }));
-    window.open(url, '_blank');
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    const win = window.open('', '_blank'); // 팝업 차단을 피하려고 창부터 엶
+    const made = [];
+    const html = await withProjectFiles(WB.generateHTML(doc), WB.dirPathOf(doc), new Map(), 0, made);
+    const url = blobUrl(html, 'text/html;charset=utf-8', made);
+    if (win) win.location = url;
+    else window.open(url, '_blank');
+    setTimeout(() => made.forEach(u => URL.revokeObjectURL(u)), 10 * 60000);
+  }
+  const blobUrl = (data, type, made) => {
+    const u = URL.createObjectURL(data instanceof Blob ? data : new Blob([data], { type }));
+    made.push(u);
+    return u;
+  };
+  function joinPath(dir, rel) {
+    const parts = rel.startsWith('/') ? [] : dir.split('/').filter(Boolean);
+    for (const seg of decodeURI(rel).split('/')) {
+      if (!seg || seg === '.') continue;
+      if (seg === '..') parts.pop();
+      else parts.push(seg);
+    }
+    return parts.join('/');
+  }
+  /** 미리보기 창에는 프로젝트 파일 주소가 없어서: 그림 · 다른 페이지 링크를 임시 주소(blob:)로 바꿈 (페이지는 두 단계까지) */
+  async function withProjectFiles(html, dir, pages, depth, made) {
+    if (dir == null || !WB.explorer.root) return html;
+    const refs = new Set();
+    // src="…", href="…", 블록의 location.href = "…", CSS url("…")
+    for (const m of html.matchAll(/(?:src|href)\s*=\s*"([^"]+)"|url\("([^"]+)"\)/g)) {
+      const r = m[1] || m[2];
+      if (!/^([a-z]+:|\/\/|#)/i.test(r)) refs.add(r);
+    }
+    for (const ref of refs) {
+      const path = joinPath(dir, ref.split(/[?#]/)[0]);
+      let url = null;
+      try {
+        if (/\.html?$/i.test(path)) {
+          if (depth >= 2 || pages.get(path) === null) continue; // 너무 깊거나 서로 가리키는 페이지는 그대로
+          if (!pages.has(path)) {
+            pages.set(path, null);
+            const text = await (await WB.explorer.fileAt(path)).text();
+            pages.set(path, blobUrl(await withProjectFiles(text, path.split('/').slice(0, -1).join('/'), pages, depth + 1, made), 'text/html;charset=utf-8', made));
+          }
+          url = pages.get(path);
+        } else url = blobUrl(await WB.explorer.fileAt(path), '', made);
+      } catch { continue; } // 없는 파일은 그대로
+      if (url) html = html.split(`"${ref}"`).join(`"${url}"`);
+    }
+    return html;
   }
 
   /* =========================================================
      탭2 오른쪽: 설정 · 코드로 변환
      ========================================================= */
-  $('#btn-settings').innerHTML = `${icon('settings', 15)} 설정`;
-  $('#btn-convert').innerHTML = `${icon('code', 15)} 코드로 변환`;
+  $('#btn-settings').innerHTML = `${icon('settings', 14)}<span>설정</span>`;
+  $('#btn-settings').title = '설정 (페이지 · 편집기)';
+  $('#btn-convert').innerHTML = `${icon('code', 14)}<span>코드</span>`;
+  $('#btn-convert').title = '코드로 변환 — 만든 화면을 HTML 코드로 보기';
   $('#btn-convert').onclick = () => showCode();
   $('#btn-settings').onclick = () => showSettings();
 
@@ -391,7 +560,14 @@
       <label class="frow"><span>기본 글꼴</span><select name="font">${FONT_OPTS.map(([v, l]) => `<option value="${esc(v)}" ${v === curFont ? 'selected' : ''}>${l}</option>`).join('')}${curFont && !FONT_OPTS.some(([v]) => v === curFont) ? `<option value="${esc(curFont)}" selected>${esc(curFont)}</option>` : ''}</select></label>
       <label class="frow"><span>페이지 여백</span><input type="text" name="padding" value="${esc(st.padding || '')}" placeholder="예: 24px"></label>
       <label class="frow"><span>내용 최대 너비</span><input type="text" name="maxw" value="${esc(st['max-width'] || '')}" placeholder="비우면 화면 가득 (예: 960px)"></label>
-      <p class="hint">내용 최대 너비를 정하면 넓은 화면에서 내용이 가운데에 모여요.</p>`
+      <p class="hint">내용 최대 너비를 정하면 넓은 화면에서 내용이 가운데에 모여요.</p>
+      <label class="frow top"><span>가져온 CSS</span><textarea name="extracss" rows="6" spellcheck="false" placeholder="예: .btn:hover { opacity: .8; }">${esc([doc.extra?.cssTop, doc.extra?.css].filter(Boolean).join('\n'))}</textarea></label>
+      <p class="hint">다른 곳에서 가져온 페이지의 :hover · 다른 화면 크기(@media) · 애니메이션처럼 요소 스타일로 바꿀 수 없는 CSS 가 여기 그대로 남아 있어요. 직접 써 넣어도 돼요.</p>
+      <label class="frow top"><span>색 팔레트<br><button class="btn small" type="button" data-findcolors style="margin-top:6px">페이지에서 찾기</button></span><textarea name="palette" rows="5" spellcheck="false" placeholder="이름: 색 (한 줄에 하나)&#10;blue: #2b2df2&#10;cream: #f2eee6">${esc((doc.extra?.vars || []).map(v => `${v.name}: ${v.value}`).join('\n'))}</textarea></label>
+      <p class="hint">코드에서 이 색들은 <code>var(--이름)</code> 으로 바뀌어 한곳(:root)에서 고칠 수 있어요. 여기서 색 값을 바꾸면 그 색을 쓰는 요소가 모두 함께 바뀌어요. 탭2 색 고르기에도 추천으로 나와요.</p>
+      <label class="frow"><span>페이지 설명</span><input type="text" name="desc" value="${esc((((doc.extra?.head || []).find(s => /<meta[^>]+name="description"/i.test(s)) || '').match(/content="([^"]*)"/) || [])[1] || '')}" placeholder="검색 결과 · 링크 미리보기에 나오는 한 줄 소개"></label>
+      <label class="frow top"><span>&lt;head&gt; 코드</span><textarea name="head" rows="3" spellcheck="false" placeholder='예: &lt;link rel="icon" href="images/favicon.png"&gt;'>${esc((doc.extra?.head || []).filter(s => !/<meta[^>]+name="description"/i.test(s)).join('\n'))}</textarea></label>
+      <p class="hint">파비콘 · 공유 미리보기(og:) 같은 태그를 한 줄에 하나씩. 웹 글꼴 링크는 탭2 에서 글꼴을 고르면 자동으로 들어가요.</p>`
       : '<p class="hint">HTML 페이지를 열면 페이지 설정을 바꿀 수 있어요.</p>'}
       <hr>
       <h4>편집기</h4>
@@ -409,6 +585,19 @@
     form.querySelector('[name=theme]').onchange = e => { WB.settings.theme = e.target.value; WB.saveSettings(); applyTheme(); };
     form.querySelector('[name=guides]').onchange = e => { WB.settings.guides = e.target.checked; WB.saveSettings(); WB.renderCanvas(); renderTools(); };
     form.querySelector('[data-reset]').onclick = () => WB.resetLayout();
+    // 색 팔레트 자동으로: 페이지에서 세 번 이상 쓰인 색을 많이 쓴 순서로
+    form.querySelector('[data-findcolors]')?.addEventListener('click', () => {
+      const count = new Map();
+      WB.walk(doc.root, n => {
+        for (const s of [n.style, n.styleTablet, n.styleMobile, n.styleHover]) for (const v of Object.values(s || {}))
+          for (const c of String(v).match(/#[0-9a-f]{6}\b/gi) || []) count.set(c.toLowerCase(), (count.get(c.toLowerCase()) || 0) + 1);
+      });
+      const ta = form.querySelector('[name=palette]');
+      const have = new Set(ta.value.split('\n').map(l => l.split(':')[1]?.trim().toLowerCase()).filter(Boolean));
+      const add = [...count].filter(([c, n]) => n >= 3 && !have.has(c)).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      ta.value = [ta.value.trim(), ...add.map(([c], i) => `color-${have.size + i + 1}: ${c}`)].filter(Boolean).join('\n');
+      if (!add.length) WB.toast('세 번 이상 쓰인 새 색이 없어요');
+    });
 
     WB.modal({
       title: '설정',
@@ -426,6 +615,28 @@
             s['font-family'] = v('font');
             if (v('padding')) s.padding = norm(v('padding')); else delete s.padding;
             if (maxw) { s['max-width'] = maxw; s.margin = '0 auto'; } else { delete s['max-width']; s.margin = '0'; }
+            // @import 같은 문장은 맨 앞으로
+            const all = form.querySelector('[name=extracss]').value.trim().split('\n');
+            const isTop = l => /^\s*@(import|charset|namespace)\b/i.test(l);
+            d.extra = { ...(d.extra || WB.emptyExtra()), cssTop: all.filter(isTop).join('\n').trim(), css: all.filter(l => !isTop(l)).join('\n').trim() };
+            // 색 팔레트: 값이 바뀐 색은 그 색을 쓰던 요소도 모두 새 색으로
+            const oldVars = new Map((d.extra.vars || []).map(x => [x.name, x.value]));
+            const vars = form.querySelector('[name=palette]').value.split('\n').map(l => l.match(/^\s*([a-z][\w-]*)\s*:\s*(.+?)\s*;?\s*$/i)).filter(Boolean).map(m => ({ name: m[1], value: m[2] }));
+            for (const x of vars) {
+              const old = oldVars.get(x.name);
+              if (!old || old.toLowerCase() === x.value.toLowerCase()) continue;
+              const re = new RegExp(old.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+              WB.walk(d.root, n => {
+                for (const s of [n.style, n.styleTablet, n.styleMobile, n.styleHover]) if (s) for (const k of Object.keys(s)) s[k] = String(s[k]).replace(re, x.value);
+              });
+            }
+            d.extra.vars = vars;
+            // <head>: 설명 + 직접 쓴 줄들
+            const desc = v('desc');
+            d.extra.head = [
+              ...(desc ? [`<meta name="description" content="${desc.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">`] : []),
+              ...form.querySelector('[name=head]').value.split('\n').map(s => s.trim()).filter(Boolean),
+            ];
           });
           close();
         },
@@ -441,7 +652,7 @@
     <p style="margin:0">코딩 없이 끌어다 놓아서 웹페이지를 만들어요.</p>
     <div class="row">
       <button class="btn primary" data-empty="new">${icon('plus', 15)} 새 페이지</button>
-      <button class="btn" data-empty="open">${icon('folderOpen', 15)} 폴더 열기</button>
+      <button class="btn" data-empty="open">${icon('box', 15)} 프로젝트 열기</button>
     </div>
     <ul>
       <li>아래 <b>HTML 태그</b>에서 요소를 클릭하거나 가운데로 끌어오세요</li>
@@ -451,7 +662,12 @@
   views.empty.addEventListener('click', e => {
     const a = e.target.closest('[data-empty]')?.dataset.empty;
     if (a === 'new') WB.newPage();
-    if (a === 'open') WB.explorer.supported ? WB.explorer.openFolder() : WB.toast('Chrome 이나 Edge 에서만 폴더를 열 수 있어요', 'error');
+    if (a === 'open') {
+      // 탭1 을 펼치고 프로젝트 목록을 보여 줌
+      if (!WB.explorer.root) WB.explorer.showProjects();
+      document.querySelector('#tab1 .ex-proj, #tab1 .btn')?.focus();
+      WB.toast('왼쪽 「프로젝트」에서 프로젝트를 고르거나 새로 만드세요');
+    }
   });
 
   /* =========================================================
@@ -483,8 +699,13 @@
       const st = WB.selectedNode().style, step = e.shiftKey ? 10 : 1;
       const dx = e.key === 'ArrowLeft' ? -step : e.key === 'ArrowRight' ? step : 0;
       const dy = e.key === 'ArrowUp' ? -step : e.key === 'ArrowDown' ? step : 0;
-      WB.setStyles(id, { left: Math.max(0, (parseFloat(st.left) || 0) + dx) + 'px', top: Math.max(0, (parseFloat(st.top) || 0) + dy) + 'px' }, `nudge:${id}`);
+      // 오른쪽 · 아래 기준이면 거꾸로 셈
+      const hx = st.right && !st.left ? 'right' : 'left', vy = st.bottom && !st.top ? 'bottom' : 'top';
+      const mx = hx === 'right' ? -dx : dx, my = vy === 'bottom' ? -dy : dy;
+      WB.setStyles(id, { [hx]: Math.max(0, (parseFloat(st[hx]) || 0) + mx) + 'px', [vy]: Math.max(0, (parseFloat(st[vy]) || 0) + my) + 'px' }, `nudge:${id}`);
     }
+    else if (mod && e.shiftKey && key === 'c') { e.preventDefault(); WB.copyStyle(); }
+    else if (mod && e.shiftKey && key === 'v') { e.preventDefault(); WB.pasteStyle(); }
     else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); WB.removeNode(id); }
     else if (mod && key === 'd') { e.preventDefault(); WB.duplicateNode(id); }
     else if (mod && key === 'c') { clipboard = JSON.parse(JSON.stringify(WB.selectedNode())); WB.toast('요소를 복사했어요'); }
@@ -495,6 +716,22 @@
     else if (e.key === 'Enter' || e.key === 'F2') { e.preventDefault(); WB.startEditSelected(); }
     else if (e.key === 'Escape') WB.selectParent();
   });
+  /* 스타일 복사 · 붙여넣기 (위치 정보는 빼고) */
+  let styleClip = null;
+  const NO_COPY = new Set(['position', 'left', 'top', 'right', 'bottom']);
+  WB.copyStyle = () => {
+    const n = WB.selectedNode();
+    if (!n) return;
+    styleClip = Object.fromEntries(Object.entries(WB.styleOf(n)).filter(([k]) => !NO_COPY.has(k)));
+    WB.toast('스타일을 복사했어요 — 다른 요소를 고르고 붙여넣기 (Ctrl+Shift+V)');
+  };
+  WB.pasteStyle = () => {
+    const id = WB.selectedId();
+    if (!id || !styleClip) return WB.toast('먼저 스타일을 복사해 주세요 (Ctrl+Shift+C)');
+    WB.setStyles(id, styleClip, `paste-style:${Date.now()}`);
+    WB.toast('스타일을 붙여넣었어요');
+  };
+
   function pasteNode() {
     const doc = WB.canvasDoc();
     const node = WB.cloneNode(clipboard);
@@ -502,7 +739,7 @@
     let parentId = 'root', index;
     if (sel && sel.id !== 'root') {
       const f = WB.find(doc.root, sel.id);
-      if (WB.kindOf(sel.tag) === 'container') parentId = sel.id;
+      if (WB.kindOf(sel) === 'container') parentId = sel.id;
       else { parentId = f.parent.id; index = f.index + 1; }
     }
     WB.insertNode(node, parentId, index);
@@ -523,7 +760,7 @@
   const drafts = WB.load('wb.drafts', []);
   if (Array.isArray(drafts) && drafts.length) {
     for (const dr of drafts) {
-      const doc = WB.newPageDoc({ name: dr.name, title: dr.title, root: WB.reId(dr.root), blocks: WB.reIdBlocks(dr.blocks) });
+      const doc = WB.newPageDoc({ name: dr.name, title: dr.title, root: WB.reId(dr.root), blocks: WB.reIdBlocks(dr.blocks), extra: dr.extra });
       doc.dirty = dr.root.children.length > 0;
       S.docs.push(doc);
     }

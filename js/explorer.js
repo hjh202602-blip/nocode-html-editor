@@ -1,6 +1,7 @@
 'use strict';
-/* 탭1 — 탐색기: 내 컴퓨터의 폴더를 열고 파일·폴더를 만들고, 열고, 이름을 바꾸고, 지움
-   (Chrome · Edge 의 File System Access API 사용) */
+/* 탭1 — 프로젝트: 브라우저 안 프로젝트(어느 브라우저나) 또는 내 컴퓨터 폴더(Chrome · Edge)를 열고
+   파일·폴더를 만들고, 열고, 이름을 바꾸고, 지움. zip 으로 내보내기 · 가져오기.
+   브라우저 프로젝트는 vfs.js 가 폴더 핸들과 같은 모양으로 만들어 주므로 아래 코드는 둘 다 똑같이 다룸 */
 (() => {
   const { $, h, esc, icon } = WB;
   const treeEl = $('#ex-tree');
@@ -11,6 +12,7 @@
   /** tree 노드: { name, kind:'file'|'directory', handle, parent, path, children, expanded } */
   const ex = (WB.explorer = { root: null, tree: null, selected: null, supported });
   let savedHandle = null;
+  let lastRoot = null; // 마지막으로 연 프로젝트 · 폴더 (목록 화면에서도 기억)
 
   /* ---------- 마지막 폴더 기억 (IndexedDB) ---------- */
   const idb = () => new Promise((res, rej) => {
@@ -71,13 +73,164 @@
         return;
       }
     }
-    ex.root = handle;
+    // 다른 프로젝트 · 폴더로 바꾸면 앞의 것에서 연 파일 탭은 닫음 (저장 안 한 것은 물어봄)
+    const prev = ex.root || lastRoot; // 프로젝트 목록을 거쳐 와도 앞의 것과 비교
+    if (prev && !(await sameRoot(prev, handle)) && !WB.closeFileDocs()) return;
+    ex.root = lastRoot = handle;
     ex.tree = { name: handle.name, kind: 'directory', handle, parent: null, path: '', children: null, expanded: true };
     ex.selected = null;
     await loadChildren(ex.tree);
     render();
-    idbSet('root', handle).catch(() => {});
+    idbSet('root', handle.isVirtual ? { vproject: handle.pid } : handle).catch(() => {});
     WB.emit('folder');
+  }
+  async function sameRoot(a, b) {
+    if (!!a.isVirtual !== !!b.isVirtual) return false;
+    try { return await a.isSameEntry(b); } catch { return false; }
+  }
+  ex.isVirtual = () => !!ex.root?.isVirtual;
+
+  /* ---------- 브라우저 프로젝트 ---------- */
+  async function openProject(id) {
+    const p = await WB.projects.get(id);
+    if (!p) return WB.toast('프로젝트를 찾지 못했어요', 'error');
+    await openFolder(WB.projects.root(p));
+  }
+  /** 이름 묻기 창 → 이름 (취소하면 null) */
+  function promptName(title, value = '', placeholder = '') {
+    return new Promise(resolve => {
+      const input = h('input', { type: 'text', value, placeholder, spellcheck: 'false', style: 'width:100%;height:32px' });
+      let finished = false;
+      const finish = (close, v) => { if (finished) return; finished = true; close(); resolve(v); };
+      const m = WB.modal({
+        title,
+        content: input,
+        actions: [
+          { label: '취소', onClick: close => finish(close, null) },
+          { label: '확인', primary: true, onClick: close => finish(close, input.value.trim() || null) },
+        ],
+      });
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') finish(m.close, input.value.trim() || null); });
+      setTimeout(() => { input.focus(); input.select(); });
+    });
+  }
+  ex.promptName = promptName;
+  const firstPage = title => new Blob([WB.generateHTML({
+    title,
+    root: { ...WB.newRoot(), children: [WB.makeNode('h1', { text: title }), WB.makeNode('p', { text: '글자를 두 번 클릭하면 고칠 수 있어요.' })] },
+    blocks: WB.emptyBlocks(),
+  })], { type: 'text/html' });
+  async function newProject() {
+    const name = await promptName('새 프로젝트', '', '예: 우리 가게 홈페이지');
+    if (!name) return;
+    const p = await WB.projects.create(name, [{ path: 'index.html', blob: firstPage(name) }]);
+    await openProject(p.id);
+    const node = ex.tree?.children.find(c => c.name === 'index.html');
+    if (node) { ex.selected = node; render(); WB.openFileNode(node); }
+    WB.toast(`프로젝트 '${name}' 을(를) 만들었어요`, 'ok');
+  }
+  /** 저장할 곳이 없을 때: 최근 프로젝트를 열거나 새로 만듦 */
+  ex.ensureRoot = async () => {
+    if (ex.root) return ex.root;
+    const list = await WB.projects.list();
+    if (list.length) await openProject(list[0].id);
+    else await openFolder(WB.projects.root(await WB.projects.create('내 프로젝트')));
+    return ex.root;
+  };
+  async function renameProject() {
+    if (!ex.isVirtual()) return;
+    const name = await promptName('프로젝트 이름 바꾸기', ex.tree.name);
+    if (!name) return;
+    await WB.projects.rename(ex.root.pid, name);
+    ex.root.name = ex.tree.name = name;
+    render();
+  }
+  async function deleteProject() {
+    if (!ex.isVirtual()) return;
+    if (!confirm(`프로젝트 '${ex.tree.name}' 과(와) 그 안의 모든 페이지 · 그림을 삭제할까요?\n이 작업은 되돌릴 수 없어요. (먼저 zip 으로 내보내 두면 안전해요)`)) return;
+    if (!WB.closeFileDocs()) return;
+    await WB.projects.remove(ex.root.pid);
+    closeRoot();
+    WB.toast('프로젝트를 삭제했어요');
+  }
+  function closeRoot() {
+    ex.root = ex.tree = ex.selected = null;
+    idbSet('root', null).catch(() => {});
+    render();
+  }
+  ex.showProjects = closeRoot;
+
+  /* ---------- zip 내보내기 · 가져오기 ---------- */
+  async function exportZip() {
+    if (!ex.root) return WB.toast('먼저 프로젝트를 열어 주세요');
+    for (const d of WB.state.docs) if (d.dirty && d.handle) await WB.saveDoc(d); // 저장 안 한 것부터 저장
+    const files = await WB.projects.readAll(ex.root);
+    if (!files.length) return WB.toast('내보낼 파일이 없어요');
+    WB.download(ex.tree.name + '.zip', await WB.makeZip(files), 'application/zip');
+    WB.toast(`파일 ${files.length}개를 zip 으로 내려받았어요`, 'ok');
+  }
+  function importFiles() {
+    const input = $('#file-picker');
+    input.accept = '.zip,.html,.htm,.css,.js,image/*';
+    input.multiple = true;
+    input.value = '';
+    input.onchange = async () => {
+      const list = [...input.files];
+      input.multiple = false;
+      if (!list.length) return;
+      try {
+        const zips = list.filter(f => /\.zip$/i.test(f.name));
+        // zip 은 하나하나 새 프로젝트로
+        let lastId = null;
+        for (const z of zips) lastId = (await WB.projects.create(z.name.replace(/\.zip$/i, ''), await WB.readZip(z))).id;
+        // 나머지(페이지 · 그림)는 지금 프로젝트에 (그림은 images/ 안으로)
+        const loose = list.filter(f => !/\.zip$/i.test(f.name)).map(f => ({ path: (/^image\//.test(f.type) ? 'images/' : '') + f.name, blob: f }));
+        if (loose.length) {
+          const root = ex.root || (lastId ? null : await ex.ensureRoot());
+          if (root) {
+            for (const f of loose) await WB.projects.writePath(root, f.path, f.blob);
+            await ex.refresh();
+          } else await WB.projects.create('가져온 파일', loose);
+        }
+        if (lastId && !loose.length) await openProject(lastId);
+        else render();
+        WB.toast(`${zips.length ? `zip ${zips.length}개를 프로젝트로, ` : ''}${loose.length ? `파일 ${loose.length}개를 가져왔어요` : '가져왔어요'}`, 'ok');
+      } catch (e) {
+        WB.toast('가져오지 못했어요: ' + e.message, 'error');
+      }
+    };
+    input.click();
+  }
+  /** 편집기와 함께 있는 예제를 프로젝트로 (서버에 examples 폴더가 있을 때) */
+  const EXAMPLES = ['naver-clone/index.html', 'naver-clone/login.html', 'practice-sites/shop.html', 'practice-sites/dashboard.html', 'practice-sites/portfolio.html', 'practice-sites/sheet.html', 'practice-sites/video-editor.html', 'practice-sites/offcut.html', 'practice-sites/settings.html'];
+  async function addExamples() {
+    try {
+      const files = [];
+      for (const path of EXAMPLES) {
+        const r = await fetch('examples/' + path);
+        if (r.ok) files.push({ path, blob: await r.blob() });
+      }
+      if (!files.length) throw new Error('예제 파일이 없어요');
+      const p = await WB.projects.create('연습 예제', files);
+      await openProject(p.id);
+      WB.toast(`예제 ${files.length}개로 프로젝트를 만들었어요`, 'ok');
+    } catch (e) {
+      WB.toast('예제를 불러오지 못했어요: ' + e.message, 'error');
+    }
+  }
+
+  /** 프로젝트 메뉴 (탭1 위쪽 버튼 · 프로젝트 이름 클릭) */
+  function projectMenu(x, y) {
+    const items = [
+      { label: '프로젝트 목록', icon: 'box', action: closeRoot },
+      { label: '새 프로젝트', icon: 'plus', action: newProject },
+      'sep',
+      { label: 'zip 으로 내보내기 (백업 · 옮기기)', icon: 'download', action: exportZip },
+      { label: '가져오기 (zip · 페이지 · 그림)', icon: 'upload', action: importFiles },
+    ];
+    if (ex.isVirtual()) items.push('sep', { label: '프로젝트 이름 바꾸기', icon: 'edit', action: renameProject }, { label: '프로젝트 삭제', icon: 'trash', danger: true, action: deleteProject });
+    if (supported) items.push('sep', { label: '내 컴퓨터 폴더 열기 (Chrome · Edge)', icon: 'folderOpen', action: () => openFolder() });
+    WB.menu(x, y, items);
   }
   async function reopen() {
     if (!savedHandle) return;
@@ -148,8 +301,9 @@
 
   function render() {
     if (!ex.tree) return renderEmpty();
-    rootEl.innerHTML = `${icon('folderOpen', 14)}<span>${esc(ex.tree.name)}</span>`;
-    rootEl.title = '열린 폴더: ' + ex.tree.name;
+    const v = ex.isVirtual();
+    rootEl.innerHTML = `${icon(v ? 'box' : 'folderOpen', 14)}<span>${esc(ex.tree.name)}</span><small class="ex-where">${v ? '브라우저' : '내 컴퓨터'}</small>${icon('chevron', 12)}`;
+    rootEl.title = (v ? '브라우저 안 프로젝트: ' : '내 컴퓨터 폴더: ') + ex.tree.name + ' — 눌러서 프로젝트 메뉴';
     treeEl.replaceChildren(...rows(ex.tree, 0));
     if (!ex.tree.children.length) treeEl.append(h('div', { class: 'ex-empty' }, h('p', { class: 'hint' }, '빈 폴더예요. 위의 [새 파일] 버튼으로 HTML 파일을 만들어 보세요.')));
   }
@@ -203,20 +357,38 @@
     return input;
   }
 
-  function renderEmpty() {
+  /** 열린 프로젝트가 없을 때: 내 프로젝트 목록 + 새로 만들기 · 가져오기 · (Chrome · Edge) 내 컴퓨터 폴더 */
+  let listSeq = 0;
+  async function renderEmpty() {
+    const seq = ++listSeq;
     rootEl.innerHTML = '';
-    treeEl.innerHTML = '';
     const box = h('div', { class: 'ex-empty' });
-    if (!supported) {
-      box.innerHTML = `<p class="warn">이 브라우저는 내 컴퓨터 폴더 열기를 지원하지 않아요.</p>
-        <p>Chrome 이나 Edge 에서 열어 주세요. 지금은 [코드로 변환] → 다운로드로 저장할 수 있어요.</p>`;
-    } else {
-      box.innerHTML = `<p>열린 폴더가 없어요.</p>`;
-      box.append(h('button', { class: 'btn primary', onclick: () => openFolder(), html: icon('folderOpen', 15) + ' 폴더 열기' }));
+    box.append(
+      h('button', { class: 'btn primary', onclick: newProject, html: icon('plus', 15) + ' 새 프로젝트' }),
+      h('div', { class: 'ex-two' },
+        h('button', { class: 'btn', onclick: importFiles, title: 'zip 은 새 프로젝트로, 페이지 · 그림은 지금 프로젝트로', html: icon('upload', 14) + ' 가져오기' }),
+        h('button', { class: 'btn', onclick: addExamples, title: '네이버 · 쇼핑몰 · 대시보드 · 포트폴리오 · 스프레드시트 · 영상 편집 예제', html: icon('file', 14) + ' 예제' })),
+      h('p', { class: 'ex-sec' }, '내 프로젝트'));
+    const listEl = h('div', { class: 'ex-projects' }, h('p', { class: 'hint' }, '불러오는 중…'));
+    box.append(listEl);
+    if (supported) {
+      box.append(h('p', { class: 'ex-sec' }, '내 컴퓨터 폴더 (Chrome · Edge)'));
+      box.append(h('button', { class: 'btn', onclick: () => openFolder(), html: icon('folderOpen', 15) + ' 폴더 열기' }));
       if (savedHandle) box.append(h('button', { class: 'btn', onclick: reopen, html: `최근 폴더 다시 열기<small>${esc(savedHandle.name)}</small>` }));
-      box.append(h('p', { class: 'hint' }, '폴더를 열면 그 안에 HTML 파일을 만들고, 열고, 저장할 수 있어요. VS Code 의 탐색기와 같아요.'));
     }
-    treeEl.append(box);
+    box.append(h('p', { class: 'hint' }, '프로젝트는 이 브라우저 안에 저장돼요. 다른 컴퓨터로 옮기거나 백업하려면 프로젝트 메뉴에서 zip 으로 내보내세요.'));
+    treeEl.replaceChildren(box);
+    let list = [];
+    try { list = await WB.projects.list(); } catch (e) { listEl.replaceChildren(h('p', { class: 'warn' }, '브라우저 저장소를 열지 못했어요: ' + e.message)); return; }
+    if (seq !== listSeq || ex.tree) return; // 그 사이 다른 화면으로 바뀜
+    const when = t => new Date(t).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    listEl.replaceChildren(...(list.length ? list.map(p => {
+      const card = h('button', { class: 'ex-proj', title: '열기' },
+        h('span', { class: 'pj-ico', html: icon('box', 16) }),
+        h('span', { class: 'pj-txt' }, h('b', {}, p.name), h('small', {}, `페이지 ${p.pages}개 · ${when(p.updated)}`)));
+      card.onclick = () => openProject(p.id);
+      return card;
+    }) : [h('p', { class: 'hint' }, '아직 프로젝트가 없어요. [새 프로젝트]로 시작하거나 [예제]를 불러와 보세요.')]));
   }
 
   /* ---------- 만들기 · 이름 바꾸기 · 지우기 ---------- */
@@ -369,18 +541,18 @@
 
   /* ---------- 사용자 동작 ---------- */
   actionsEl.innerHTML = [
-    ['open', 'folderOpen', '폴더 열기'],
-    ['newFile', 'filePlus', '새 파일'],
+    ['projects', 'box', '프로젝트 메뉴 (목록 · 새로 만들기 · zip 내보내기 · 가져오기)'],
+    ['newFile', 'filePlus', '새 페이지'],
     ['newFolder', 'folderPlus', '새 폴더'],
     ['refresh', 'refresh', '새로 고침'],
     ['collapse', 'collapse', '모두 접기'],
   ].map(([act, ic, t]) => `<button class="icon-btn" data-act="${act}" title="${t}">${icon(ic)}</button>`).join('');
   actionsEl.addEventListener('click', e => {
-    const act = e.target.closest('[data-act]')?.dataset.act;
+    const btn = e.target.closest('[data-act]');
+    const act = btn?.dataset.act;
     if (!act) return;
-    if (!supported) return WB.toast('Chrome 이나 Edge 에서만 폴더를 열 수 있어요', 'error');
-    if (act === 'open') return openFolder();
-    if (!ex.tree) return WB.toast('먼저 폴더를 열어 주세요');
+    if (act === 'projects') { const r = btn.getBoundingClientRect(); return projectMenu(r.left, r.bottom + 2); }
+    if (!ex.tree) return WB.toast('먼저 프로젝트를 열어 주세요');
     if (act === 'newFile') newFile();
     else if (act === 'newFolder') newFolder();
     else if (act === 'refresh') ex.refresh();
@@ -435,17 +607,25 @@
     else if (e.key === 'Enter' && node.kind === 'file') WB.openFileNode(node);
   });
 
+  rootEl.addEventListener('click', () => {
+    const r = rootEl.getBoundingClientRect();
+    projectMenu(r.left + 8, r.bottom);
+  });
+
   WB.on('doc', () => ex.tree && render());
 
-  /* ---------- 시작 ---------- */
+  /* ---------- 시작: 마지막에 연 프로젝트 · 폴더 ---------- */
   render();
-  if (supported) {
-    idbGet('root').then(async handle => {
-      if (!handle) return;
-      savedHandle = handle;
-      // 이미 권한이 있으면 바로 열고, 아니면 [최근 폴더 다시 열기] 버튼을 보여줌
-      if ((await handle.queryPermission({ mode: 'readwrite' })) === 'granted') openFolder(handle);
-      else render();
-    }).catch(() => {});
-  }
+  idbGet('root').then(async last => {
+    if (!last) return;
+    if (last.vproject) {
+      if (await WB.projects.get(last.vproject)) openProject(last.vproject);
+      return;
+    }
+    if (!supported) return;
+    savedHandle = last;
+    // 이미 권한이 있으면 바로 열고, 아니면 [최근 폴더 다시 열기] 버튼을 보여줌
+    if ((await last.queryPermission({ mode: 'readwrite' })) === 'granted') openFolder(last);
+    else render();
+  }).catch(() => {});
 })();

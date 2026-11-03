@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omorpro — Portfolio</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.5;
+      color: #e5e7eb;
+      background-color: #1e1f25;
+    }
+    .c1 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 80px;
+      background-color: #1a1b20;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .c2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .c3 {
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 6px;
+      background-color: #ff1f5a;
+      color: #ffffff;
+      font-size: 15px;
+    }
+    .c4 {
+      display: flex;
+      flex-direction: row;
+    }
+    .c5 {
+      color: #ffffff;
+    }
+    .c6 {
+      color: #ff1f5a;
+    }
+    .c7 {
+      display: flex;
+      flex-direction: row;
+      gap: 34px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .c8 {
+      color: #ff1f5a;
+      text-decoration: none;
+    }
+    .c9 {
+      color: #e5e7eb;
+      text-decoration: none;
+    }
+    .c10 {
+      background-color: #ff1f5a;
+      color: #ffffff;
+      border-style: none;
+      border-radius: 4px;
+      padding: 12px 26px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .c11 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 40px;
+      padding: 70px 80px;
+    }
+    .c12 {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex-grow: 1;
+    }
+    .c13 {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: #9ca3af;
+    }
+    .c14 {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .c15 {
+      color: #ffffff;
+      --hl-color: #ff1f5a;
+    }
+    .c16 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.25;
+    }
+    .c17 {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.8;
+      margin: 0;
+    }
+    .c18 {
+      display: flex;
+      flex-direction: row;
+      gap: 120px;
+      margin: 40px 0 0;
+    }
+    .c19 {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .c20 {
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: #9ca3af;
+    }
+    .c21 {
+      display: flex;
+      flex-direction: row;
+      gap: 14px;
+    }
+    .c22 {
+      width: 42px;
+      height: 42px;
+      line-height: 42px;
+      text-align: center;
+      border-radius: 6px;
+      background-color: #26272e;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .c23 {
+      width: 340px;
+      height: 400px;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      object-fit: cover;
+    }
+    .c24 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 60px;
+      padding: 40px 80px 80px;
+    }
+    .c25 {
+      width: 360px;
+      height: 380px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .c26 {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .c27 {
+      font-size: 24px;
+      color: #ffffff;
+      margin: 0;
+    }
+    .c28 {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.9;
+      margin: 0;
+    }
+    .c29 {
+      background-color: #ff1f5a;
+      color: #ffffff;
+      border-style: none;
+      border-radius: 4px;
+      padding: 12px 26px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      margin: 12px 0 0;
+      width: fit-content;
+    }
+    .c30 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 60px 80px;
+    }
+    .c31 {
+      color: #ff1f5a;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .c32 {
+      color: #ffffff;
+      font-size: 26px;
+      margin: 0 0 24px;
+    }
+    .c33 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      width: 100%;
+    }
+    .c34 {
+      display: flex;
+      flex-direction: column;
+      background-color: #26272e;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .c35 {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+    .c36 {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 16px 18px;
+      gap: 6px;
+    }
+    .c37 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      font-size: 11px;
+    }
+    .c38 {
+      color: #ff1f5a;
+      font-weight: 700;
+    }
+    .c39 {
+      color: #9ca3af;
+    }
+    .c40 {
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .c41 {
+      display: flex;
+      flex-direction: column;
+      background-color: #26272e;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      align-items: center;
+      gap: 8px;
+      padding: 26px 22px;
+      text-align: center;
+    }
+    .c42 {
+      width: 52px;
+      height: 52px;
+      line-height: 52px;
+      border-radius: 50%;
+      background-color: #3a3b44;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .c43 {
+      color: #ff1f5a;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .c44 {
+      color: #9ca3af;
+      font-size: 11px;
+    }
+    .c45 {
+      color: #c7c9d1;
+      font-size: 12px;
+      line-height: 1.8;
+      margin: 6px 0 0;
+    }
+    .c46 {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .c47 {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 16px 18px;
+      gap: 8px;
+    }
+    .c48 {
+      font-size: 11px;
+      background-color: #33343c;
+      padding: 3px 8px;
+      border-radius: 4px;
+      width: fit-content;
+      color: #9ca3af;
+    }
+    .c49 {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .c50 {
+      color: #9ca3af;
+      font-size: 12px;
+      margin: 0;
+    }
+    .c51 {
+      color: #ffffff;
+      font-size: 26px;
+      margin: 0 0 20px;
+    }
+    .c52 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 760px;
+    }
+    .c53 {
+      background-color: #26272e;
+      color: #e5e7eb;
+      border-style: none;
+      border-radius: 6px;
+      padding: 14px;
+      font-size: 13px;
+    }
+    .c54 {
+      background-color: #ff1f5a;
+      color: #ffffff;
+      border-style: none;
+      border-radius: 4px;
+      padding: 12px 26px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      margin: 18px 0 0;
+    }
+    .c55 {
+      display: flex;
+      flex-direction: row;
+      gap: 120px;
+      margin: 40px 0 0;
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: center;
+    }
+    .c56 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .c57 {
+      color: #ff1f5a;
+      font-size: 20px;
+    }
+    .c58 {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding: 24px;
+      background-color: #17181c;
+      color: #9ca3af;
+      font-size: 12px;
+    }
+    .hl {
+      color: var(--hl-color, #e11d48);
+    }
+    [data-hover] {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+    }
+    [data-hover="lift"]:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    }
+    [data-hover="grow"]:hover {
+      transform: scale(1.05);
+    }
+    [data-hover="underline"]:hover {
+      text-decoration: underline;
+    }
+    /* 휴대폰 화면 */
+    @media (max-width: 640px) {
+      .c1 {
+        padding: 14px 16px;
+      }
+      .c7 {
+        display: none;
+      }
+      .c11 {
+        flex-direction: column;
+        padding: 32px 16px;
+        gap: 28px;
+      }
+      .c14 {
+        font-size: 30px;
+        flex-wrap: wrap;
+      }
+      .c16 {
+        font-size: 24px;
+      }
+      .c18 {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .c23 {
+        width: 100%;
+        height: 280px;
+      }
+      .c24 {
+        flex-direction: column;
+        padding: 24px 16px 40px;
+        gap: 24px;
+      }
+      .c25 {
+        width: 100%;
+        height: 260px;
+      }
+      .c30 {
+        padding: 40px 16px;
+      }
+      .c33 {
+        grid-template-columns: 1fr;
+      }
+      .c52 {
+        width: 100%;
+        grid-template-columns: 1fr;
+      }
+      .c55 {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="c1">
+    <div class="c2">
+      <span class="c3">O</span>
+      <div class="c4">
+        <span class="c5">Omor</span>
+        <span class="c6">pro</span>
+      </div>
+    </div>
+    <div class="c7">
+      <a class="c8" href="#home" data-hover="underline">Home</a>
+      <a class="c9" href="#about" data-hover="underline">About</a>
+      <a class="c9" href="#service" data-hover="underline">Service</a>
+      <a class="c9" href="#portfolio" data-hover="underline">Portfolio</a>
+      <a class="c9" href="#blog" data-hover="underline">Blog</a>
+      <a class="c9" href="#contact" data-hover="underline">Contact</a>
+    </div>
+    <button class="c10" type="button" id="hire-me" data-hover="lift">Hire Me</button>
+  </div>
+  <div class="c11" id="home">
+    <div class="c12" id="hero-text">
+      <span class="c13">WELCOME TO MY WORLD</span>
+      <div class="c14">
+        <span class="c15">Hi, I’m <span class="hl">Omor Rahman</span></span>
+      </div>
+      <h2 class="c16">a Professional UI/Ux<br>Designer.</h2>
+      <p class="c17">I have been working since 2012. I am proficient in ui design,<br>user experience, researcher, web development.</p>
+      <div class="c18">
+        <div class="c19">
+          <span class="c20">FIND WITH ME</span>
+          <div class="c21">
+            <span class="c22">f</span>
+            <span class="c22">◎</span>
+            <span class="c22">in</span>
+          </div>
+        </div>
+        <div class="c19">
+          <span class="c20">BEST SKILL ON</span>
+          <div class="c21">
+            <span class="c22">Fi</span>
+            <span class="c22">Xd</span>
+            <span class="c22">Ps</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <img class="c23" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="Omor Rahman" id="hero-img">
+  </div>
+  <div class="c24" id="about">
+    <img class="c25" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="소개 사진" data-reveal="left">
+    <div class="c26" data-reveal="right">
+      <h2 class="c27">Who I Am?</h2>
+      <p class="c28">I am a website designer from London, with a strong focus in UI/UX design. I love to get new experiences and always learn from my surroundings.</p>
+      <p class="c28">I am a website designer from London, with a strong focus in UI/UX design. I love to get new experiences and always learn from my surroundings.</p>
+      <button class="c29" type="button">DOWNLOAD PDF</button>
+    </div>
+  </div>
+  <div class="c30" id="portfolio">
+    <span class="c31">PORTFOLIO</span>
+    <h2 class="c32" data-reveal="fade">My Recent Works</h2>
+    <div class="c33">
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="프로젝트">
+        <div class="c36">
+          <div class="c37">
+            <span class="c38">DEVELOPMENT</span>
+            <span class="c39" id="like1" data-hover="grow">♡ 12k</span>
+          </div>
+          <span class="c40">Mobile app landing design &amp; Services</span>
+        </div>
+      </div>
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="프로젝트">
+        <div class="c36">
+          <div class="c37">
+            <span class="c38">DEVELOPMENT</span>
+            <span class="c39" id="like2" data-hover="grow">♡ 12k</span>
+          </div>
+          <span class="c40">Web app dashboard design</span>
+        </div>
+      </div>
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="프로젝트">
+        <div class="c36">
+          <div class="c37">
+            <span class="c38">DEVELOPMENT</span>
+            <span class="c39" id="like3" data-hover="grow">♡ 12k</span>
+          </div>
+          <span class="c40">E-commerce product page</span>
+        </div>
+      </div>
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="프로젝트">
+        <div class="c36">
+          <div class="c37">
+            <span class="c38">DEVELOPMENT</span>
+            <span class="c39" id="like4" data-hover="grow">♡ 12k</span>
+          </div>
+          <span class="c40">Travel booking app UI</span>
+        </div>
+      </div>
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="프로젝트">
+        <div class="c36">
+          <div class="c37">
+            <span class="c38">DEVELOPMENT</span>
+            <span class="c39" id="like5" data-hover="grow">♡ 12k</span>
+          </div>
+          <span class="c40">Banking app redesign</span>
+        </div>
+      </div>
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="프로젝트">
+        <div class="c36">
+          <div class="c37">
+            <span class="c38">DEVELOPMENT</span>
+            <span class="c39" id="like6" data-hover="grow">♡ 12k</span>
+          </div>
+          <span class="c40">Portfolio website concept</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="c30" id="service">
+    <span class="c31">TESTIMONIALS</span>
+    <h2 class="c32" data-reveal="fade">What They Say</h2>
+    <div class="c33">
+      <div class="c41" data-reveal="zoom" data-hover="lift">
+        <span class="c42">N</span>
+        <span class="c43">Nevine Acotanza</span>
+        <span class="c44">Chief Operating Officer</span>
+        <p class="c45">Lorem ipsum is simply dummy text of the printing and typesetting industry. It has been the industry standard.</p>
+      </div>
+      <div class="c41" data-reveal="zoom" data-hover="lift">
+        <span class="c42">J</span>
+        <span class="c43">Jone Duone Joe</span>
+        <span class="c44">Operating Officer</span>
+        <p class="c45">Lorem ipsum is simply dummy text of the printing and typesetting industry. It has been the industry standard.</p>
+      </div>
+      <div class="c41" data-reveal="zoom" data-hover="lift">
+        <span class="c42">N</span>
+        <span class="c43">Nevine Dhawan</span>
+        <span class="c44">CEO Of Officer</span>
+        <p class="c45">Lorem ipsum is simply dummy text of the printing and typesetting industry. It has been the industry standard.</p>
+      </div>
+    </div>
+  </div>
+  <div class="c30" id="blog">
+    <span class="c31">RECENT ARTICLES</span>
+    <h2 class="c32" data-reveal="fade">Visit My Blog &amp; Keep Your Feedback</h2>
+    <div class="c33">
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c46" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="블로그 사진">
+        <div class="c47">
+          <span class="c48">25 Aug 2023</span>
+          <span class="c49">How to improved Image Web Design</span>
+          <p class="c50">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+      </div>
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c46" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="블로그 사진">
+        <div class="c47">
+          <span class="c48">26 Aug 2023</span>
+          <span class="c49">How to improved Image Web Design</span>
+          <p class="c50">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+      </div>
+      <div class="c34" data-reveal="up" data-hover="lift">
+        <img class="c46" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="블로그 사진">
+        <div class="c47">
+          <span class="c48">27 Aug 2023</span>
+          <span class="c49">How to improved Image Web Design</span>
+          <p class="c50">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="c30" id="contact">
+    <span class="c31">HAVE QUESTIONS?</span>
+    <h2 class="c51" data-reveal="fade">Contact Me Now</h2>
+    <div class="c52" data-reveal="up">
+      <div class="c19">
+        <input class="c53" type="text" placeholder="Your Name">
+        <input class="c53" type="text" placeholder="Your Email">
+        <input class="c53" type="text" placeholder="Your Phone">
+      </div>
+      <textarea class="c53" rows="6" placeholder="Your Message"></textarea>
+    </div>
+    <button class="c54" type="button" id="send">SUBMIT NOW</button>
+    <div class="c55">
+      <div class="c56">
+        <span class="c57">☏</span>
+        <span>+012 345 678 102</span>
+      </div>
+      <div class="c56">
+        <span class="c57">⌖</span>
+        <span>125 Main Street, London</span>
+      </div>
+      <div class="c56">
+        <span class="c57">✉</span>
+        <span>hello@omorpro.com</span>
+      </div>
+    </div>
+  </div>
+  <div class="c58">
+    <span>© 2026 Omorpro. All rights reserved.</span>
+  </div>
+  <script>
+    // 도우미 함수
+    const el = id => (id && typeof id === 'object' ? id : document.getElementById(id));
+    const on = (id, type, fn) => el(id)?.addEventListener(type, fn);
+    const animFrames = {"fade":[{"opacity":0},{"opacity":1}],"up":[{"opacity":0,"transform":"translateY(40px)"},{"opacity":1,"transform":"none"}],"left":[{"opacity":0,"transform":"translateX(-60px)"},{"opacity":1,"transform":"none"}],"zoom":[{"opacity":0,"transform":"scale(0.8)"},{"opacity":1,"transform":"none"}],"shake":[{"transform":"translateX(0)"},{"transform":"translateX(-8px)"},{"transform":"translateX(8px)"},{"transform":"translateX(-5px)"},{"transform":"translateX(0)"}],"bounce":[{"transform":"translateY(0)"},{"transform":"translateY(-16px)"},{"transform":"translateY(0)"},{"transform":"translateY(-6px)"},{"transform":"translateY(0)"}],"spin":[{"transform":"rotate(0)"},{"transform":"rotate(360deg)"}],"out":[{"opacity":1},{"opacity":0}]};
+    const animate = (e, fx, sec) => e?.animate(animFrames[fx], { duration: sec * 1000, easing: 'ease-out', fill: fx === 'out' ? 'forwards' : 'none' });
+    const toggleText = (id, a, b) => { if (el(id)) el(id).textContent = el(id).textContent === a ? b : a; };
+    const scrollToEl = id => el(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // #hire-me 을(를) 클릭했을 때
+    on("hire-me", 'click', async (event) => {
+      scrollToEl("contact");
+    });
+
+    // #send 을(를) 클릭했을 때
+    on("send", 'click', async (event) => {
+      alert("메시지를 보냈어요! (연습용이라 실제로 보내지지는 않아요)");
+    });
+
+    // #like1 을(를) 클릭했을 때
+    on("like1", 'click', async (event) => {
+      toggleText("like1", "♡ 12k", "♥ 12k");
+      animate(el("like1"), "bounce", 0.4);
+    });
+
+    // #like2 을(를) 클릭했을 때
+    on("like2", 'click', async (event) => {
+      toggleText("like2", "♡ 12k", "♥ 12k");
+      animate(el("like2"), "bounce", 0.4);
+    });
+
+    // #like3 을(를) 클릭했을 때
+    on("like3", 'click', async (event) => {
+      toggleText("like3", "♡ 12k", "♥ 12k");
+      animate(el("like3"), "bounce", 0.4);
+    });
+
+    // #like4 을(를) 클릭했을 때
+    on("like4", 'click', async (event) => {
+      toggleText("like4", "♡ 12k", "♥ 12k");
+      animate(el("like4"), "bounce", 0.4);
+    });
+
+    // #like5 을(를) 클릭했을 때
+    on("like5", 'click', async (event) => {
+      toggleText("like5", "♡ 12k", "♥ 12k");
+      animate(el("like5"), "bounce", 0.4);
+    });
+
+    // #like6 을(를) 클릭했을 때
+    on("like6", 'click', async (event) => {
+      toggleText("like6", "♡ 12k", "♥ 12k");
+      animate(el("like6"), "bounce", 0.4);
+    });
+
+    // 페이지가 열렸을 때
+    (async () => {
+      animate(el("hero-text"), "left", 0.8);
+      animate(el("hero-img"), "zoom", 0.8);
+    })();
+
+    // 스크롤해서 화면에 보이면 나타나기
+    const revealFrames = {"fade":[{"opacity":0},{"opacity":1}],"up":[{"opacity":0,"transform":"translateY(40px)"},{"opacity":1,"transform":"none"}],"left":[{"opacity":0,"transform":"translateX(-60px)"},{"opacity":1,"transform":"none"}],"right":[{"opacity":0,"transform":"translateX(60px)"},{"opacity":1,"transform":"none"}],"zoom":[{"opacity":0,"transform":"scale(0.85)"},{"opacity":1,"transform":"none"}]};
+    const revealer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.animate(revealFrames[entry.target.dataset.reveal] || revealFrames.fade, { duration: 700, easing: 'ease-out', fill: 'both' });
+        revealer.unobserve(entry.target);
+      }
+    }, { threshold: 0.15 });
+    document.querySelectorAll('[data-reveal]').forEach(e => { e.style.opacity = 0; revealer.observe(e); });
+  </script>
+  <script type="application/json" id="wb-blocks">{"scripts":[{"x":10,"y":10,"blocks":[{"type":"onLoad","args":{}},{"type":"animate","args":{"el":"hero-text","fx":"left","n":"0.8"}},{"type":"animate","args":{"el":"hero-img","fx":"zoom","n":"0.8"}}]},{"x":10,"y":174,"blocks":[{"type":"onClick","args":{"el":"hire-me"}},{"type":"scrollTo","args":{"el":"contact"}}]},{"x":10,"y":300,"blocks":[{"type":"onClick","args":{"el":"send"}},{"type":"alert","args":{"msg":"메시지를 보냈어요! (연습용이라 실제로 보내지지는 않아요)"}}]},{"x":10,"y":426,"blocks":[{"type":"onClick","args":{"el":"like1"}},{"type":"toggleText","args":{"el":"like1","a":"♡ 12k","b":"♥ 12k"}},{"type":"animate","args":{"el":"like1","fx":"bounce","n":"0.4"}}]},{"x":10,"y":590,"blocks":[{"type":"onClick","args":{"el":"like2"}},{"type":"toggleText","args":{"el":"like2","a":"♡ 12k","b":"♥ 12k"}},{"type":"animate","args":{"el":"like2","fx":"bounce","n":"0.4"}}]},{"x":10,"y":754,"blocks":[{"type":"onClick","args":{"el":"like3"}},{"type":"toggleText","args":{"el":"like3","a":"♡ 12k","b":"♥ 12k"}},{"type":"animate","args":{"el":"like3","fx":"bounce","n":"0.4"}}]},{"x":10,"y":918,"blocks":[{"type":"onClick","args":{"el":"like4"}},{"type":"toggleText","args":{"el":"like4","a":"♡ 12k","b":"♥ 12k"}},{"type":"animate","args":{"el":"like4","fx":"bounce","n":"0.4"}}]},{"x":10,"y":1082,"blocks":[{"type":"onClick","args":{"el":"like5"}},{"type":"toggleText","args":{"el":"like5","a":"♡ 12k","b":"♥ 12k"}},{"type":"animate","args":{"el":"like5","fx":"bounce","n":"0.4"}}]},{"x":10,"y":1246,"blocks":[{"type":"onClick","args":{"el":"like6"}},{"type":"toggleText","args":{"el":"like6","a":"♡ 12k","b":"♥ 12k"}},{"type":"animate","args":{"el":"like6","fx":"bounce","n":"0.4"}}]}],"vars":[],"signals":[]}</script>
+</body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="블록 웹 편집기">
+  <title>OFFCUT — Studio Website</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" data-wb>
+  <style data-wb>
+    /* 색 팔레트 */
+    :root {
+      --cream: #f2eee6;
+      --blue: #2b2df2;
+      --sand: #d6d0c2;
+      --ink: #0d0d0b;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--ink);
+      color: var(--cream);
+      font-family: 'Geist', sans-serif;
+    }
+    .free_1 {
+      position: relative;
+      width: 1280px;
+      height: 880px;
+      margin: 0 auto;
+      overflow: hidden;
+      background-color: var(--ink);
+      color: var(--cream);
+      font-family: 'Geist', sans-serif;
+    }
+    .text_1 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      position: absolute;
+      left: 24px;
+      top: 14px;
+    }
+    .text_2 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      position: absolute;
+      top: 14px;
+      right: 330px;
+    }
+    .text_3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 82px;
+      line-height: 0.9;
+      white-space: nowrap;
+      --hl-font: 'Instrument Serif', serif;
+      --hl-style: italic;
+      --hl-color: var(--cream);
+      word-spacing: 4px;
+      position: absolute;
+      left: 24px;
+      top: 44px;
+    }
+    .box_1 {
+      width: 1px;
+      height: 16px;
+      background-color: rgba(242, 238, 230, 0.6);
+      position: absolute;
+      left: 24px;
+      top: 160px;
+    }
+    .box_2 {
+      width: 16px;
+      height: 1px;
+      background-color: rgba(242, 238, 230, 0.6);
+      position: absolute;
+      left: 0px;
+      top: 186px;
+    }
+    .box_3 {
+      width: 1px;
+      height: 16px;
+      background-color: rgba(242, 238, 230, 0.6);
+      position: absolute;
+      left: 24px;
+      top: 800px;
+    }
+    .box_4 {
+      width: 16px;
+      height: 1px;
+      background-color: rgba(242, 238, 230, 0.6);
+      position: absolute;
+      left: 0px;
+      top: 790px;
+    }
+    .free_2 {
+      position: absolute;
+      width: 840px;
+      height: 600px;
+      background-color: var(--cream);
+      color: var(--ink);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: 'Geist', sans-serif;
+      left: 24px;
+      top: 186px;
+    }
+    .text_4 {
+      font-family: 'Anton', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+      position: absolute;
+      left: 24px;
+      top: 20px;
+    }
+    .text_5 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      color: #5c5a55;
+      position: absolute;
+      left: 170px;
+      top: 27px;
+    }
+    .row_1 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      font-size: 12px;
+      position: absolute;
+      top: 23px;
+      right: 24px;
+    }
+    .sup_1 {
+      font-size: 8px;
+    }
+    .col_1 {
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+      position: absolute;
+      left: 24px;
+      top: 84px;
+    }
+    .text_6 {
+      font-family: 'Anton', sans-serif;
+      font-size: 142px;
+      line-height: 0.88;
+      white-space: nowrap;
+    }
+    .text_7 {
+      font-family: 'Anton', sans-serif;
+      font-size: 142px;
+      line-height: 0.88;
+      white-space: nowrap;
+      --hl-font: 'Instrument Serif', serif;
+      --hl-style: italic;
+      --hl-color: var(--blue);
+      word-spacing: 6px;
+    }
+    .free_3 {
+      position: absolute;
+      width: 215px;
+      height: 330px;
+      background-color: var(--sand);
+      overflow: hidden;
+      left: 600px;
+      top: 72px;
+    }
+    .box_5 {
+      width: 200px;
+      height: 100px;
+      border-radius: 0 0 100px 100px;
+      background-color: var(--ink);
+      position: absolute;
+      left: 8px;
+      top: 0px;
+    }
+    .box_6 {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(13, 13, 11, 0.12);
+      position: absolute;
+      left: 0px;
+      top: 150px;
+    }
+    .text_8 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: #5c5a55;
+      white-space: nowrap;
+      position: absolute;
+      left: 600px;
+      top: 410px;
+    }
+    .text_9 {
+      font-size: 14px;
+      line-height: 1.45;
+      width: 270px;
+      margin: 0;
+      position: absolute;
+      left: 455px;
+      top: 440px;
+    }
+    .row_2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      position: absolute;
+      left: 455px;
+      top: 530px;
+    }
+    .cta {
+      background-color: var(--ink);
+      color: var(--cream);
+      border-style: none;
+      border-radius: 999px;
+      padding: 11px 20px;
+      font-size: 12px;
+      font-family: 'Geist', sans-serif;
+      cursor: pointer;
+    }
+    .link_1 {
+      color: var(--ink);
+      font-size: 12px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-weight: 500;
+    }
+    .row_3 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 792px;
+      justify-content: space-between;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: rgba(13, 13, 11, 0.25);
+      padding-top: 10px;
+      position: absolute;
+      left: 24px;
+      top: 566px;
+    }
+    .text_10 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+    .free_4 {
+      position: absolute;
+      width: 440px;
+      height: 330px;
+      background-color: var(--blue);
+      color: var(--cream);
+      border-radius: 4px;
+      overflow: hidden;
+      left: 878px;
+      top: 52px;
+    }
+    .text_11 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      position: absolute;
+      left: 18px;
+      top: 16px;
+    }
+    .text_12 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      position: absolute;
+      left: 300px;
+      top: 16px;
+    }
+    .text_13 {
+      font-family: 'Anton', sans-serif;
+      font-size: 116px;
+      line-height: 0.88;
+      white-space: nowrap;
+      position: absolute;
+      left: 18px;
+      top: 44px;
+    }
+    .text_14 {
+      font-family: 'Anton', sans-serif;
+      font-size: 116px;
+      line-height: 0.88;
+      white-space: nowrap;
+      --hl-font: 'Instrument Serif', serif;
+      --hl-style: italic;
+      --hl-color: var(--cream);
+      word-spacing: 6px;
+      position: absolute;
+      left: 18px;
+      top: 150px;
+    }
+    .box_7 {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(242, 238, 230, 0.35);
+      position: absolute;
+      left: 0px;
+      top: 275px;
+    }
+    .link_2 {
+      color: var(--cream);
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px;
+      text-decoration: underline;
+      position: absolute;
+      left: 18px;
+      top: 285px;
+    }
+    .free_5 {
+      position: absolute;
+      width: 470px;
+      height: 300px;
+      background-color: var(--cream);
+      color: var(--ink);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: 'Geist', sans-serif;
+      left: 806px;
+      top: 506px;
+    }
+    .text_15 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 1px;
+      position: absolute;
+      left: 16px;
+      top: 16px;
+    }
+    .text_16 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 15px;
+      line-height: 1.2;
+      width: 230px;
+      margin: 0;
+      position: absolute;
+      left: 228px;
+      top: 14px;
+    }
+    .row_4 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: rgba(13, 13, 11, 0.18);
+      padding: 0 16px;
+      gap: 0px;
+      position: absolute;
+      left: 0px;
+      top: 58px;
+    }
+    .text_17 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 1px;
+      width: 50px;
+      color: #77736b;
+    }
+    .text_18 {
+      font-family: 'Anton', sans-serif;
+      font-size: 31px;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--ink);
+    }
+    .text_19 {
+      font-size: 7px;
+      line-height: 1.4;
+      width: 96px;
+      margin: 0 0 0 auto;
+      color: #5c5a55;
+    }
+    .row_5 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: rgba(13, 13, 11, 0.18);
+      padding: 0 16px;
+      gap: 0px;
+      position: absolute;
+      left: 0px;
+      top: 108px;
+    }
+    .text_20 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 1px;
+      width: 62px;
+      color: #77736b;
+    }
+    .text_21 {
+      font-family: 'Anton', sans-serif;
+      font-size: 31px;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--blue);
+    }
+    .row_6 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: rgba(13, 13, 11, 0.18);
+      padding: 0 16px;
+      gap: 0px;
+      position: absolute;
+      left: 0px;
+      top: 158px;
+    }
+    .row_7 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: rgba(13, 13, 11, 0.18);
+      padding: 0 16px;
+      gap: 0px;
+      position: absolute;
+      left: 0px;
+      top: 208px;
+    }
+    .row_8 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: rgba(13, 13, 11, 0.18);
+      padding: 0 16px;
+      gap: 0px;
+      position: absolute;
+      left: 0px;
+      top: 258px;
+    }
+    .free_6 {
+      position: absolute;
+      width: 62px;
+      height: 76px;
+      background-color: var(--sand);
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      left: 318px;
+      top: 62px;
+    }
+    .box_8 {
+      width: 55px;
+      height: 55px;
+      border-radius: 55px 0 0 0;
+      background-color: var(--ink);
+      position: absolute;
+      left: 7px;
+      top: 21px;
+    }
+    .box_9 {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background-color: var(--blue);
+      position: absolute;
+      left: 772px;
+      top: 498px;
+    }
+    .row_9 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 18px;
+      position: absolute;
+      left: 24px;
+      top: 832px;
+    }
+    .row_10 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 0 0 9px;
+    }
+    .box_10 {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--cream);
+      border-width: 2px;
+      border-style: solid;
+      border-color: var(--ink);
+      margin: 0 0 0 -9px;
+    }
+    .box_11 {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--blue);
+      border-width: 2px;
+      border-style: solid;
+      border-color: var(--ink);
+      margin: 0 0 0 -9px;
+    }
+    .box_12 {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--sand);
+      border-width: 2px;
+      border-style: solid;
+      border-color: var(--ink);
+      margin: 0 0 0 -9px;
+    }
+    .box_13 {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--ink);
+      border-width: 2px;
+      border-style: solid;
+      border-color: var(--ink);
+      margin: 0 0 0 -9px;
+    }
+    .text_22 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+    .text_23 {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      position: absolute;
+      left: 480px;
+      top: 840px;
+    }
+    .nav-link:hover {
+      color: var(--blue);
+    }
+    .cta:hover {
+      background-color: var(--blue);
+    }
+    .hl {
+      color: var(--hl-color, #e11d48);
+      font-family: var(--hl-font);
+      font-style: var(--hl-style);
+    }
+  </style>
+</head>
+<body>
+  <div class="free_1" data-layout="free">
+    <span class="text_1">OFFCUT® — STUDIO WEBSITE, 2026</span>
+    <span class="text_2">01 / 04 — HOME</span>
+    <span class="text_3">IDEAS WITH <span class="hl">visual impact.</span></span>
+    <div class="box_1"></div>
+    <div class="box_2"></div>
+    <div class="box_3"></div>
+    <div class="box_4"></div>
+    <div class="free_2" data-layout="free">
+      <span class="text_4">OFFCUT°</span>
+      <span class="text_5">INDEPENDENT CREATIVE STUDIO — LISBON, 38.72° N</span>
+      <div class="row_1">
+        <span class="nav-link">
+          <span>Work</span>
+          <sup class="sup_1">05</sup>
+        </span>
+        <span class="nav-link">
+          <span>Studio</span>
+        </span>
+        <span class="nav-link">
+          <span>Services</span>
+        </span>
+        <span class="nav-link">
+          <span>Journal</span>
+          <sup class="sup_1">12</sup>
+        </span>
+        <span class="nav-link">
+          <span>Menu ☰</span>
+        </span>
+      </div>
+      <div class="col_1">
+        <span class="text_6">WE DESIGN</span>
+        <span class="text_7">THE <span class="hl">second</span></span>
+        <span class="text_6">LOOK.</span>
+      </div>
+      <div class="free_3" data-layout="free">
+        <div class="box_5"></div>
+        <div class="box_6"></div>
+      </div>
+      <span class="text_8">FIG. 01 — KILN &amp; CO., IDENTITY SYSTEM, 2026</span>
+      <p class="text_9">Offcut is an independent studio for brand identity, art direction and digital experiences. We make work people stop for — and then come back to.</p>
+      <div class="row_2">
+        <button class="cta" type="button">Start a project ↗</button>
+        <a class="link_1" href="#work">See selected work (05)</a>
+      </div>
+      <div class="row_3">
+        <span class="text_10">(SCROLL)</span>
+        <span class="text_10">BRAND IDENTITY · ART DIRECTION · DIGITAL EXPERIENCES · CAMPAIGNS · WEB DESIGN</span>
+        <span class="text_10">EST. 2016</span>
+      </div>
+    </div>
+    <div class="free_4" data-layout="free">
+      <span class="text_11">(06) CONTACT</span>
+      <span class="text_12">AVAILABLE — Q3</span>
+      <span class="text_13">LET'S MAKE</span>
+      <span class="text_14">THEM <span class="hl">look</span></span>
+      <div class="box_7"></div>
+      <a class="link_2" href="mailto:hello@offcut.studio">hello@offcut.studio</a>
+    </div>
+    <div class="free_5" data-layout="free">
+      <span class="text_15">(04) SERVICES</span>
+      <p class="text_16">Five disciplines, one table. Most projects use three of them; the good ones blur the lines.</p>
+      <div class="row_4">
+        <span class="text_17">01</span>
+        <span class="text_18">BRAND IDENTITY</span>
+        <span class="text_19">Naming, strategy, identity systems and the rules that hold them together.</span>
+      </div>
+      <div class="row_5">
+        <span class="text_20">02</span>
+        <span class="text_21">ART DIRECTION</span>
+        <span class="text_19">Photography, film and illustration directed on set and in the edit.</span>
+      </div>
+      <div class="row_6">
+        <span class="text_17">03</span>
+        <span class="text_18">DIGITAL EXPERIENCES</span>
+        <span class="text_19">Products and installations, designed and prototyped in the browser.</span>
+      </div>
+      <div class="row_7">
+        <span class="text_17">04</span>
+        <span class="text_18">CREATIVE CAMPAIGNS</span>
+        <span class="text_19">Launch ideas built to travel — print, outdoor, social.</span>
+      </div>
+      <div class="row_8">
+        <span class="text_17">05</span>
+        <span class="text_18">WEB DESIGN</span>
+        <span class="text_19">Editorial sites with motion, designed, built and handed over.</span>
+      </div>
+      <div class="free_6" data-layout="free">
+        <div class="box_8"></div>
+      </div>
+    </div>
+    <div class="box_9"></div>
+    <div class="row_9">
+      <div class="row_10">
+        <div class="box_10"></div>
+        <div class="box_11"></div>
+        <div class="box_12"></div>
+        <div class="box_13"></div>
+      </div>
+      <span class="text_22">F2EEE6 · 2B2DF2 · D6D0C2 · 0D0D0B</span>
+    </div>
+    <span class="text_23">ANTON — INSTRUMENT SERIF — GEIST</span>
+  </div>
+</body>
+</html>

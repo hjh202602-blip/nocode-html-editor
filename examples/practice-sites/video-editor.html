@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Summer Holiday — Video Editor</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      font-size: 12px;
+      background-color: #141417;
+      color: #c8c8cc;
+      overflow: hidden;
+    }
+    .c1 {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      min-width: 1280px;
+    }
+    .c2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 34px;
+      flex-shrink: 0;
+      padding: 0 12px;
+      gap: 18px;
+      background-color: #1e1e22;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c3 {
+      padding: 0 4px;
+      color: #8a8a92;
+    }
+    .c4 {
+      margin: 0 auto;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .c5 {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      flex-grow: 1;
+      min-height: 0;
+      gap: 2px;
+      background-color: #141417;
+    }
+    .c6 {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      background-color: #1e1e22;
+      flex-shrink: 0;
+      min-height: 0;
+    }
+    .c7 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 26px;
+      flex-shrink: 0;
+      padding: 0 8px;
+      gap: 8px;
+      color: #8a8a92;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c8 {
+      margin: 0 0 0 auto;
+    }
+    .c9 {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      flex-grow: 1;
+      min-height: 0;
+    }
+    .c10 {
+      display: flex;
+      flex-direction: column;
+      width: 92px;
+      gap: 2px;
+      padding: 6px 4px;
+      font-size: 11px;
+      border-width: 0 1px 0 0;
+      border-style: solid;
+      border-color: #34343b;
+      overflow-y: auto;
+    }
+    .c11 {
+      padding: 3px 6px;
+      border-radius: 3px;
+    }
+    .c12 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 8px;
+      flex-grow: 1;
+      align-content: start;
+      overflow-y: auto;
+    }
+    .c13 {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .c14 {
+      width: 100%;
+      height: 38px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+    .c15 {
+      font-size: 9px;
+      color: #8a8a92;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .c16 {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      min-width: 0;
+      background-color: #1e1e22;
+    }
+    .c17 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 26px;
+      flex-shrink: 0;
+      padding: 0 10px;
+      gap: 10px;
+      font-size: 11px;
+      color: #8a8a92;
+    }
+    .c18 {
+      margin: 0 auto;
+      color: #c8c8cc;
+    }
+    .c19 {
+      color: #c8c8cc;
+      font-variant-numeric: tabular-nums;
+    }
+    .c20 {
+      flex-grow: 1;
+      min-height: 0;
+      background-color: #000000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c21 {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .c22 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 34px;
+      flex-shrink: 0;
+      justify-content: center;
+      gap: 10px;
+    }
+    .c23 {
+      padding: 2px 6px;
+      font-size: 14px;
+      color: #c8c8cc;
+      cursor: pointer;
+    }
+    .c24 {
+      display: flex;
+      flex-direction: column;
+      width: 270px;
+      background-color: #1e1e22;
+      flex-shrink: 0;
+      font-size: 11px;
+      overflow-y: auto;
+    }
+    .c25 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 26px;
+      flex-shrink: 0;
+      padding: 0 8px;
+      gap: 10px;
+      color: #8a8a92;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c26 {
+      color: #ffffff;
+    }
+    .c27 {
+      padding: 6px 10px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .c28 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 6px 8px;
+      gap: 8px;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c29 {
+      color: #e5484d;
+      font-size: 9px;
+    }
+    .c30 {
+      color: #c8c8cc;
+      font-weight: 600;
+    }
+    .c31 {
+      margin: 0 0 0 auto;
+      color: #8a8a92;
+    }
+    .c32 {
+      display: flex;
+      flex-direction: column;
+      padding: 4px 8px 8px;
+    }
+    .c33 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 0;
+    }
+    .c34 {
+      width: 92px;
+      color: #8a8a92;
+      text-align: right;
+    }
+    .c35 {
+      width: 64px;
+      background-color: #16161a;
+      color: #c8c8cc;
+      border-style: none;
+      border-radius: 3px;
+      padding: 3px 6px;
+      font-size: 11px;
+    }
+    .c36 {
+      display: flex;
+      flex-direction: column;
+      padding: 4px 8px 8px;
+      gap: 4px;
+    }
+    .c37 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+    }
+    .c38 {
+      background-color: #16161a;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .c39 {
+      width: 110px;
+    }
+    .c40 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 30px;
+      flex-shrink: 0;
+      padding: 0 12px;
+      gap: 14px;
+      background-color: #1e1e22;
+      border-width: 1px 0;
+      border-style: solid;
+      border-color: #34343b;
+      color: #8a8a92;
+      font-size: 13px;
+    }
+    .c41 {
+      margin: 0 0 0 auto;
+      font-size: 11px;
+      color: #6f6f78;
+    }
+    .c42 {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      flex-shrink: 0;
+    }
+    .c43 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 26px;
+      background-color: #1e1e22;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+      font-size: 10px;
+      color: #8a8a92;
+    }
+    .c44 {
+      width: 110px;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .c45 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    .c46 {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .c47 {
+      display: flex;
+      flex-direction: column;
+      width: 110px;
+      flex-shrink: 0;
+      background-color: #1e1e22;
+    }
+    .c48 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 44px;
+      padding: 0 8px;
+      gap: 8px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c49 {
+      background-color: #3a3a44;
+      color: #ffffff;
+      padding: 0 4px;
+      border-radius: 2px;
+      font-size: 10px;
+    }
+    .c50 {
+      display: flex;
+      flex-direction: column;
+    }
+    .c51 {
+      color: #c8c8cc;
+    }
+    .c52 {
+      color: #8a8a92;
+      font-size: 9px;
+    }
+    .c53 {
+      background-color: #e5484d;
+      color: #ffffff;
+      padding: 0 4px;
+      border-radius: 2px;
+      font-size: 10px;
+    }
+    .c54 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 40px;
+      padding: 0 8px;
+      gap: 8px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c55 {
+      position: relative;
+      flex-grow: 1;
+      height: 288px;
+      overflow: hidden;
+      background-color: #1a1a1f;
+    }
+    .c56 {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 44px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c57 {
+      position: absolute;
+      left: 0px;
+      top: 44px;
+      width: 100%;
+      height: 44px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c58 {
+      position: absolute;
+      left: 0px;
+      top: 88px;
+      width: 100%;
+      height: 40px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c59 {
+      position: absolute;
+      left: 0px;
+      top: 128px;
+      width: 100%;
+      height: 40px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c60 {
+      position: absolute;
+      left: 0px;
+      top: 168px;
+      width: 100%;
+      height: 40px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c61 {
+      position: absolute;
+      left: 0px;
+      top: 208px;
+      width: 100%;
+      height: 40px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c62 {
+      position: absolute;
+      left: 0px;
+      top: 248px;
+      width: 100%;
+      height: 40px;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c63 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 10px;
+      top: 3px;
+      width: 110px;
+      border-color: #5b7fb0;
+      background-color: #c9b98f;
+    }
+    .c64 {
+      font-size: 9px;
+      color: #ffffff;
+      background-color: rgba(20, 30, 50, 0.75);
+      padding: 1px 4px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .c65 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 200px;
+      top: 3px;
+      width: 110px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%239fd3e8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9eef5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%232a9dc4%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%237a9a5a%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c66 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 410px;
+      top: 3px;
+      width: 90px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f5c4c8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23b9d4ec%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%234b8fbf%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23e9e4dc%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%22120%22%20width%3D%22320%22%20height%3D%226%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M215%20180%20L220%20112%20Q232%2098%20244%20112%20L250%20180Z%22%20fill%3D%22%23f08a3c%22%2F%3E%3Ccircle%20cx%3D%22232%22%20cy%3D%2292%22%20r%3D%2213%22%20fill%3D%22%235a3a2a%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c67 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 540px;
+      top: 3px;
+      width: 140px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f2b880%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238fb8d6%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233d7ea6%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%236b5a48%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2278%22%20width%3D%2214%22%20height%3D%2212%22%20fill%3D%22%23f3e3c3%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2286%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23e9cfa7%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%2280%22%20width%3D%2216%22%20height%3D%2212%22%20fill%3D%22%23f6e9d0%22%2F%3E%3Crect%20x%3D%2295%22%20y%3D%2272%22%20width%3D%2214%22%20height%3D%2214%22%20fill%3D%22%23efd9b5%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c68 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 700px;
+      top: 3px;
+      width: 150px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23a8d8b0%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23e4f2d8%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233f9a8a%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%232f5e3a%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c69 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 0px;
+      top: 47px;
+      width: 330px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%239fd3e8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9eef5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%232a9dc4%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%237a9a5a%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c70 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 335px;
+      top: 47px;
+      width: 260px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f2b880%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238fb8d6%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233d7ea6%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%236b5a48%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2278%22%20width%3D%2214%22%20height%3D%2212%22%20fill%3D%22%23f3e3c3%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2286%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23e9cfa7%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%2280%22%20width%3D%2216%22%20height%3D%2212%22%20fill%3D%22%23f6e9d0%22%2F%3E%3Crect%20x%3D%2295%22%20y%3D%2272%22%20width%3D%2214%22%20height%3D%2214%22%20fill%3D%22%23efd9b5%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c71 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 600px;
+      top: 47px;
+      width: 220px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f5c4c8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23b9d4ec%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%234b8fbf%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23e9e4dc%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%22120%22%20width%3D%22320%22%20height%3D%226%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M215%20180%20L220%20112%20Q232%2098%20244%20112%20L250%20180Z%22%20fill%3D%22%23f08a3c%22%2F%3E%3Ccircle%20cx%3D%22232%22%20cy%3D%2292%22%20r%3D%2213%22%20fill%3D%22%235a3a2a%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c72 {
+      position: absolute;
+      height: 38px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      left: 825px;
+      top: 47px;
+      width: 120px;
+      border-color: #5b7fb0;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23c6d6f5%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f0e4f5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%232c6fb0%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23c9a06a%22%2F%3E%3C%2Fsvg%3E");
+      background-size: auto 100%;
+      background-color: #2b4e7a;
+    }
+    .c73 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 0px;
+      top: 91px;
+      width: 380px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c74 {
+      font-size: 9px;
+      color: #e8fff0;
+      padding: 1px 4px;
+      white-space: nowrap;
+    }
+    .c75 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 395px;
+      top: 91px;
+      width: 150px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c76 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 560px;
+      top: 91px;
+      width: 380px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c77 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 0px;
+      top: 131px;
+      width: 40px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c78 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 250px;
+      top: 131px;
+      width: 130px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c79 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 560px;
+      top: 131px;
+      width: 380px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c80 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 140px;
+      top: 171px;
+      width: 80px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c81 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 350px;
+      top: 171px;
+      width: 190px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c82 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 720px;
+      top: 171px;
+      width: 70px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c83 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 310px;
+      top: 211px;
+      width: 640px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c84 {
+      position: absolute;
+      height: 34px;
+      border-radius: 3px;
+      overflow: hidden;
+      border-width: 1px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 0px;
+      top: 251px;
+      width: 950px;
+      border-color: #3f9a68;
+      background-color: #2f7a4f;
+      background-image: repeating-linear-gradient(90deg, rgba(200, 255, 220, 0.55) 0px, rgba(200, 255, 220, 0.55) 1px, transparent 1px, transparent 3px);
+      background-size: 100% 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .c85 {
+      position: absolute;
+      left: 220px;
+      top: 0px;
+      width: 2px;
+      height: 288px;
+      background-color: #e5484d;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .c86 {
+      display: flex;
+      flex-direction: column;
+      width: 180px;
+      flex-shrink: 0;
+      background-color: #1e1e22;
+      padding: 6px 10px;
+      gap: 8px;
+      border-width: 0 0 0 1px;
+      border-style: solid;
+      border-color: #34343b;
+    }
+    .c87 {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .c88 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .c89 {
+      font-size: 9px;
+      color: #8a8a92;
+    }
+    .c90 {
+      width: 10px;
+      height: 200px;
+      background-color: #111114;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .c91 {
+      width: 10px;
+      height: 55%;
+      background-image: linear-gradient(0deg, #2fbf5a, #2fbf5a 70%, #e7d43a 85%, #e5484d);
+    }
+    .c92 {
+      width: 10px;
+      height: 70%;
+      background-image: linear-gradient(0deg, #2fbf5a, #2fbf5a 70%, #e7d43a 85%, #e5484d);
+    }
+    .c93 {
+      width: 10px;
+      height: 40%;
+      background-image: linear-gradient(0deg, #2fbf5a, #2fbf5a 70%, #e7d43a 85%, #e5484d);
+    }
+    .c94 {
+      width: 10px;
+      height: 62%;
+      background-image: linear-gradient(0deg, #2fbf5a, #2fbf5a 70%, #e7d43a 85%, #e5484d);
+    }
+    .c95 {
+      width: 10px;
+      height: 48%;
+      background-image: linear-gradient(0deg, #2fbf5a, #2fbf5a 70%, #e7d43a 85%, #e5484d);
+    }
+    .c96 {
+      width: 10px;
+      height: 80%;
+      background-image: linear-gradient(0deg, #2fbf5a, #2fbf5a 70%, #e7d43a 85%, #e5484d);
+    }
+    .c97 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 40px;
+      flex-shrink: 0;
+      justify-content: center;
+      gap: 34px;
+      background-color: #1e1e22;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: #34343b;
+      color: #8a8a92;
+      font-size: 11px;
+    }
+    .c98 {
+      padding: 4px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    [data-hover] {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+    }
+    [data-hover="bright"]:hover {
+      filter: brightness(1.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="c1">
+    <div class="c2">
+      <span class="c3" data-hover="bright">▤ Media Pool</span>
+      <span class="c3" data-hover="bright">✦ Effects Library</span>
+      <span class="c3" data-hover="bright">☰ Edit Index</span>
+      <span class="c3" data-hover="bright">♫ Sound Library</span>
+      <span class="c4">My Summer Holiday</span>
+      <span class="c3" data-hover="bright">⫶ Mixer</span>
+      <span class="c3" data-hover="bright">ⓘ Metadata</span>
+      <span class="c3" data-hover="bright">⚙ Inspector</span>
+    </div>
+    <div class="c5">
+      <div class="c6">
+        <div class="c7">
+          <span>▾ Balcony View</span>
+          <span class="c8">⊞ ☰ ⌕</span>
+        </div>
+        <div class="c9">
+          <div class="c10">
+            <span class="c11 folder" data-hover="bright">Master</span>
+            <span class="c11 folder" data-hover="bright">Edits</span>
+            <span class="c11 folder" data-hover="bright" id="folder-first">Balcony View</span>
+            <span class="c11 folder" data-hover="bright">Audio</span>
+            <span class="c11 folder" data-hover="bright">End Credits</span>
+            <span class="c11 folder" data-hover="bright">Drone</span>
+            <span class="c11 folder" data-hover="bright">Airports</span>
+            <span class="c11 folder" data-hover="bright">Interviews</span>
+            <span class="c11 folder" data-hover="bright">Holiday Reel</span>
+            <span class="c11 folder" data-hover="bright">Yacht Footage</span>
+            <span class="c11 folder" data-hover="bright">Extra Shots</span>
+          </div>
+          <div class="c12">
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f2b880%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238fb8d6%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233d7ea6%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%236b5a48%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2278%22%20width%3D%2214%22%20height%3D%2212%22%20fill%3D%22%23f3e3c3%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2286%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23e9cfa7%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%2280%22%20width%3D%2216%22%20height%3D%2212%22%20fill%3D%22%23f6e9d0%22%2F%3E%3Crect%20x%3D%2295%22%20y%3D%2272%22%20width%3D%2214%22%20height%3D%2214%22%20fill%3D%22%23efd9b5%22%2F%3E%3C%2Fsvg%3E" alt="Amalfi_Coast_1">
+              <span class="c15">Amalfi_Coast_1</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f5c4c8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23b9d4ec%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%234b8fbf%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23e9e4dc%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%22120%22%20width%3D%22320%22%20height%3D%226%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M215%20180%20L220%20112%20Q232%2098%20244%20112%20L250%20180Z%22%20fill%3D%22%23f08a3c%22%2F%3E%3Ccircle%20cx%3D%22232%22%20cy%3D%2292%22%20r%3D%2213%22%20fill%3D%22%235a3a2a%22%2F%3E%3C%2Fsvg%3E" alt="Amalfi_Coast_2">
+              <span class="c15">Amalfi_Coast_2</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%239fd3e8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9eef5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%232a9dc4%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%237a9a5a%22%2F%3E%3C%2Fsvg%3E" alt="Amalfi_Coast_3">
+              <span class="c15">Amalfi_Coast_3</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ffcf8a%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f08a5d%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%235a6f9a%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%233e3a40%22%2F%3E%3C%2Fsvg%3E" alt="Balcony_Girl">
+              <span class="c15">Balcony_Girl</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23a8d8b0%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23e4f2d8%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233f9a8a%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%232f5e3a%22%2F%3E%3C%2Fsvg%3E" alt="Beach_Run">
+              <span class="c15">Beach_Run</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23c6d6f5%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f0e4f5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%232c6fb0%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23c9a06a%22%2F%3E%3C%2Fsvg%3E" alt="Forest_Lake">
+              <span class="c15">Forest_Lake</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f2b880%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238fb8d6%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233d7ea6%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%236b5a48%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2278%22%20width%3D%2214%22%20height%3D%2212%22%20fill%3D%22%23f3e3c3%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2286%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23e9cfa7%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%2280%22%20width%3D%2216%22%20height%3D%2212%22%20fill%3D%22%23f6e9d0%22%2F%3E%3Crect%20x%3D%2295%22%20y%3D%2272%22%20width%3D%2214%22%20height%3D%2214%22%20fill%3D%22%23efd9b5%22%2F%3E%3C%2Fsvg%3E" alt="Sunset_Bay">
+              <span class="c15">Sunset_Bay</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f5c4c8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23b9d4ec%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%234b8fbf%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23e9e4dc%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%22120%22%20width%3D%22320%22%20height%3D%226%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M215%20180%20L220%20112%20Q232%2098%20244%20112%20L250%20180Z%22%20fill%3D%22%23f08a3c%22%2F%3E%3Ccircle%20cx%3D%22232%22%20cy%3D%2292%22%20r%3D%2213%22%20fill%3D%22%235a3a2a%22%2F%3E%3C%2Fsvg%3E" alt="Turtle_Dive">
+              <span class="c15">Turtle_Dive</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%239fd3e8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9eef5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%232a9dc4%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%237a9a5a%22%2F%3E%3C%2Fsvg%3E" alt="Harbor_Boats">
+              <span class="c15">Harbor_Boats</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ffcf8a%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f08a5d%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%235a6f9a%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%233e3a40%22%2F%3E%3C%2Fsvg%3E" alt="Cliff_Road">
+              <span class="c15">Cliff_Road</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23a8d8b0%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23e4f2d8%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233f9a8a%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%232f5e3a%22%2F%3E%3C%2Fsvg%3E" alt="Lemon_Tree">
+              <span class="c15">Lemon_Tree</span>
+            </div>
+            <div class="c13 thumb" data-hover="bright">
+              <img class="c14" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23c6d6f5%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23f0e4f5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%232c6fb0%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23c9a06a%22%2F%3E%3C%2Fsvg%3E" alt="Night_Town">
+              <span class="c15">Night_Town</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="c16">
+        <div class="c17">
+          <span>Fit ▾</span>
+          <span class="c18">Amalfi_Coast_Aerial_6.mov</span>
+          <span class="c19">00:00:11:09</span>
+        </div>
+        <div class="c20">
+          <img class="c21" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f2b880%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238fb8d6%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%233d7ea6%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%236b5a48%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2278%22%20width%3D%2214%22%20height%3D%2212%22%20fill%3D%22%23f3e3c3%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2286%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23e9cfa7%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%2280%22%20width%3D%2216%22%20height%3D%2212%22%20fill%3D%22%23f6e9d0%22%2F%3E%3Crect%20x%3D%2295%22%20y%3D%2272%22%20width%3D%2214%22%20height%3D%2214%22%20fill%3D%22%23efd9b5%22%2F%3E%3C%2Fsvg%3E" alt="Amalfi_Coast_Aerial_6.mov">
+        </div>
+        <div class="c22">
+          <span class="c23" data-hover="bright" title="처음으로">⏮</span>
+          <span class="c23" data-hover="bright" title="10프레임 뒤로">◂</span>
+          <span class="c23" data-hover="bright" title="멈춤">■</span>
+          <span class="c23" data-hover="bright" title="재생 (스페이스)">▶</span>
+          <span class="c23" data-hover="bright" title="10프레임 앞으로">▸</span>
+          <span class="c23" data-hover="bright">⟳</span>
+        </div>
+      </div>
+      <div class="c16">
+        <div class="c17">
+          <span>Fit ▾</span>
+          <span class="c18">My Summer Holiday Edit</span>
+          <span class="c19" id="tc">01:00:09:04</span>
+        </div>
+        <div class="c20">
+          <img class="c21" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22180%22%20viewBox%3D%220%200%20320%20180%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f5c4c8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23b9d4ec%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22url(%23s)%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%2270%22%20r%3D%2216%22%20fill%3D%22%23fff3c4%22%20opacity%3D%220.85%22%2F%3E%3Crect%20y%3D%22105%22%20width%3D%22320%22%20height%3D%2275%22%20fill%3D%22%234b8fbf%22%2F%3E%3Cpath%20d%3D%22M0%20120%20L40%2070%20L80%2095%20L120%2060%20L150%20110%20L150%20180%20L0%20180Z%22%20fill%3D%22%23e9e4dc%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%22120%22%20width%3D%22320%22%20height%3D%226%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M215%20180%20L220%20112%20Q232%2098%20244%20112%20L250%20180Z%22%20fill%3D%22%23f08a3c%22%2F%3E%3Ccircle%20cx%3D%22232%22%20cy%3D%2292%22%20r%3D%2213%22%20fill%3D%22%235a3a2a%22%2F%3E%3C%2Fsvg%3E" alt="My Summer Holiday Edit" id="viewer-img">
+        </div>
+        <div class="c22">
+          <span class="c23" data-hover="bright" id="to-start" title="처음으로">⏮</span>
+          <span class="c23" data-hover="bright" id="step-back" title="10프레임 뒤로">◂</span>
+          <span class="c23" data-hover="bright" id="stop" title="멈춤">■</span>
+          <span class="c23" data-hover="bright" id="play" title="재생 (스페이스)">▶</span>
+          <span class="c23" data-hover="bright" id="step-fwd" title="10프레임 앞으로">▸</span>
+          <span class="c23" data-hover="bright">⟳</span>
+        </div>
+      </div>
+      <div class="c24">
+        <div class="c25">
+          <span class="c26">Video</span>
+          <span>Audio</span>
+          <span>Effects</span>
+          <span>Transition</span>
+          <span>Image</span>
+          <span>File</span>
+        </div>
+        <span class="c27" id="insp-clip">lake_next_to_mountains.mov</span>
+        <div class="c28" data-hover="bright">
+          <span class="c29">●</span>
+          <span class="c30">Transform</span>
+          <span class="c31">↺</span>
+        </div>
+        <div class="c32">
+          <div class="c33">
+            <span class="c34">Zoom (%)</span>
+            <input class="c35" type="number" value="100" id="zoom" min="10" max="400" step="10">
+          </div>
+          <div class="c33">
+            <span class="c34">Position X</span>
+            <input class="c35" type="number" value="0" id="posx">
+          </div>
+          <div class="c33">
+            <span class="c34">Position Y</span>
+            <input class="c35" type="number" value="0" id="posy">
+          </div>
+          <div class="c33">
+            <span class="c34">Rotation (°)</span>
+            <input class="c35" type="number" value="0" id="rot" step="5">
+          </div>
+          <div class="c33">
+            <span class="c34">Pitch</span>
+            <input class="c35" type="number" value="0">
+          </div>
+          <div class="c33">
+            <span class="c34">Yaw</span>
+            <input class="c35" type="number" value="0">
+          </div>
+        </div>
+        <div class="c28" data-hover="bright">
+          <span class="c29">●</span>
+          <span class="c30">Cropping</span>
+          <span class="c31">↺</span>
+        </div>
+        <div class="c28" data-hover="bright">
+          <span class="c29">●</span>
+          <span class="c30">Dynamic Zoom</span>
+          <span class="c31">↺</span>
+        </div>
+        <div class="c28" data-hover="bright">
+          <span class="c29">●</span>
+          <span class="c30">Composite</span>
+          <span class="c31">↺</span>
+        </div>
+        <div class="c36">
+          <div class="c37">
+            <span class="c34">Composite Mode</span>
+            <span class="c38">Normal ▾</span>
+          </div>
+          <div class="c37">
+            <span class="c34">Opacity</span>
+            <input class="c39" type="range" id="opacity" min="0" max="100" value="100">
+            <span id="opacity-label">100</span>
+          </div>
+        </div>
+        <div class="c28" data-hover="bright">
+          <span class="c29">●</span>
+          <span class="c30">Speed Change</span>
+          <span class="c31">↺</span>
+        </div>
+        <div class="c28" data-hover="bright">
+          <span class="c29">●</span>
+          <span class="c30">Stabilization</span>
+          <span class="c31">↺</span>
+        </div>
+        <div class="c28" data-hover="bright">
+          <span class="c29">●</span>
+          <span class="c30">Lens Correction</span>
+          <span class="c31">↺</span>
+        </div>
+      </div>
+    </div>
+    <div class="c40">
+      <span data-hover="bright">▭</span>
+      <span data-hover="bright">↖</span>
+      <span data-hover="bright">⇤</span>
+      <span data-hover="bright">✂</span>
+      <span data-hover="bright">⧉</span>
+      <span data-hover="bright">⌗</span>
+      <span data-hover="bright">🔗</span>
+      <span data-hover="bright">🔒</span>
+      <span data-hover="bright">⚑</span>
+      <span data-hover="bright">◆</span>
+      <span class="c41" id="status">클립을 끌어서 옮기고, 양 끝을 잡아 길이를 바꿔 보세요</span>
+    </div>
+    <div class="c42">
+      <div class="c16">
+        <div class="c43">
+          <span class="c44" id="tc2">01:00:09:04</span>
+          <div class="c45">
+            <span>01:00:00:00</span>
+            <span>01:00:10:00</span>
+            <span>01:00:20:00</span>
+            <span>01:00:30:00</span>
+            <span>01:00:40:00</span>
+          </div>
+        </div>
+        <div class="c46">
+          <div class="c47">
+            <div class="c48">
+              <span class="c49">V2</span>
+              <div class="c50">
+                <span class="c51">Video 2</span>
+                <span class="c52">🔒 ◫ ▣</span>
+              </div>
+            </div>
+            <div class="c48">
+              <span class="c53">V1</span>
+              <div class="c50">
+                <span class="c51">Video 1</span>
+                <span class="c52">🔒 ◫ ▣</span>
+              </div>
+            </div>
+            <div class="c54">
+              <span class="c53">A1</span>
+              <div class="c50">
+                <span class="c51">Audio 1</span>
+                <span class="c52">🔒 ◫ ▣</span>
+              </div>
+            </div>
+            <div class="c54">
+              <span class="c49">A2</span>
+              <div class="c50">
+                <span class="c51">Audio 2</span>
+                <span class="c52">🔒 ◫ ▣</span>
+              </div>
+            </div>
+            <div class="c54">
+              <span class="c49">A3</span>
+              <div class="c50">
+                <span class="c51">Audio 3</span>
+                <span class="c52">🔒 ◫ ▣</span>
+              </div>
+            </div>
+            <div class="c54">
+              <span class="c49">A4</span>
+              <div class="c50">
+                <span class="c51">Audio 4</span>
+                <span class="c52">🔒 ◫ ▣</span>
+              </div>
+            </div>
+            <div class="c54">
+              <span class="c49">A5</span>
+              <div class="c50">
+                <span class="c51">Audio 5</span>
+                <span class="c52">🔒 ◫ ▣</span>
+              </div>
+            </div>
+          </div>
+          <div class="c55" data-layout="free" id="lanes">
+            <div class="c56"></div>
+            <div class="c57"></div>
+            <div class="c58"></div>
+            <div class="c59"></div>
+            <div class="c60"></div>
+            <div class="c61"></div>
+            <div class="c62"></div>
+            <div class="c63 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">Lower 3rd Simple Underline</span>
+            </div>
+            <div class="c65 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">mountains_along_a_lake.mov</span>
+            </div>
+            <div class="c66 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">Amalfi_Coast_Tr.mov</span>
+            </div>
+            <div class="c67 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">people_running_on_beach.mov</span>
+            </div>
+            <div class="c68 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">thick_forest_along_a_lake.mov</span>
+            </div>
+            <div class="c69 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">lake_next_to_mountains.mov</span>
+            </div>
+            <div class="c70 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">Amalfi_Coast_Aerial_7.mov</span>
+            </div>
+            <div class="c71 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">woman_on_balcony.mov</span>
+            </div>
+            <div class="c72 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c64">Clip-de-sea-turtle.mov</span>
+            </div>
+            <div class="c73 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">A0102_01.mov</span>
+            </div>
+            <div class="c75 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">A0102_01.mov</span>
+            </div>
+            <div class="c76 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">A0102_01.mov</span>
+            </div>
+            <div class="c77 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">SFX</span>
+            </div>
+            <div class="c78 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">SOUND FX.wav</span>
+            </div>
+            <div class="c79 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">AA0113_01.mov</span>
+            </div>
+            <div class="c80 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">SFX - Overhead</span>
+            </div>
+            <div class="c81 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">Cross Fade · SFX</span>
+            </div>
+            <div class="c82 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">SOUND FX</span>
+            </div>
+            <div class="c83 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">AA0113_01.mov</span>
+            </div>
+            <div class="c84 clip" data-drag="x" data-resize="x" data-hover="bright">
+              <span class="c74">Music Score for Trailer.mov</span>
+            </div>
+            <div class="c85" id="playhead"></div>
+          </div>
+        </div>
+      </div>
+      <div class="c86">
+        <span class="c30">Mixer</span>
+        <div class="c87">
+          <div class="c88">
+            <span class="c89">A1</span>
+            <div class="c90">
+              <div class="c91" id="meter-A1"></div>
+            </div>
+          </div>
+          <div class="c88">
+            <span class="c89">A2</span>
+            <div class="c90">
+              <div class="c92" id="meter-A2"></div>
+            </div>
+          </div>
+          <div class="c88">
+            <span class="c89">A3</span>
+            <div class="c90">
+              <div class="c93" id="meter-A3"></div>
+            </div>
+          </div>
+          <div class="c88">
+            <span class="c89">A4</span>
+            <div class="c90">
+              <div class="c94" id="meter-A4"></div>
+            </div>
+          </div>
+          <div class="c88">
+            <span class="c89">A5</span>
+            <div class="c90">
+              <div class="c95" id="meter-A5"></div>
+            </div>
+          </div>
+          <div class="c88">
+            <span class="c89">M1</span>
+            <div class="c90">
+              <div class="c96" id="meter-M1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="c97">
+      <span class="c98 page" id="page-media" data-hover="bright">Media</span>
+      <span class="c98 page" id="page-cut" data-hover="bright">Cut</span>
+      <span class="c98 page" id="page-edit" data-hover="bright">Edit</span>
+      <span class="c98 page" id="page-fusion" data-hover="bright">Fusion</span>
+      <span class="c98 page" id="page-color" data-hover="bright">Color</span>
+      <span class="c98 page" id="page-fairlight" data-hover="bright">Fairlight</span>
+      <span class="c98 page" id="page-deliver" data-hover="bright">Deliver</span>
+    </div>
+  </div>
+  <script>
+    // 도우미 함수
+    const el = id => (id && typeof id === 'object' ? id : document.getElementById(id));
+    const on = (id, type, fn) => el(id)?.addEventListener(type, fn);
+    const val = id => el(id)?.value ?? '';
+    const text = id => (el(id)?.textContent ?? '').replace(/\s+/g, ' ').trim(); // 코드 들여쓰기 공백은 빼고
+    const setText = (id, v) => { if (el(id)) el(id).textContent = v; };
+    const setStyle = (id, prop, v) => { if (el(id)) el(id).style[prop] = v; };
+    const wait = sec => new Promise(done => setTimeout(done, sec * 1000));
+    const frame = () => new Promise(done => requestAnimationFrame(done));
+    const place = e => { if (getComputedStyle(e).position === 'static') e.style.position = 'relative'; };
+    const moveBy = (id, dx, dy) => {
+      const e = el(id);
+      if (!e) return;
+      place(e);
+      e.style.left = (parseFloat(getComputedStyle(e).left) || 0) + dx + 'px';
+      e.style.top = (parseFloat(getComputedStyle(e).top) || 0) + dy + 'px';
+    };
+    const moveTo = (id, x, y) => {
+      const e = el(id);
+      if (!e) return;
+      place(e);
+      e.style.left = x + 'px';
+      e.style.top = y + 'px';
+    };
+    const xform = (e, key, v) => {
+      e.dataset[key] = v;
+      e.style.transform = 'rotate(' + (Number(e.dataset.angle) || 0) + 'deg) scale(' + (e.dataset.scale ?? 1) + ')';
+    };
+    const rotate = (id, deg, exact) => {
+      const e = el(id);
+      if (e) xform(e, 'angle', (exact ? 0 : Number(e.dataset.angle) || 0) + deg);
+    };
+    const scaleTo = (id, pct) => { const e = el(id); if (e) xform(e, 'scale', pct / 100); };
+    const PX = new Set(["width","height","borderRadius","padding","left","top","fontSize"]);
+    const css = (id, prop, v) => {
+      const e = el(id);
+      if (!e) return;
+      if (PX.has(prop) && String(v).trim() !== '' && !isNaN(v)) v += 'px'; // 숫자만 쓰면 px
+      e.style[prop] = v;
+    };
+    const toggleCss = (id, prop, a, b) => {
+      const e = el(id);
+      if (!e) return;
+      const now = String(e.style[prop] || getComputedStyle(e)[prop]);
+      css(e, prop, now.startsWith(String(a)) ? b : a);
+    };
+    const pick = id => {
+      const e = el(id);
+      if (!e) return;
+      if (!document.getElementById('wb-pick-style')) document.head.append(Object.assign(document.createElement('style'), { id: 'wb-pick-style', textContent: '[data-picked] { outline: 2px solid #1a73e8; outline-offset: -2px; }' }));
+      picked?.removeAttribute('data-picked');
+      picked = e;
+      e.setAttribute('data-picked', '');
+    };
+    const cloneEl = (id, where) => {
+      const e = el(id);
+      if (!e) return;
+      const c = e.cloneNode(true);
+      [c, ...c.querySelectorAll('[id]')].forEach(x => x.removeAttribute('id')); // id 는 겹치면 안 돼서 지움
+      c.removeAttribute('data-picked');
+      if (where === 'before') e.before(c);
+      else if (where === 'end') e.append(c);
+      else e.after(c);
+      made = c;
+    };
+    const removeEl = id => {
+      const e = el(id);
+      if (e && e.contains(picked)) picked = null;
+      e?.remove();
+    };
+    const random = (a, b) => {
+      const [lo, hi] = a < b ? [a, b] : [b, a];
+      return Number.isInteger(lo) && Number.isInteger(hi) ? lo + Math.floor(Math.random() * (hi - lo + 1)) : lo + Math.random() * (hi - lo);
+    };
+    const all = cls => [...document.getElementsByClassName(cls)];
+    const activeOnly = (cls, id, prop, v) => {
+      const set = (e, x) => {
+        if (prop !== 'outline') return (e.style[prop] = x);
+        e.style.outline = x ? '2px solid ' + x : '';
+        e.style.outlineOffset = x ? '-2px' : '';
+      };
+      all(cls).forEach(e => set(e, '')); // 나머지는 원래 스타일로
+      if (el(id)) set(el(id), v);
+    };
+    const same =(a, b) => (a !== '' && b !== '' && !isNaN(a) && !isNaN(b) ? Number(a) === Number(b) : String(a) === String(b));
+
+    // 변수 · 대답 · 신호
+    const vars = { "frame": 0, "playing": 0 };
+    const signals = new EventTarget();
+    let picked = null, made = null; // 고른 요소 · 방금 복제한 요소
+
+    // #play 을(를) 클릭했을 때
+    on("play", 'click', async (event) => {
+      signals.dispatchEvent(new Event("play"));
+    });
+
+    // [play] 신호를 받았을 때
+    signals.addEventListener("play", async () => {
+      if (same(vars["playing"], 0)) {
+        vars["playing"] = 1;
+        while (!same(vars["playing"], 0)) {
+          moveBy("playhead", 1, 0);
+          vars["frame"] = Number(vars["frame"]) + 1;
+          setText("tc", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+          setText("tc2", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+          if ((Number(vars["frame"]) > 940)) {
+            vars["frame"] = 0;
+            moveTo("playhead", 0, 0);
+          }
+          await wait(0.03);
+          await frame();
+        }
+      }
+    });
+
+    // #stop 을(를) 클릭했을 때
+    on("stop", 'click', async (event) => {
+      vars["playing"] = 0;
+    });
+
+    // 스페이스 키를 눌렀을 때 (글자 입력 중이 아닐 때만)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== " ") return;
+      if (event.target.isContentEditable || event.target.matches?.('input, textarea, select')) return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      if (same(vars["playing"], 0)) {
+        signals.dispatchEvent(new Event("play"));
+      } else {
+        vars["playing"] = 0;
+      }
+    });
+
+    // #to-start 을(를) 클릭했을 때
+    on("to-start", 'click', async (event) => {
+      vars["playing"] = 0;
+      vars["frame"] = 0;
+      moveTo("playhead", 0, 0);
+      setText("tc", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+      setText("tc2", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+    });
+
+    // #step-back 을(를) 클릭했을 때
+    on("step-back", 'click', async (event) => {
+      vars["frame"] = Number(vars["frame"]) + -10;
+      moveBy("playhead", -10, 0);
+      setText("tc", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+      setText("tc2", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+    });
+
+    // #step-fwd 을(를) 클릭했을 때
+    on("step-fwd", 'click', async (event) => {
+      vars["frame"] = Number(vars["frame"]) + 10;
+      moveBy("playhead", 10, 0);
+      setText("tc", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+      setText("tc2", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+    });
+
+    // 왼쪽 화살표 키를 눌렀을 때 (글자 입력 중이 아닐 때만)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "ArrowLeft") return;
+      if (event.target.isContentEditable || event.target.matches?.('input, textarea, select')) return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      vars["frame"] = Number(vars["frame"]) + -1;
+      moveBy("playhead", -1, 0);
+      setText("tc", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+      setText("tc2", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+    });
+
+    // 오른쪽 화살표 키를 눌렀을 때 (글자 입력 중이 아닐 때만)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "ArrowRight") return;
+      if (event.target.isContentEditable || event.target.matches?.('input, textarea, select')) return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      vars["frame"] = Number(vars["frame"]) + 1;
+      moveBy("playhead", 1, 0);
+      setText("tc", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+      setText("tc2", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+    });
+
+    // 이름표 .clip 요소를 클릭했을 때
+    document.addEventListener("click", async (event) => {
+      const thisEl = event.target.closest?.('.' + CSS.escape("clip"));
+      if (!thisEl) return;
+      pick(thisEl);
+      setText("insp-clip", text(thisEl));
+    });
+
+    // 이름표 .clip 요소를 끌어서 놓았을 때
+    document.addEventListener("wb-drop", async (event) => {
+      const thisEl = event.target.closest?.('.' + CSS.escape("clip"));
+      if (!thisEl) return;
+      pick(thisEl);
+      setText("status", (String("옮김: ") + String(text(thisEl))));
+    });
+
+    // Delete 키를 눌렀을 때 (글자 입력 중이 아닐 때만)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "Delete") return;
+      if (event.target.isContentEditable || event.target.matches?.('input, textarea, select')) return;
+      removeEl(picked);
+      setText("status", "고른 클립을 지웠어요");
+    });
+
+    // D 키를 눌렀을 때 (글자 입력 중이 아닐 때만)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "d") return;
+      if (event.target.isContentEditable || event.target.matches?.('input, textarea, select')) return;
+      cloneEl(picked, "after");
+      moveBy(made, 20, 0);
+      pick(made);
+      setText("status", "고른 클립을 복제했어요 (D)");
+    });
+
+    // #opacity 에 입력했을 때
+    on("opacity", 'input', async (event) => {
+      setStyle("viewer-img", 'opacity', 1 - Number((100 - Number(val("opacity")))) / 100);
+      setText("opacity-label", val("opacity"));
+    });
+
+    // #zoom 에 입력했을 때
+    on("zoom", 'input', async (event) => {
+      scaleTo("viewer-img", Number(val("zoom")));
+    });
+
+    // #rot 에 입력했을 때
+    on("rot", 'input', async (event) => {
+      rotate("viewer-img", Number(val("rot")), true);
+    });
+
+    // #posx 에 입력했을 때
+    on("posx", 'input', async (event) => {
+      moveTo("viewer-img", Number(val("posx")), Number(val("posy")));
+    });
+
+    // #posy 에 입력했을 때
+    on("posy", 'input', async (event) => {
+      moveTo("viewer-img", Number(val("posx")), Number(val("posy")));
+    });
+
+    // 이름표 .page 요소를 클릭했을 때
+    document.addEventListener("click", async (event) => {
+      const thisEl = event.target.closest?.('.' + CSS.escape("page"));
+      if (!thisEl) return;
+      activeOnly("page", thisEl, "backgroundColor", "#3a3a44");
+      activeOnly("page", thisEl, "color", "#ffffff");
+    });
+
+    // 이름표 .folder 요소를 클릭했을 때
+    document.addEventListener("click", async (event) => {
+      const thisEl = event.target.closest?.('.' + CSS.escape("folder"));
+      if (!thisEl) return;
+      activeOnly("folder", thisEl, "backgroundColor", "#3a3a44");
+    });
+
+    // 이름표 .thumb 요소를 클릭했을 때
+    document.addEventListener("click", async (event) => {
+      const thisEl = event.target.closest?.('.' + CSS.escape("thumb"));
+      if (!thisEl) return;
+      activeOnly("thumb", thisEl, "outline", "#e5484d");
+    });
+
+    // 페이지가 열렸을 때
+    (async () => {
+      vars["frame"] = 220;
+      vars["playing"] = 0;
+      setText("tc", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+      setText("tc2", (String("01:00:") + String((String(String(Math.trunc(Number((Number(Math.floor(Number(vars["frame"]) / 24)) % 60)))).padStart(2, '0')) + String((String(":") + String(String(Math.trunc(Number((Number(vars["frame"]) % 24)))).padStart(2, '0'))))))));
+      activeOnly("page", "page-edit", "backgroundColor", "#3a3a44");
+      activeOnly("page", "page-edit", "color", "#ffffff");
+      activeOnly("folder", "folder-first", "backgroundColor", "#3a3a44");
+    })();
+
+    // 페이지가 열렸을 때
+    (async () => {
+      while (true) {
+        if (same(vars["playing"], 1)) {
+          css("meter-A1", "height", (String(random(20, 95)) + String("%")));
+          css("meter-A2", "height", (String(random(20, 95)) + String("%")));
+          css("meter-A3", "height", (String(random(20, 95)) + String("%")));
+          css("meter-A4", "height", (String(random(20, 95)) + String("%")));
+          css("meter-A5", "height", (String(random(20, 95)) + String("%")));
+          css("meter-M1", "height", (String(random(20, 95)) + String("%")));
+        }
+        await wait(0.12);
+        await frame(); // 화면이 멈추지 않게 한 번 쉬기
+      }
+    })();
+
+    // 끌어서 옮기기 · 양 끝 잡아 길이 조절
+    (function wbDrag() {
+        let d = null;
+        const style = document.createElement('style');
+        style.textContent = '[data-drag] { cursor: grab; touch-action: none; user-select: none; } [data-resize] { touch-action: none; user-select: none; }';
+        document.head.append(style);
+        const edgeOf = (t, x) => {
+          if (!t.dataset.resize) return '';
+          const r = t.getBoundingClientRect();
+          return x > r.right - 8 ? 'r' : x < r.left + 8 ? 'l' : '';
+        };
+        document.addEventListener('pointermove', e => {
+          if (d) return;
+          const t = e.target.closest?.('[data-resize]');
+          if (t) t.style.cursor = edgeOf(t, e.clientX) ? 'ew-resize' : t.dataset.drag ? 'grab' : '';
+        });
+        document.addEventListener('pointerdown', e => {
+          const t = e.target.closest?.('[data-drag], [data-resize]');
+          if (!t || e.button !== 0) return;
+          const edge = edgeOf(t, e.clientX);
+          if (!edge && !t.dataset.drag) return;
+          const cs = getComputedStyle(t);
+          if (cs.position === 'static') t.style.position = 'relative';
+          const abs = cs.position === 'absolute';
+          if (abs) { t.style.left = t.offsetLeft + 'px'; t.style.right = 'auto'; t.style.top = t.offsetTop + 'px'; t.style.bottom = 'auto'; }
+          d = { t, edge, abs, x: e.clientX, y: e.clientY, left: parseFloat(t.style.left || cs.left) || 0, top: parseFloat(t.style.top || cs.top) || 0, w: t.offsetWidth, axis: t.dataset.drag || '', moved: false };
+          t.setPointerCapture?.(e.pointerId);
+          e.preventDefault();
+        });
+        document.addEventListener('pointermove', e => {
+          if (!d) return;
+          const dx = e.clientX - d.x, dy = e.clientY - d.y;
+          if (!d.moved && Math.hypot(dx, dy) < 3) return;
+          d.moved = true;
+          const t = d.t, p = t.offsetParent;
+          const maxX = d.abs && p ? p.clientWidth : Infinity;
+          if (d.edge === 'r') t.style.width = Math.max(12, Math.min(d.w + dx, maxX - d.left)) + 'px';
+          else if (d.edge === 'l') {
+            const nx = Math.max(d.abs ? 0 : -Infinity, Math.min(d.left + dx, d.left + d.w - 12));
+            t.style.left = nx + 'px';
+            t.style.width = d.w - (nx - d.left) + 'px';
+          } else {
+            if (d.axis.includes('x')) t.style.left = Math.max(d.abs ? 0 : -Infinity, Math.min(d.left + dx, maxX - d.w)) + 'px';
+            if (d.axis.includes('y')) t.style.top = Math.max(d.abs ? 0 : -Infinity, d.top + dy) + 'px';
+          }
+        });
+        const end = () => {
+          if (d?.moved) d.t.dispatchEvent(new CustomEvent('wb-drop', { bubbles: true }));
+          d = null;
+        };
+        document.addEventListener('pointerup', end);
+        document.addEventListener('pointercancel', end);
+      })();
+  </script>
+  <script type="application/json" id="wb-blocks">{"scripts":[{"x":10,"y":10,"blocks":[{"type":"onLoad","args":{}},{"type":"setVar","args":{"var":"frame","v":"220"}},{"type":"setVar","args":{"var":"playing","v":"0"}},{"type":"setText","args":{"el":"tc","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"setText","args":{"el":"tc2","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"activeOnly","args":{"cls":"page","el":"page-edit","prop":"backgroundColor","color":"#3a3a44"}},{"type":"activeOnly","args":{"cls":"page","el":"page-edit","prop":"color","color":"#ffffff"}},{"type":"activeOnly","args":{"cls":"folder","el":"folder-first","prop":"backgroundColor","color":"#3a3a44"}}]},{"x":10,"y":364,"blocks":[{"type":"onClick","args":{"el":"play"}},{"type":"sendSignal","args":{"sig":"play"}}]},{"x":10,"y":490,"blocks":[{"type":"onSignal","args":{"sig":"play"}},{"type":"if","args":{"cond":{"type":"compare","args":{"a":{"type":"getVar","args":{"var":"playing"}},"op":"=","b":"0"}}},"body":[{"type":"setVar","args":{"var":"playing","v":"1"}},{"type":"repeatUntil","args":{"cond":{"type":"compare","args":{"a":{"type":"getVar","args":{"var":"playing"}},"op":"=","b":"0"}}},"body":[{"type":"moveBy","args":{"el":"playhead","x":"1","y":"0"}},{"type":"changeVar","args":{"var":"frame","v":"1"}},{"type":"setText","args":{"el":"tc","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"setText","args":{"el":"tc2","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"if","args":{"cond":{"type":"compare","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":">","b":"940"}}},"body":[{"type":"setVar","args":{"var":"frame","v":"0"}},{"type":"moveTo","args":{"el":"playhead","x":"0","y":"0"}}]},{"type":"wait","args":{"n":"0.03"}}]}]}]},{"x":10,"y":616,"blocks":[{"type":"onClick","args":{"el":"stop"}},{"type":"setVar","args":{"var":"playing","v":"0"}}]},{"x":10,"y":742,"blocks":[{"type":"onKey","args":{"key":" ","when":"free"}},{"type":"ifElse","args":{"cond":{"type":"compare","args":{"a":{"type":"getVar","args":{"var":"playing"}},"op":"=","b":"0"}}},"body":[{"type":"sendSignal","args":{"sig":"play"}}],"body2":[{"type":"setVar","args":{"var":"playing","v":"0"}}]}]},{"x":10,"y":868,"blocks":[{"type":"onClick","args":{"el":"to-start"}},{"type":"setVar","args":{"var":"playing","v":"0"}},{"type":"setVar","args":{"var":"frame","v":"0"}},{"type":"moveTo","args":{"el":"playhead","x":"0","y":"0"}},{"type":"setText","args":{"el":"tc","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"setText","args":{"el":"tc2","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}}]},{"x":10,"y":1146,"blocks":[{"type":"onClick","args":{"el":"step-back"}},{"type":"changeVar","args":{"var":"frame","v":"-10"}},{"type":"moveBy","args":{"el":"playhead","x":"-10","y":"0"}},{"type":"setText","args":{"el":"tc","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"setText","args":{"el":"tc2","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}}]},{"x":10,"y":1386,"blocks":[{"type":"onClick","args":{"el":"step-fwd"}},{"type":"changeVar","args":{"var":"frame","v":"10"}},{"type":"moveBy","args":{"el":"playhead","x":"10","y":"0"}},{"type":"setText","args":{"el":"tc","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"setText","args":{"el":"tc2","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}}]},{"x":10,"y":1626,"blocks":[{"type":"onKey","args":{"key":"ArrowLeft","when":"free"}},{"type":"changeVar","args":{"var":"frame","v":"-1"}},{"type":"moveBy","args":{"el":"playhead","x":"-1","y":"0"}},{"type":"setText","args":{"el":"tc","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"setText","args":{"el":"tc2","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}}]},{"x":10,"y":1866,"blocks":[{"type":"onKey","args":{"key":"ArrowRight","when":"free"}},{"type":"changeVar","args":{"var":"frame","v":"1"}},{"type":"moveBy","args":{"el":"playhead","x":"1","y":"0"}},{"type":"setText","args":{"el":"tc","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}},{"type":"setText","args":{"el":"tc2","v":{"type":"join","args":{"a":"01:00:","b":{"type":"join","args":{"a":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"//","b":"24"}},"op":"%","b":"60"}},"k":"2"}},"b":{"type":"join","args":{"a":":","b":{"type":"pad","args":{"n":{"type":"calc","args":{"a":{"type":"getVar","args":{"var":"frame"}},"op":"%","b":"24"}},"k":"2"}}}}}}}}}}]},{"x":10,"y":2106,"blocks":[{"type":"onGroup","args":{"cls":"clip","ev":"click"}},{"type":"pick","args":{"el":"@this"}},{"type":"setText","args":{"el":"insp-clip","v":{"type":"getText","args":{"el":"@this"}}}}]},{"x":10,"y":2270,"blocks":[{"type":"onGroup","args":{"cls":"clip","ev":"wb-drop"}},{"type":"pick","args":{"el":"@this"}},{"type":"setText","args":{"el":"status","v":{"type":"join","args":{"a":"옮김: ","b":{"type":"getText","args":{"el":"@this"}}}}}}]},{"x":10,"y":2434,"blocks":[{"type":"onKey","args":{"key":"Delete","when":"free"}},{"type":"removeEl","args":{"el":"@picked"}},{"type":"setText","args":{"el":"status","v":"고른 클립을 지웠어요"}}]},{"x":10,"y":2598,"blocks":[{"type":"onKey","args":{"key":"d","when":"free"}},{"type":"cloneEl","args":{"el":"@picked","where":"after"}},{"type":"moveBy","args":{"el":"@made","x":"20","y":"0"}},{"type":"pick","args":{"el":"@made"}},{"type":"setText","args":{"el":"status","v":"고른 클립을 복제했어요 (D)"}}]},{"x":10,"y":2838,"blocks":[{"type":"onInput","args":{"el":"opacity"}},{"type":"setOpacity","args":{"el":"viewer-img","n":{"type":"calc","args":{"a":"100","op":"-","b":{"type":"getValue","args":{"el":"opacity"}}}}}},{"type":"setText","args":{"el":"opacity-label","v":{"type":"getValue","args":{"el":"opacity"}}}}]},{"x":10,"y":3002,"blocks":[{"type":"onInput","args":{"el":"zoom"}},{"type":"scaleTo","args":{"el":"viewer-img","n":{"type":"getValue","args":{"el":"zoom"}}}}]},{"x":10,"y":3128,"blocks":[{"type":"onInput","args":{"el":"rot"}},{"type":"rotateTo","args":{"el":"viewer-img","deg":{"type":"getValue","args":{"el":"rot"}}}}]},{"x":10,"y":3254,"blocks":[{"type":"onInput","args":{"el":"posx"}},{"type":"moveTo","args":{"el":"viewer-img","x":{"type":"getValue","args":{"el":"posx"}},"y":{"type":"getValue","args":{"el":"posy"}}}}]},{"x":10,"y":3380,"blocks":[{"type":"onInput","args":{"el":"posy"}},{"type":"moveTo","args":{"el":"viewer-img","x":{"type":"getValue","args":{"el":"posx"}},"y":{"type":"getValue","args":{"el":"posy"}}}}]},{"x":10,"y":3506,"blocks":[{"type":"onLoad","args":{}},{"type":"forever","args":{},"body":[{"type":"if","args":{"cond":{"type":"compare","args":{"a":{"type":"getVar","args":{"var":"playing"}},"op":"=","b":"1"}}},"body":[{"type":"setCss","args":{"el":"meter-A1","prop":"height","v":{"type":"join","args":{"a":{"type":"random","args":{"a":"20","b":"95"}},"b":"%"}}}},{"type":"setCss","args":{"el":"meter-A2","prop":"height","v":{"type":"join","args":{"a":{"type":"random","args":{"a":"20","b":"95"}},"b":"%"}}}},{"type":"setCss","args":{"el":"meter-A3","prop":"height","v":{"type":"join","args":{"a":{"type":"random","args":{"a":"20","b":"95"}},"b":"%"}}}},{"type":"setCss","args":{"el":"meter-A4","prop":"height","v":{"type":"join","args":{"a":{"type":"random","args":{"a":"20","b":"95"}},"b":"%"}}}},{"type":"setCss","args":{"el":"meter-A5","prop":"height","v":{"type":"join","args":{"a":{"type":"random","args":{"a":"20","b":"95"}},"b":"%"}}}},{"type":"setCss","args":{"el":"meter-M1","prop":"height","v":{"type":"join","args":{"a":{"type":"random","args":{"a":"20","b":"95"}},"b":"%"}}}}]},{"type":"wait","args":{"n":"0.12"}}]}]},{"x":10,"y":3632,"blocks":[{"type":"onGroup","args":{"cls":"page","ev":"click"}},{"type":"activeOnly","args":{"cls":"page","el":"@this","prop":"backgroundColor","color":"#3a3a44"}},{"type":"activeOnly","args":{"cls":"page","el":"@this","prop":"color","color":"#ffffff"}}]},{"x":10,"y":3796,"blocks":[{"type":"onGroup","args":{"cls":"folder","ev":"click"}},{"type":"activeOnly","args":{"cls":"folder","el":"@this","prop":"backgroundColor","color":"#3a3a44"}}]},{"x":10,"y":3922,"blocks":[{"type":"onGroup","args":{"cls":"thumb","ev":"click"}},{"type":"activeOnly","args":{"cls":"thumb","el":"@this","prop":"outline","color":"#e5484d"}}]}],"vars":["frame","playing"],"signals":["play"]}</script>
+</body>
+</html>

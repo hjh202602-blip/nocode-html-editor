@@ -38,6 +38,9 @@ const ICONS = {
   guides: '<rect x="3" y="3" width="18" height="18" rx="2" stroke-dasharray="3 3"/><rect x="8" y="8" width="8" height="8" rx="1"/>',
   settings: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
   code: '<path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>',
+  box: '<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+  upload: '<path d="M12 15V3M7 8l5-5 5 5M5 21h14"/>',
+  ruler: '<rect x="2" y="7" width="20" height="10" rx="1.5"/><path d="M6 7v4M10 7v3M14 7v4M18 7v3"/>',
   copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
   download: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
   save: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
@@ -50,8 +53,13 @@ const ICONS = {
   alignL: '<path d="M4 6h16M4 12h10M4 18h13"/>',
   alignC: '<path d="M4 6h16M7 12h10M5.5 18h13"/>',
   alignR: '<path d="M4 6h16M10 12h10M7 18h13"/>',
+  brush: '<path d="M18.4 2.6a2 2 0 0 1 2.9 2.9L12 15l-3-3z"/><path d="M9 12c-2 0-4 1.5-4 4 0 1.5-1 2.5-2 3 3 1 7 0 8-3"/>',
+  paste: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>',
+  rows: '<rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="15" width="18" height="5" rx="1"/><path d="M12 9v6M9 12h6"/>',
+  alignJ: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
+  wide: '<rect x="1" y="6" width="22" height="12" rx="2"/><path d="M5 12h14M8 9l-3 3 3 3M16 9l3 3-3 3"/>',
   external: '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
 };
 WB.icon = (name, size = 16) =>
@@ -66,29 +74,38 @@ WB.emit = (ev, data) => (listeners[ev] || []).forEach(fn => fn(data));
 const KIND = {};
 'div section header footer nav main article aside form ul ol table thead tbody tr select figure body'
   .split(' ').forEach(t => (KIND[t] = 'container'));
-'img input hr br video audio iframe textarea'.split(' ').forEach(t => (KIND[t] = 'void'));
-/** container = 안에 다른 요소를 담음, text = 글자를 담음, void = 아무것도 담지 않음 */
-WB.kindOf = tag => KIND[tag] || 'text';
+'img input hr br video audio iframe textarea svg'.split(' ').forEach(t => (KIND[t] = 'void'));
+/** container = 안에 다른 요소를 담음, text = 글자를 담음, void = 아무것도 담지 않음
+    태그 이름 대신 요소(node)를 주면 그 요소의 실제 모양으로 판단:
+    가져온 페이지의 <li><a>…</a></li>, <a><img></a> 처럼 글자 태그도 안에 요소를 담고 있으면 container */
+WB.kindOf = x => {
+  if (x && typeof x === 'object') return x.children ? 'container' : x.text !== undefined ? 'text' : KIND[x.tag] || 'void';
+  return KIND[x] || 'text';
+};
 /** 특정 태그 안에는 정해진 태그만 넣을 수 있음 */
 WB.ACCEPTS = { select: ['option'], table: ['thead', 'tbody', 'tr'], thead: ['tr'], tbody: ['tr'], tr: ['td', 'th'] };
 
 WB.TAG_LABEL = {
   body: '페이지', h1: '큰 제목', h2: '중간 제목', h3: '작은 제목', h4: '제목 4', h5: '제목 5', h6: '제목 6',
-  p: '문단', span: '짧은 글자', strong: '굵은 글자', em: '기울임 글자', blockquote: '인용문', small: '작은 글자',
+  p: '문단', span: '짧은 글자', strong: '굵은 글자', sup: '위첨자', sub: '아래첨자', em: '기울임 글자', blockquote: '인용문', small: '작은 글자',
   div: '상자', section: '구역', header: '머리말', footer: '꼬리말', nav: '메뉴 영역', main: '본문', article: '글 묶음',
   aside: '곁 내용', figure: '그림 묶음', hr: '구분선', br: '줄바꿈', a: '링크', button: '버튼', img: '이미지',
   video: '동영상', audio: '오디오', iframe: '웹페이지 삽입', ul: '글머리 목록', ol: '번호 목록', li: '목록 항목',
   table: '표', thead: '표 머리', tbody: '표 본문', tr: '표 줄', td: '표 칸', th: '표 제목 칸',
-  form: '입력 양식', input: '입력칸', textarea: '여러 줄 입력', select: '선택 목록', option: '선택 항목', label: '라벨',
+  svg: '차트', form: '입력 양식', input: '입력칸', textarea: '여러 줄 입력', select: '선택 목록', option: '선택 항목', label: '라벨',
 };
 const INPUT_LABEL = { checkbox: '체크박스', radio: '라디오 버튼', password: '비밀번호 칸', email: '이메일 칸', number: '숫자 칸', date: '날짜 칸', submit: '제출 버튼', color: '색 고르기', range: '슬라이더' };
 WB.labelOf = node => {
   if (!node) return '';
   if (node.id === 'root') return '페이지';
   if (WB.isFree(node)) return '자유 배치';
+  if (node.tag === 'div' && node.style.display === 'grid') return '격자 배치';
   if (node.tag === 'div' && (node.style.display || '').includes('flex'))
     return node.style['flex-direction'] === 'column' ? '세로 배치' : '가로 배치';
   if (node.tag === 'input') return INPUT_LABEL[node.attrs.type] || '입력칸';
+  if (node.tag === 'svg' && node.attrs['data-icon']) return '아이콘';
+  if (node.tag === 'svg' && node.raw != null) return '그림 (SVG)';
+  if (node.attrs?.['data-ui'] === 'switch') return '스위치';
   return WB.TAG_LABEL[node.tag] || node.tag;
 };
 
@@ -153,6 +170,8 @@ WB.cloneNode = node => {
 
 /* ---------- 열린 문서들 ---------- */
 let docSeq = 0;
+// cssTop: @import 처럼 맨 앞에 와야 하는 것 · vars: 색 팔레트 [{ name, value }] → :root { --name: value }
+WB.emptyExtra = () => ({ cssTop: '', css: '', head: [], scripts: [], vars: [] });
 WB.state = { docs: [], activeId: null };
 WB.newDocId = () => 'd' + ++docSeq;
 WB.newPageDoc = opts => ({
@@ -163,7 +182,11 @@ WB.newPageDoc = opts => ({
   path: opts.path ?? null,
   title: opts.title ?? opts.name.replace(/\.html?$/i, ''),
   root: opts.root || WB.newRoot(),
-  blocks: opts.blocks || { scripts: [] }, // 탭5 블록 코딩
+  blocks: opts.blocks || WB.emptyBlocks(), // 탭5 블록 코딩
+  // 가져온 페이지에서 편집기가 요소로 바꿀 수 없어 그대로 보존하는 것: 추가 CSS · <head> 의 링크 · 외부 스크립트
+  extra: opts.extra || WB.emptyExtra(),
+  foreign: !!opts.foreign, // 다른 곳에서 만든 페이지 (처음 저장할 때 원본을 남김)
+  original: opts.original || null,
   selectedId: null,
   dirty: false,
   undo: [],
@@ -217,7 +240,7 @@ function travel(from, to) {
   const s = JSON.parse(doc[from].pop());
   doc.title = s.title;
   doc.root = s.root;
-  doc.blocks = s.blocks || { scripts: [] };
+  doc.blocks = s.blocks || WB.emptyBlocks();
   doc.lastKey = null;
   doc.dirty = true;
   if (doc.selectedId && !WB.find(doc.root, doc.selectedId)) doc.selectedId = null;
@@ -256,13 +279,12 @@ WB.moveNode = (id, parentId, index) => {
 WB.isFree = node => node?.attrs?.['data-layout'] === 'free';
 const unfree = n => {
   if (n.style.position !== 'absolute') return;
-  delete n.style.position;
-  delete n.style.left;
-  delete n.style.top;
+  for (const k of ['position', 'left', 'top', 'right', 'bottom']) delete n.style[k];
 };
 WB.unfree = unfree;
-/** node(새 요소) 또는 id(있는 요소)를 자유 배치 상자 parentId 안의 (x, y)에 놓음. 맨 앞으로 올라옴 */
-WB.placeFree = (nodeOrId, parentId, x, y) => {
+/** node(새 요소) 또는 id(있는 요소)를 자유 배치 상자 parentId 안의 (x, y)에 놓음. 맨 앞으로 올라옴.
+    anchor = { right, bottom } 를 주면 오른쪽 · 아래 기준 위치로 */
+WB.placeFree = (nodeOrId, parentId, x, y, anchor = {}) => {
   const doc = WB.canvasDoc();
   if (!doc) return;
   if (typeof nodeOrId === 'string') {
@@ -276,7 +298,11 @@ WB.placeFree = (nodeOrId, parentId, x, y) => {
       f.parent.children.splice(f.index, 1);
       n = f.node;
     }
-    Object.assign(n.style, { position: 'absolute', left: Math.round(x) + 'px', top: Math.round(y) + 'px' });
+    const st = n.style;
+    st.position = 'absolute';
+    delete st.left; delete st.right; delete st.top; delete st.bottom;
+    if (anchor.right != null) st.right = Math.round(anchor.right) + 'px'; else st.left = Math.round(x) + 'px';
+    if (anchor.bottom != null) st.bottom = Math.round(anchor.bottom) + 'px'; else st.top = Math.round(y) + 'px';
     nodeIn(d, parentId).children.push(n);
   });
 };
@@ -318,21 +344,51 @@ WB.moveSibling = (id, dir) => {
   });
 };
 
+/* ---------- 스타일 쓰기 ----------
+   요소의 스타일은 네 묶음: style(기본) · styleTablet(태블릿 1024px 이하) · styleMobile(휴대폰 640px 이하) · styleHover(마우스 올림)
+   태블릿 · 휴대폰 화면 보기에서 고치면 그 화면 전용 묶음에 씀 → 코드에서는 @media 안으로.
+   탭2 위쪽 「상태」를 「마우스 올림」으로 바꾸면 styleHover 에 씀 → 코드에서는 :hover 규칙으로.
+   「같은 이름표 요소에 함께 적용」이 켜져 있으면 이름표(class 첫 단어)가 같은 요소 모두에 씀 */
+WB.VARIANT_KEYS = { tablet: 'styleTablet', mobile: 'styleMobile', hover: 'styleHover' };
+/** 지금 고치는 묶음: '' (기본) · 'tablet' · 'mobile' · 'hover' */
+WB.editVariant = () => (WB.settings.state === 'hover' ? 'hover' : WB.settings.device === 'mobile' ? 'mobile' : WB.settings.device === 'tablet' ? 'tablet' : '');
+WB.mobileEdit = () => WB.editVariant() === 'mobile' || WB.editVariant() === 'tablet';
+/** 화면 크기 기준으로 겹쳐 본 스타일 (hover: 마우스 올림 상태까지) */
+WB.mergedStyle = (n, device = WB.settings.device, hover = false) => ({
+  ...n.style,
+  ...(device === 'tablet' || device === 'mobile' ? n.styleTablet : null),
+  ...(device === 'mobile' ? n.styleMobile : null),
+  ...(hover ? n.styleHover : null),
+});
+/** 지금 보고 있는 화면 · 상태 기준의 스타일 (읽기용) */
+WB.styleOf = n => WB.mergedStyle(n, WB.settings.device, WB.editVariant() === 'hover');
+/** 지금 고쳐야 할 스타일 묶음 (쓰기용) */
+WB.styleTarget = n => {
+  const v = WB.editVariant();
+  return v ? (n[WB.VARIANT_KEYS[v]] ||= {}) : n.style;
+};
+WB.groupOf = n => (n?.attrs?.class || '').trim().split(/\s+/)[0] || '';
+function targetsFor(doc, id) {
+  const n = nodeIn(doc, id);
+  const g = WB.settings.linkGroup && WB.groupOf(n);
+  if (!g) return [n];
+  const out = [];
+  WB.walk(doc.root, x => { if (WB.groupOf(x) === g) out.push(x); });
+  return out;
+}
+function writeStyle(n, obj) {
+  const t = WB.styleTarget(n);
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === '' || v == null) delete t[k];
+    else t[k] = v;
+  }
+  for (const key of Object.values(WB.VARIANT_KEYS)) if (n[key] && !Object.keys(n[key]).length) delete n[key];
+}
 WB.setStyle = (id, prop, value, key) =>
-  WB.commit(doc => {
-    const n = nodeIn(doc, id);
-    if (value === '' || value == null) delete n.style[prop];
-    else n.style[prop] = value;
-  }, key || `style:${id}:${prop}`);
+  WB.commit(doc => targetsFor(doc, id).forEach(n => writeStyle(n, { [prop]: value })), key || `style:${id}:${prop}`);
 
 WB.setStyles = (id, obj, key) =>
-  WB.commit(doc => {
-    const n = nodeIn(doc, id);
-    for (const [k, v] of Object.entries(obj)) {
-      if (v === '' || v == null) delete n.style[k];
-      else n.style[k] = v;
-    }
-  }, key);
+  WB.commit(doc => targetsFor(doc, id).forEach(n => writeStyle(n, obj)), key);
 
 WB.setAttr = (id, name, value, key) =>
   WB.commit(doc => {
@@ -365,12 +421,12 @@ WB.saveSettings = () => WB.store('wb.settings', WB.settings);
 
 /* ---------- 알림 · 메뉴 · 모달 ---------- */
 let toastTimer;
-WB.toast = (msg, type = '') => {
+WB.toast = (msg, type = '', ms = 2400) => {
   const t = WB.$('#toast');
   t.textContent = msg;
   t.className = 'toast show ' + type;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => (t.className = 'toast ' + type), 2400);
+  toastTimer = setTimeout(() => (t.className = 'toast ' + type), ms);
 };
 
 WB.download = (name, text, type = 'text/html') => {

@@ -7,21 +7,34 @@
   const panel = $('#tab5');
 
   panel.innerHTML = `
-    <div class="panel-head"><span class="panel-title">동작 <b>JS</b></span>
+    <div class="panel-head"><span class="panel-title">블록 코딩 <b>JS</b></span>
+      <div class="blk-mode seg mini" title="블록으로 만들기 / JavaScript 직접 쓰기">
+        <button data-mode="blocks" class="on">블록</button><button data-mode="code">코드</button>
+      </div>
       <div class="head-actions">
+        <button class="blk-run" data-act="run" title="페이지를 새 창에서 열어 블록을 실행해 봐요">▶ 시작하기</button>
+        <button class="icon-btn" data-act="max" title="블록 작업판 크게 / 원래대로">${icon('wide')}</button>
         <button class="icon-btn" data-act="tidy" title="블록 묶음 가지런히 정리">${icon('alignL')}</button>
         <button class="icon-btn" data-act="code" title="만들어진 JavaScript 보기">${icon('code')}</button>
       </div>
     </div>
-    <div class="blk-cats">${WB.BLOCK_CATS.map((c, i) => `<button class="blk-cat ${i ? '' : 'on'}" data-cat="${c.id}" style="--c:${c.c}">${c.name}</button>`).join('')}</div>
-    <div class="blk-palette"></div>
-    <div class="blk-ws"><div class="blk-ws-inner"></div></div>
-    <div class="blk-foot">블록을 아래 작업판으로 끌어와 끼워 맞추세요. 지우려면 위 블록 목록으로 다시 끌어다 놓아요.</div>`;
+    <div class="blk-body">
+      <div class="blk-cats">${WB.BLOCK_CATS.map((c, i) => `<button class="blk-cat ${i ? '' : 'on'}" data-cat="${c.id}" style="--c:${c.c}" title="${c.name}"><span class="ci">${c.icon}</span><span class="cn">${c.name}</span></button>`).join('')}</div>
+      <div class="blk-palette"></div>
+      <div class="blk-ws"><div class="blk-ws-inner"></div></div>
+    </div>
+    <div class="blk-codebox" hidden>
+      <div class="blk-code-hint">블록과 함께 실행돼요. <code>el('id')</code> 로 요소 찾기, <code>on('id', 'click', () => { … })</code> 로 이벤트, 블록에서 만든 변수는 <code>vars['이름']</code>.</div>
+      <div class="blk-code-wrap"><pre class="blk-code-gutter">1</pre><textarea class="blk-code" spellcheck="false" placeholder="// 여기에 JavaScript 를 직접 써요&#10;on('button1', 'click', () => {&#10;  alert('안녕!');&#10;});"></textarea></div>
+      <div class="blk-code-err" hidden></div>
+    </div>
+    <div class="blk-foot">블록을 작업판으로 끌어와 끼워 맞추세요. 지우려면 블록 꾸러미로 다시 끌어다 놓아요.</div>`;
   const pal = panel.querySelector('.blk-palette');
   const ws = panel.querySelector('.blk-ws');
   const inner = panel.querySelector('.blk-ws-inner');
   const snap = h('div', { class: 'bk-snap', hidden: true });
-  let cat = 'event';
+  let cat = 'start';
+  const blockData = () => WB.canvasDoc()?.blocks || WB.emptyBlocks();
 
   /* ---------- 캔버스 요소 목록 (블록에서 고를 대상) ---------- */
   const FILTERS = {
@@ -29,7 +42,9 @@
     input: n => (n.tag === 'input' && !['checkbox', 'radio', 'submit', 'button'].includes(n.attrs.type)) || n.tag === 'textarea' || n.tag === 'select',
     check: n => n.tag === 'input' && ['checkbox', 'radio'].includes(n.attrs.type),
     form: n => n.tag === 'form',
-    text: n => WB.kindOf(n.tag) === 'text',
+    media: n => n.tag === 'audio' || n.tag === 'video',
+    box: n => WB.kindOf(n) === 'container',
+    text: n => WB.kindOf(n) === 'text',
   };
   function elementList(filter) {
     const doc = WB.canvasDoc();
@@ -41,6 +56,45 @@
     const t = (n.text || n.attrs.placeholder || '').trim().slice(0, 14);
     return WB.labelOf(n) + (t ? ` "${t}"` : '');
   };
+  /** 요소 칸에 고를 수 있는 특별한 값: 그때그때 정해지는 요소 */
+  const SPECIAL_EL = WB.SPECIAL_EL;
+  const elValueLabel = v => (SPECIAL_EL[v] ? '⟐ ' + SPECIAL_EL[v] : '#' + v);
+  // 한 번 그릴 때 함께 쓰는 id · 이름표 목록 (그릴 때마다 새로 만듦)
+  let cache = null;
+  const scan = () => {
+    if (cache) return cache;
+    cache = { ids: new Set(), classes: new Set() };
+    const doc = WB.canvasDoc();
+    if (doc) WB.walk(doc.root, n => {
+      if (n.attrs.id) cache.ids.add(n.attrs.id);
+      (n.attrs.class || '').split(/\s+/).filter(Boolean).forEach(c => cache.classes.add(c));
+    });
+    return cache;
+  };
+  const idSet = () => scan().ids;
+  const classSet = () => scan().classes;
+  /** 요소 고르기 목록을 펼치기 직전에 채움 */
+  function fillElSelect(sel) {
+    if (sel.dataset.filled) return;
+    sel.dataset.filled = '1';
+    const v = sel.value;
+    sel.innerHTML = '';
+    sel.append(new Option('요소 고르기…', ''));
+    const sp = h('optgroup', { label: '그때그때 정해지는 요소' });
+    for (const [k, l] of Object.entries(SPECIAL_EL)) sp.append(new Option('⟐ ' + l, k));
+    sel.append(sp);
+    let found = !v || !!SPECIAL_EL[v];
+    const grp = h('optgroup', { label: '캔버스의 요소' });
+    for (const n of elementList(sel.dataset.filter)) {
+      const value = n.attrs.id || 'node:' + n.id;
+      if (value === v) found = true;
+      grp.append(new Option((n.attrs.id ? '#' + n.attrs.id + ' · ' : '') + elLabel(n), value));
+    }
+    sel.append(grp);
+    if (!found) sel.append(new Option(`(없는 요소 #${v})`, v));
+    sel.value = v;
+  }
+
   /** 블록에서 고른 요소에 id 가 없으면 영어 id 를 붙여 줌 (JS 에서 찾을 이름) */
   const ID_BASE = { button: 'button', input: 'input', textarea: 'textarea', select: 'choice', form: 'form', a: 'link', img: 'image', p: 'text', span: 'text', label: 'label', h1: 'title', h2: 'title', h3: 'title', div: 'box' };
   function uniqueId(doc, n) {
@@ -68,6 +122,12 @@
     el.setAttribute('style', style);
     return el;
   }
+  /** 엔트리처럼: 시작 블록은 왼쪽에 동그란 아이콘, 일반 블록은 오른쪽 끝에 분류 아이콘 */
+  function decorate(el, b, cls) {
+    const def = DEFS[b.type];
+    if (def.shape === 'hat') el.prepend(h('span', { class: 'bk-ico' }, def.icon || '▶'));
+    else if (def.shape === 'stack' || cls.includes('bk-top')) el.append(h('span', { class: 'bk-end' }, WB.blockCatIcon(b.type)));
+  }
   const mouth = (b, key, mode) => h('div', { class: 'bk-mid' }, h('div', { class: 'bk-arm' }), listEl(b[key], `${b.id}:${key}`, mode));
   function listEl(list, path, mode) {
     const el = h('div', { class: 'bk-list', 'data-path': path });
@@ -81,6 +141,7 @@
       if (m) el.append(slot(b, m[1], mode));
       else if (part.trim()) el.append(h('span', { class: 'bk-t' }, part.trim()));
     }
+    if (text === DEFS[b.type].text) decorate(el, b, cls);
     return el;
   }
   function slot(b, name, mode) {
@@ -95,21 +156,35 @@
     }
     const live = mode === 'ws';
     if (spec.type === 'el') {
-      if (!live) { wrap.append(h('span', { class: 'sl dd' }, v ? '#' + v : '요소')); return wrap; }
-      const sel = h('select', { class: 'sl', 'data-arg': name, title: '캔버스에 있는 요소 고르기' });
-      sel.append(new Option('요소 고르기…', ''));
-      let found = !v;
-      for (const n of elementList(spec.filter)) {
-        const value = n.attrs.id || 'node:' + n.id;
-        if (value === v) found = true;
-        sel.append(new Option((n.attrs.id ? '#' + n.attrs.id + ' · ' : '') + elLabel(n), value));
-      }
-      if (!found) sel.append(new Option(`(없는 요소 #${v})`, v));
+      if (!live) { wrap.append(h('span', { class: 'sl dd' }, v ? elValueLabel(v) : '요소')); return wrap; }
+      // 목록은 펼칠 때 채움 (요소가 많은 페이지에서 고칠 때마다 수천 개 항목을 다시 만들지 않게)
+      const sel = h('select', { class: 'sl', 'data-arg': name, 'data-filter': spec.filter, title: '캔버스에 있는 요소 고르기' });
+      sel.append(new Option(v ? elValueLabel(v) : '요소 고르기…', v || ''));
       sel.value = v || '';
-      sel.classList.toggle('warn', !found || !v);
+      sel.classList.toggle('warn', !v || (!SPECIAL_EL[v] && !idSet().has(v)));
+      wrap.append(sel);
+    } else if (spec.type === 'cls') {
+      // 이름표: 캔버스 요소들의 이름표(class)에 쓰인 단어 목록
+      if (!live) { wrap.append(h('span', { class: 'sl dd dark' }, v ? '.' + v : '이름표')); return wrap; }
+      const names = classSet();
+      const sel = h('select', { class: 'sl dark', 'data-arg': name, title: '탭2 속성의 「이름표」에 적은 이름' });
+      sel.append(new Option(names.size ? '이름표 고르기…' : '(이름표 없음)', ''));
+      for (const c of [...names].sort()) sel.append(new Option('.' + c, c));
+      if (v && !names.has(v)) sel.append(new Option(`(없음: ${v})`, v));
+      sel.value = v || '';
+      sel.classList.toggle('warn', !v || !names.has(v));
+      wrap.append(sel);
+    } else if (spec.type === 'var' || spec.type === 'signal') {
+      const names = blockData()[spec.type === 'var' ? 'vars' : 'signals'] || [];
+      if (!live) { wrap.append(h('span', { class: 'sl dd dark' }, v || (spec.type === 'var' ? '변수' : '신호'))); return wrap; }
+      const sel = h('select', { class: 'sl dark', 'data-arg': name });
+      if (!names.includes(v)) sel.append(new Option(v ? `(없음: ${v})` : '고르기…', v));
+      for (const n of names) sel.append(new Option(n, n));
+      sel.value = v;
+      sel.classList.toggle('warn', !names.includes(v));
       wrap.append(sel);
     } else if (spec.type === 'choice') {
-      const sel = h('select', { class: 'sl', 'data-arg': name, disabled: !live });
+      const sel = h('select', { class: 'sl dark', 'data-arg': name, disabled: !live });
       for (const [value, label] of spec.options) sel.append(new Option(label, value));
       sel.value = v;
       wrap.append(sel);
@@ -127,16 +202,74 @@
   }
 
   /* ---------- 블록 목록 · 작업판 ---------- */
+  const LIST_INFO = {
+    vars: { make: '변수 만들기', ask: '새 변수 이름', ph: '예: 점수', empty: '변수를 만들면 변수 블록이 나타나요.' },
+    signals: { make: '신호 만들기', ask: '새 신호 이름', ph: '예: 게임 시작', empty: '신호를 만들면 신호 블록이 나타나요.' },
+  };
+  const CAT_LIST = { start: 'signals', variable: 'vars' };
+
   function renderPalette() {
+    const info = WB.BLOCK_CATS.find(c => c.id === cat);
+    const d = blockData();
     pal.innerHTML = '';
+    pal.style.setProperty('--c', info.c);
+    pal.append(h('div', { class: 'pal-title' }, info.name));
+    const listKey = CAT_LIST[cat];
+    if (listKey) {
+      // 엔트리처럼 꾸러미 위쪽에 「변수 만들기」 · 「신호 만들기」
+      const L = LIST_INFO[listKey];
+      pal.append(h('button', { class: 'pal-make', 'data-make': listKey }, '+ ' + L.make));
+      const names = d[listKey] || [];
+      if (names.length) {
+        const chips = h('div', { class: 'pal-names' });
+        for (const n of names) chips.append(h('span', { class: 'pal-name' }, n, h('button', { 'data-del': listKey, 'data-name': n, title: '지우기' }, '×')));
+        pal.append(chips);
+      } else pal.append(h('div', { class: 'pal-hint' }, L.empty));
+    }
     for (const [type, def] of Object.entries(DEFS)) {
-      if (def.cat !== cat) continue;
-      const b = WB.newBlock(type);
+      if (def.cat !== cat || def.hidden) continue;
+      if (def.needs && !(d[def.needs] || []).length) continue;
+      const b = WB.newBlock(type, d);
       b.id = 'pal:' + type;
       pal.append(h('div', { class: 'pal-row' }, renderBlock(b, 'pal')));
     }
     panel.querySelectorAll('.blk-cat').forEach(x => x.classList.toggle('on', x.dataset.cat === cat));
   }
+
+  /** 이름 묻기 창 */
+  function askName(title, placeholder) {
+    return new Promise(resolve => {
+      const input = h('input', { type: 'text', placeholder, spellcheck: 'false', style: 'width:100%;height:32px' });
+      let done = false;
+      const finish = (close, v) => { if (done) return; done = true; close(); resolve(v); };
+      const m = WB.modal({
+        title,
+        content: input,
+        actions: [
+          { label: '취소', onClick: close => finish(close, null) },
+          { label: '만들기', primary: true, onClick: close => finish(close, input.value.trim() || null) },
+        ],
+      });
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') finish(m.close, input.value.trim() || null); });
+      setTimeout(() => input.focus());
+    });
+  }
+
+  pal.addEventListener('click', async e => {
+    const make = e.target.closest('[data-make]')?.dataset.make;
+    const del = e.target.closest('[data-del]');
+    if (make) {
+      const L = LIST_INFO[make];
+      const name = await askName(L.make, L.ph);
+      if (!name) return;
+      if ((blockData()[make] || []).includes(name)) return WB.toast(`'${name}' 은(는) 이미 있어요`, 'error');
+      WB.commit(doc => (doc.blocks[make] ||= []).push(name));
+    } else if (del) {
+      const key = del.dataset.del, name = del.dataset.name;
+      if (!confirm(`'${name}' 을(를) 지울까요? 이 이름을 쓰는 블록은 노란색 경고로 표시돼요.`)) return;
+      WB.commit(doc => (doc.blocks[key] = (doc.blocks[key] || []).filter(n => n !== name)));
+    }
+  });
 
   let work = null; // 끄는 동안 쓰는 블록 데이터 사본
   const data = () => work || WB.canvasDoc()?.blocks || { scripts: [] };
@@ -146,6 +279,7 @@
   };
 
   function renderWs() {
+    cache = null;
     inner.innerHTML = '';
     panel.classList.toggle('disabled', !WB.canvasDoc());
     if (!WB.canvasDoc()) {
@@ -190,7 +324,7 @@
 
   function begin() {
     work = JSON.parse(JSON.stringify(WB.canvasDoc().blocks));
-    if (!drag.fromWs) drag.stack = [WB.newBlock(drag.id.slice(4))];
+    if (!drag.fromWs) drag.stack = [WB.newBlock(drag.id.slice(4), work)];
     else {
       // 잡은 블록과 그 아래 블록들을 함께 떼어 냄 (값 블록은 그것만)
       const loc = WB.locateBlock(work, drag.id);
@@ -328,6 +462,9 @@
       blockById(doc.blocks, owner).args[name] = v;
     }, `barg:${owner}:${name}:${Date.now()}`);
   });
+  const fillOnOpen = e => { if (e.target.matches?.('select[data-filter]')) fillElSelect(e.target); };
+  ws.addEventListener('pointerdown', fillOnOpen, true);
+  ws.addEventListener('focusin', fillOnOpen);
   ws.addEventListener('input', e => {
     if (e.target.matches('input.sl[type=text]')) e.target.size = Math.max(2, e.target.value.length + 1);
   });
@@ -391,6 +528,8 @@
   panel.querySelector('.head-actions').addEventListener('click', e => {
     const act = e.target.closest('[data-act]')?.dataset.act;
     if (!WB.canvasDoc()) return;
+    if (act === 'run') WB.preview();
+    if (act === 'max') e.target.closest('[data-act]').classList.toggle('on', WB.toggleBlockMax());
     if (act === 'tidy') tidy();
     if (act === 'code') showCode();
   });
@@ -401,8 +540,54 @@
     renderPalette();
   });
 
-  WB.on('change', () => { if (!drag?.started) renderWs(); });
-  WB.on('doc', renderWs);
+  /* ---------- 「코드」: JavaScript 직접 쓰기 ---------- */
+  const body = panel.querySelector('.blk-body');
+  const foot = panel.querySelector('.blk-foot');
+  const codeBox = panel.querySelector('.blk-codebox');
+  const ta = panel.querySelector('.blk-code');
+  const gutter = panel.querySelector('.blk-code-gutter');
+  const errEl = panel.querySelector('.blk-code-err');
+  const modeBtns = panel.querySelectorAll('[data-mode]');
+  let mode = 'blocks';
+  function setMode(m) {
+    mode = m;
+    modeBtns.forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+    body.hidden = foot.hidden = m === 'code';
+    codeBox.hidden = m !== 'code';
+    if (m === 'code') syncCode();
+  }
+  function checkCode() {
+    gutter.textContent = Array.from({ length: ta.value.split('\n').length }, (_, i) => i + 1).join('\n');
+    let msg = '';
+    try { new Function(ta.value); } catch (err) { msg = '문법 오류: ' + err.message; } // 실행하지 않고 문법만 검사
+    errEl.textContent = msg;
+    errEl.hidden = !msg;
+    // 코드가 있으면 「코드」 버튼에 점 표시
+    modeBtns[1].classList.toggle('has', !!ta.value.trim());
+  }
+  function syncCode() {
+    if (document.activeElement !== ta) ta.value = blockData().code || '';
+    ta.disabled = !WB.canvasDoc();
+    checkCode();
+  }
+  panel.querySelector('.blk-mode').addEventListener('click', e => {
+    const b = e.target.closest('[data-mode]');
+    if (b) setMode(b.dataset.mode);
+  });
+  ta.addEventListener('input', () => {
+    WB.commit(doc => (doc.blocks.code = ta.value), 'blk-code');
+    checkCode();
+  });
+  ta.addEventListener('scroll', () => (gutter.scrollTop = ta.scrollTop));
+  ta.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    e.preventDefault(); // 탭 키는 칸 이동 대신 들여쓰기
+    ta.setRangeText('  ', ta.selectionStart, ta.selectionEnd, 'end');
+    ta.dispatchEvent(new Event('input'));
+  });
+
+  WB.on('change', () => { if (!drag?.started) { renderWs(); renderPalette(); } syncCode(); });
+  WB.on('doc', () => { renderWs(); renderPalette(); syncCode(); });
   renderPalette();
   renderWs();
 })();
