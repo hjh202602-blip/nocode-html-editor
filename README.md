@@ -110,7 +110,7 @@ python -m http.server 5530 --bind 127.0.0.1
 
 ### 예제
 
-- `examples/naver-clone/` — 첫 화면 + 로그인 화면 (로그인 버튼은 블록으로 이동)
+- `examples/portal/` — 가상 포털 "모아"의 첫 화면 + 로그인 화면 (로그인 버튼은 블록으로 이동)
 - `examples/practice-sites/` — 쇼핑몰 상품 목록 · 관리자 대시보드 · 개인 포트폴리오
   - shop: 이름표로 분류 필터 · 평점/리뷰/할인/가격 정렬, 휴대폰에서 2칸
   - dashboard: 선 · 도넛 · 막대 · 영역 차트, 메뉴 하나만 켜기, 휴대폰에서 1칸

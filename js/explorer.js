@@ -202,7 +202,7 @@
     input.click();
   }
   /** 편집기와 함께 있는 예제를 프로젝트로 (서버에 examples 폴더가 있을 때) */
-  const EXAMPLES = ['naver-clone/index.html', 'naver-clone/login.html', 'practice-sites/shop.html', 'practice-sites/dashboard.html', 'practice-sites/portfolio.html', 'practice-sites/sheet.html', 'practice-sites/video-editor.html', 'practice-sites/offcut.html', 'practice-sites/settings.html'];
+  const EXAMPLES = ['portal/index.html', 'portal/login.html', 'practice-sites/shop.html', 'practice-sites/dashboard.html', 'practice-sites/portfolio.html', 'practice-sites/sheet.html', 'practice-sites/video-editor.html', 'practice-sites/offcut.html', 'practice-sites/settings.html'];
   async function addExamples() {
     try {
       const files = [];
@@ -367,7 +367,7 @@
       h('button', { class: 'btn primary', onclick: newProject, html: icon('plus', 15) + ' 새 프로젝트' }),
       h('div', { class: 'ex-two' },
         h('button', { class: 'btn', onclick: importFiles, title: 'zip 은 새 프로젝트로, 페이지 · 그림은 지금 프로젝트로', html: icon('upload', 14) + ' 가져오기' }),
-        h('button', { class: 'btn', onclick: addExamples, title: '네이버 · 쇼핑몰 · 대시보드 · 포트폴리오 · 스프레드시트 · 영상 편집 예제', html: icon('file', 14) + ' 예제' })),
+        h('button', { class: 'btn', onclick: addExamples, title: '포털 · 쇼핑몰 · 대시보드 · 포트폴리오 · 스프레드시트 · 영상 편집 예제', html: icon('file', 14) + ' 예제' })),
       h('p', { class: 'ex-sec' }, '내 프로젝트'));
     const listEl = h('div', { class: 'ex-projects' }, h('p', { class: 'hint' }, '불러오는 중…'));
     box.append(listEl);
