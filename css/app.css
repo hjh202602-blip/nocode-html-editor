@@ -2,9 +2,7 @@
 
 :root {
   --w1: 240px;
-  --w5: 380px;
-  --h2: 176px;
-  --h4: 210px;
+  --w5: 400px;
 
   --bg: #1e1e1e;
   --panel: #252526;
@@ -67,23 +65,21 @@ button { cursor: pointer; }
 .ico { flex: none; display: block; }
 
 /* ---------- 전체 배치 (탭 크기 조절) ---------- */
+/* 1 프로젝트 | 2 작업 공간 | 3 설정 + 4 도구 (HTML · CSS · JS) */
 #app {
   height: 100vh;
   display: grid;
   grid-template-columns: var(--w1) 5px minmax(0, 1fr) 5px var(--w5);
-  grid-template-rows: var(--h2) 5px minmax(0, 1fr) 5px var(--h4);
-  grid-template-areas:
-    "t1 s1 t2 t2 t2"
-    "t1 s1 s2 s2 s2"
-    "t1 s1 t3 s5 t5"
-    "t1 s1 s4 s4 s4"
-    "t1 s1 t4 t4 t4";
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "t1 s1 t3 s5 side";
 }
-#tab1 { grid-area: t1; }
-#tab2 { grid-area: t2; }
+#app.sliding { transition: grid-template-columns .24s ease; }
+#tab1 { grid-area: t1; align-items: flex-end; } /* 접힐 때 안의 내용은 펼친 폭 그대로 왼쪽으로 밀려 나감 */
+#tab1 > * { flex-shrink: 0; width: var(--w1o); }
 #tab3 { grid-area: t3; }
-#tab4 { grid-area: t4; }
-#tab5 { grid-area: t5; }
+#side { grid-area: side; min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+#side > * { flex-shrink: 0; width: var(--w5o); min-width: 100%; }
+#app.no-w1 > [data-split="w1"], #app.no-w5 > [data-split="w5"] { background: var(--border); }
 
 .panel {
   background: var(--panel);
@@ -232,16 +228,16 @@ input, textarea { user-select: text; }
 .ex-empty .hint { font-size: 12px; color: var(--text-faint); }
 
 /* ---------- 탭2: 스타일 설정 ---------- */
-#tab2 { flex-direction: row; align-items: stretch; border-bottom: 0; }
+#tab2 { flex-direction: column; }
 .inspector {
   flex: 1;
   min-width: 0;
-  overflow: auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 6px 0;
-  padding: 6px 4px;
+  flex-direction: column;
+  padding: 0 0 24px;
 }
 /* 설정 · 코드로 변환: 오른쪽 끝에 작게 세로로 */
 .tab2-actions {
@@ -255,14 +251,13 @@ input, textarea { user-select: text; }
 }
 .tab2-actions .btn { height: 26px; padding: 0 7px; gap: 4px; font-size: 11px; justify-content: flex-start; }
 .insp-target {
+  flex: none;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  padding: 0 12px 0 8px;
-  min-width: 128px;
-  max-width: 190px;
-  border-right: 1px solid var(--border);
+  gap: 3px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--head);
 }
 .insp-target .t-name { font-weight: 700; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .insp-target .t-tag { font: 11px var(--mono); color: var(--accent); }
@@ -270,22 +265,33 @@ input, textarea { user-select: text; }
 .insp-target .t-reset { align-self: flex-start; margin-top: 3px; border: 0; background: none; padding: 0; color: var(--text-dim); font-size: 11px; text-decoration: underline; }
 .insp-target .t-reset:hover { color: var(--text); }
 .insp-group {
+  flex: none;
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
-  border-right: 1px solid var(--border);
+  padding: 0 12px 12px;
+  border-bottom: 1px solid var(--border);
 }
 .insp-group .g-title {
-  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: .06em;
-  color: var(--accent);
-  margin-bottom: 2px;
+  letter-spacing: .02em;
+  color: var(--text);
+  cursor: pointer;
 }
-.insp-group .g-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px 8px; }
+.insp-group .g-title::before { content: '▾'; font-size: 10px; color: var(--text-faint); width: 10px; }
+.insp-group.shut { padding-bottom: 0; }
+.insp-group.shut .g-title::before { content: '▸'; }
+.insp-group.shut .g-row { display: none; }
+.insp-group .g-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 10px; }
 .ctl { display: flex; flex-direction: column; gap: 2px; }
 .ctl .cap { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
-.ctl.wide input, .ctl.wide textarea { width: 190px; }
+.ctl.wide { flex-basis: 100%; }
+.ctl.wide input, .ctl.wide textarea { width: 100%; }
+.ctl.wide .field input { flex: 1; min-width: 0; }
 .ctl input[type=text], .ctl input:not([type]) { width: 64px; height: 26px; }
 .ctl input[type=number] { width: 56px; height: 26px; }
 .ctl select { height: 26px; max-width: 120px; }
@@ -501,8 +507,10 @@ input, textarea { user-select: text; }
 .breadcrumb .hint { margin-left: auto; color: var(--text-faint); }
 
 /* ---------- 탭4: HTML 태그 ---------- */
-.pal-head .pal-search { margin-left: 10px; width: 180px; height: 24px; }
-.pal-cats { display: flex; gap: 4px; margin-left: 8px; overflow-x: auto; scrollbar-width: none; }
+.pal-head { height: auto; min-height: 32px; flex-wrap: wrap; gap: 6px; padding: 6px 8px; }
+.pal-head .head-actions { display: none !important; }
+.pal-head .pal-search { flex: 1 1 120px; width: auto; height: 24px; }
+.pal-cats { display: flex; flex: 1 1 100%; flex-wrap: wrap; gap: 3px; }
 .pal-cat {
   flex: none;
   height: 22px;
@@ -517,14 +525,15 @@ input, textarea { user-select: text; }
 .pal-cat.on { color: var(--accent); background: var(--accent-soft); border-color: var(--accent-soft); }
 .pal-body {
   flex: 1;
+  min-height: 0;
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 14px 18px;
-  padding: 10px 14px 16px;
+  padding: 10px 10px 16px;
 }
-.pal-group { flex: 1 1 250px; min-width: 220px; }
+.pal-group { flex: 1 1 100%; min-width: 0; }
 .pal-group h4 {
   margin: 0 0 6px;
   font-size: 11px;
@@ -535,7 +544,7 @@ input, textarea { user-select: text; }
   gap: 6px;
 }
 .pal-group h4::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--gc); }
-.pal-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; }
+.pal-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 6px; }
 .pal-item {
   display: flex;
   align-items: center;
@@ -943,7 +952,7 @@ span.sl { display: inline-flex; align-items: center; }
 
 /* 탭2: 상태(기본 / 마우스 올림) · 색 진하기 */
 .insp-target .t-state { margin-top: 4px; align-self: flex-start; }
-.field.color .alpha { width: 38px !important; padding: 0 2px; text-align: right; }
+.field.color .alpha { width: 46px !important; padding: 0 2px; text-align: right; }
 .zoom-val { width: auto !important; min-width: 40px; padding: 0 4px; font-size: 11px; }
 
 /* ---------- 탭4: 형식 · 이름 / 구조 ---------- */
@@ -1009,3 +1018,27 @@ span.sl { display: inline-flex; align-items: center; }
 .tree-text { color: var(--text-faint); overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
 .tree-count { font-size: 10px; color: var(--text-faint); }
 .tree-row .chip { margin-left: 0; font-size: 10px; line-height: 14px; }
+
+/* ---------- 3: 설정 · 4: 도구 (HTML · CSS · JS) ---------- */
+#tab-set { flex-direction: row; align-items: center; gap: 6px; height: 40px; padding: 0 10px; background: var(--head); }
+#tab-set .btn { height: 28px; }
+#tab-set #btn-theme { margin-left: auto; font-size: 15px; }
+#tools { flex: 1; min-height: 0; container-type: inline-size; }
+.tools-head { flex: none; display: flex; align-items: center; height: 40px; padding: 0 8px; background: var(--head); border-bottom: 1px solid var(--border); }
+.tool-mode { flex: 1; height: 30px; }
+.tool-mode button { flex: 1; justify-content: center; gap: 5px; font-size: 12px; }
+.tool-mode button b { font: 700 11px var(--mono); letter-spacing: .04em; }
+.tool-mode button[data-tm='html'].on { color: #e8814e; background: color-mix(in srgb, #e8814e 16%, transparent); }
+.tool-mode button[data-tm='css'].on { color: #519aba; background: color-mix(in srgb, #519aba 18%, transparent); }
+.tool-mode button[data-tm='js'].on { color: #e5c33d; background: color-mix(in srgb, #e5c33d 16%, transparent); }
+.tool-pane { flex: 1; min-height: 0; }
+.tool-pane[hidden] { display: none !important; }
+.tool-pane > .panel-head { background: var(--panel); }
+@container (max-width: 640px) {
+  .fmt-body { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
+  .fmt-col { overflow: visible; }
+  .fmt-col.ids { border-left: 0; border-top: 1px solid var(--border); }
+  .fmt-card { min-width: 0; flex: 1 1 160px; }
+}
+/* 2: 작업 공간 위쪽의 프로젝트 탭 열기 버튼 */
+.doc-bar .side-btn { flex: none; align-self: center; margin: 0 2px 0 4px; }

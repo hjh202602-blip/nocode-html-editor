@@ -99,7 +99,7 @@
       { key: 'number', name: '숫자 칸', icon: '123', desc: '숫자만 입력', make: () => N('input', { attrs: { type: 'number', placeholder: '0' }, style: { padding: '8px' } }) },
       { key: 'checkbox', name: '체크박스', icon: '☑', desc: '켜고 끄는 네모 칸', make: () => N('input', { attrs: { type: 'checkbox' } }) },
       { key: 'radio', name: '라디오 버튼', icon: '◉', desc: '여러 개 중 하나 고르기', make: () => N('input', { attrs: { type: 'radio', name: 'choice' } }) },
-      { key: 'switch', name: '스위치', icon: '⏻', desc: '켜고 끄는 토글 (JS 없이 CSS 로). 색은 탭2 모양에서', make: () => WB.switchNode(true) },
+      { key: 'switch', name: '스위치', icon: '⏻', desc: '켜고 끄는 토글 (JS 없이 CSS 로). 색은 「CSS 디자인」 모양에서', make: () => WB.switchNode(true) },
       { key: 'textarea', name: '여러 줄 입력', icon: '¶¶', desc: '긴 글 입력', make: () => N('textarea', { attrs: { rows: '4', placeholder: '내용을 입력하세요' }, style: { width: '320px', padding: '8px' } }) },
       { key: 'select', name: '선택 목록', icon: '▾', desc: '펼쳐서 고르는 목록', make: () => N('select', { style: { padding: '6px' }, children: ['선택 1', '선택 2', '선택 3'].map(t => N('option', { text: t })) }) },
       { key: 'label', name: '라벨', icon: 'lbl', desc: '입력칸에 붙이는 이름표', make: () => N('label', { text: '라벨' }) },
@@ -143,7 +143,7 @@
           children: [N('strong', { text: t + ' 카드' })],
         })),
       }) },
-      { key: 'part-dialog', name: '팝업 창', icon: '▣', desc: '화면 가운데 뜨는 창. 탭5 블록 「팝업 열기」로 열고, 안의 닫기 버튼으로 닫음', make: () => N('dialog', {
+      { key: 'part-dialog', name: '팝업 창', icon: '▣', desc: '화면 가운데 뜨는 창. 「JS 동작」 블록 「팝업 열기」로 열고, 안의 닫기 버튼으로 닫음', make: () => N('dialog', {
         style: { padding: '24px', 'border-style': 'none', 'border-radius': '12px', 'max-width': '360px', 'box-shadow': '0 12px 32px rgba(0, 0, 0, 0.22)' },
         children: [
           N('h3', { text: '알림', style: { margin: '0 0 8px' } }),

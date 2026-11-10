@@ -16,7 +16,7 @@
     .wb-page { flex: 1; position: relative; contain: layout; } /* contain: 「화면에 고정」 요소가 편집기 창이 아니라 페이지 안에 머물게 */
     dialog[data-wb-id] { display: block; position: relative; margin: 12px auto; } /* 팝업 창도 편집할 수 있게 펼쳐 둠 */
     .wb-page:empty::before {
-      content: '아래 「HTML 태그」에서 요소를 클릭하거나 이곳으로 끌어다 놓으세요';
+      content: '오른쪽 「HTML 태그」에서 요소를 클릭하거나 이곳으로 끌어다 놓으세요';
       display: flex; align-items: center; justify-content: center; height: 220px; padding: 16px;
       border: 2px dashed #c9d1dc; border-radius: 10px; color: #8a96a8; text-align: center;
       font: 14px 'Malgun Gothic', sans-serif;

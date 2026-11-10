@@ -8,18 +8,27 @@
   /* =========================================================
      탭 크기 조절 (VS Code 처럼 경계선을 끌어서 조절, 두 번 클릭하면 접기/펴기)
      ========================================================= */
-  const LAYOUT_DEFAULT = { w1: 240, w5: 380, h2: 176, h4: 210 };
-  const LIMITS = { w1: [140, 600], w5: [180, 600], h2: [48, 320], h4: [80, 520] };
-  let layout = WB.load('wb.layout', LAYOUT_DEFAULT);
+  /* 배치: 1 프로젝트(w1) | 2 작업 공간 | 3 설정 + 4 도구(w5, HTML · CSS · JS) */
+  const LAYOUT_DEFAULT = { w1: 240, w5: 400 };
+  const LIMITS = { w1: [140, 600], w5: [280, 1200] };
+  let layout = { ...LAYOUT_DEFAULT, ...WB.load('wb.layout', {}) };
+  delete layout.h2;
+  delete layout.h4;
   const before = WB.load('wb.layout.prev', {});
-  if (WB.load('wb.layout.ver', 0) < 2) {
-    // 탭2 설정이 늘어나서 예전에 저장한 높이가 작으면 넓혀 줌
-    layout.h2 = Math.max(layout.h2, LAYOUT_DEFAULT.h2);
-    WB.store('wb.layout.ver', 2);
+  if (WB.load('wb.layout.ver', 0) < 3) {
+    // 배치를 바꿔서 오른쪽 도구 탭에 디자인 설정까지 들어감 → 예전 폭이 좁으면 넓혀 줌
+    if (layout.w5 > 0) layout.w5 = Math.max(layout.w5, LAYOUT_DEFAULT.w5);
+    WB.store('wb.layout.ver', 3);
   }
 
   function applyLayout() {
     for (const k of Object.keys(LAYOUT_DEFAULT)) app.style.setProperty('--' + k, layout[k] + 'px');
+    // 접을 때 안의 내용은 펼친 폭 그대로 두어서 옆으로 밀려 들어가는 것처럼 보이게
+    app.style.setProperty('--w1o', (layout.w1 || before.w1 || LAYOUT_DEFAULT.w1) + 'px');
+    app.style.setProperty('--w5o', (layout.w5 || before.w5 || LAYOUT_DEFAULT.w5) + 'px');
+    app.classList.toggle('no-w1', !layout.w1);
+    app.classList.toggle('no-w5', !layout.w5);
+    $('#btn-side1')?.classList.toggle('on', !!layout.w1);
     WB.emit('layout');
   }
   function saveLayout() {
@@ -43,9 +52,30 @@
   WB.togglePanel = k => {
     if (layout[k] > 0) { before[k] = layout[k]; layout[k] = 0; }
     else layout[k] = before[k] || LAYOUT_DEFAULT[k];
+    app.classList.add('sliding'); // 접고 펼 때만 부드럽게 (경계선을 끌 때는 바로)
+    clearTimeout(WB._slideT);
+    WB._slideT = setTimeout(() => { app.classList.remove('sliding'); WB.emit('layout'); }, 260);
     applyLayout();
     saveLayout();
   };
+
+  /* 4번 탭: HTML 태그 · CSS 디자인 · JS 동작 중 하나 */
+  const TOOL_MODES = ['html', 'css', 'js'];
+  WB.setTool = (m, start) => {
+    if (!TOOL_MODES.includes(m)) m = 'html';
+    WB.settings.tool = m;
+    WB.saveSettings();
+    $$('#tools [data-tm]').forEach(b => b.classList.toggle('on', b.dataset.tm === m));
+    $$('#tools [data-pane]').forEach(p => (p.hidden = p.dataset.pane !== m));
+    if (!layout.w5 && !start) WB.togglePanel('w5'); // 접혀 있으면 펼침
+    WB.emit('tool', m);
+  };
+  $('#tools .tool-mode').addEventListener('click', e => {
+    const b = e.target.closest('[data-tm]');
+    if (b) WB.setTool(b.dataset.tm);
+  });
+  $('#btn-side1').innerHTML = icon('folder');
+  $('#btn-side1').onclick = () => WB.togglePanel('w1');
 
   $$('.splitter').forEach(sp => {
     const k = sp.dataset.split;
@@ -60,12 +90,12 @@
       document.body.classList.toggle('rows', !vertical);
       const start = vertical ? e.clientX : e.clientY;
       const startVal = layout[k];
-      const sign = k === 'w5' || k === 'h4' ? -1 : 1;
+      const sign = k === 'w5' ? -1 : 1;
       const [min, max] = LIMITS[k];
       const move = ev => {
         let v = startVal + sign * ((vertical ? ev.clientX : ev.clientY) - start);
         // 가운데 작업 공간은 최소 크기를 남김
-        const room = vertical ? innerWidth - 320 - (k === 'w1' ? layout.w5 : layout.w1) : innerHeight - 160 - (k === 'h2' ? layout.h4 : layout.h2);
+        const room = innerWidth - 320 - (k === 'w1' ? layout.w5 : layout.w1);
         v = Math.min(v, max, room);
         v = v < min / 2 ? 0 : Math.max(v, min); // 많이 줄이면 접힘
         layout[k] = Math.round(v);
@@ -263,7 +293,7 @@
       r.inlined ? `· CSS 규칙 ${r.inlined}개를 요소 스타일로 옮겼어요` : '',
       r.kept ? `· :hover · 다른 화면 크기 같은 규칙 ${r.kept}개는 「가져온 CSS」로 그대로 보존해요 (설정 → 페이지)` : '',
       r.rich ? `· 링크 · 굵게 · 그림을 담은 글자 요소 ${r.rich}개는 상자로 바꿔 안의 요소를 살렸어요` : '',
-      r.scripts ? `· 스크립트 ${r.scripts}개는 탭5 「코드」로 옮겼어요` : '',
+      r.scripts ? `· 스크립트 ${r.scripts}개는 「JS 동작」의 「코드」로 옮겼어요` : '',
       inlined.length ? `· 같은 프로젝트의 ${inlined.join(', ')} 을(를) 페이지 안으로 읽어 들였어요` : '',
       `처음 저장할 때 원본을 '${name.replace(/\.html?$/i, '')}.원본.html' 로 남겨 둘게요.`,
     ].filter(Boolean);
@@ -503,11 +533,17 @@
   }
 
   /* =========================================================
-     탭2 오른쪽: 설정 · 코드로 변환
+     3: 설정 · 코드로 변환 · 테마
      ========================================================= */
   $('#btn-settings').innerHTML = `${icon('settings', 14)}<span>설정</span>`;
-  $('#btn-settings').title = '설정 (페이지 · 편집기)';
-  $('#btn-convert').innerHTML = `${icon('code', 14)}<span>코드</span>`;
+  $('#btn-settings').title = '설정 (페이지 · 편집기 · 단축키)';
+  $('#btn-convert').innerHTML = `${icon('code', 14)}<span>코드로 변환</span>`;
+  $('#btn-theme').innerHTML = '◐';
+  $('#btn-theme').onclick = () => {
+    WB.settings.theme = WB.settings.theme === 'light' ? 'dark' : 'light';
+    WB.saveSettings();
+    applyTheme();
+  };
   $('#btn-convert').title = '코드로 변환 — 만든 화면을 HTML 코드로 보기';
   $('#btn-convert').onclick = () => showCode();
   $('#btn-settings').onclick = () => showSettings();
@@ -564,10 +600,10 @@
       <label class="frow top"><span>가져온 CSS</span><textarea name="extracss" rows="6" spellcheck="false" placeholder="예: .btn:hover { opacity: .8; }">${esc([doc.extra?.cssTop, doc.extra?.css].filter(Boolean).join('\n'))}</textarea></label>
       <p class="hint">다른 곳에서 가져온 페이지의 :hover · 다른 화면 크기(@media) · 애니메이션처럼 요소 스타일로 바꿀 수 없는 CSS 가 여기 그대로 남아 있어요. 직접 써 넣어도 돼요.</p>
       <label class="frow top"><span>색 팔레트<br><button class="btn small" type="button" data-findcolors style="margin-top:6px">페이지에서 찾기</button></span><textarea name="palette" rows="5" spellcheck="false" placeholder="이름: 색 (한 줄에 하나)&#10;blue: #2b2df2&#10;cream: #f2eee6">${esc((doc.extra?.vars || []).map(v => `${v.name}: ${v.value}`).join('\n'))}</textarea></label>
-      <p class="hint">코드에서 이 색들은 <code>var(--이름)</code> 으로 바뀌어 한곳(:root)에서 고칠 수 있어요. 여기서 색 값을 바꾸면 그 색을 쓰는 요소가 모두 함께 바뀌어요. 탭2 색 고르기에도 추천으로 나와요.</p>
+      <p class="hint">코드에서 이 색들은 <code>var(--이름)</code> 으로 바뀌어 한곳(:root)에서 고칠 수 있어요. 여기서 색 값을 바꾸면 그 색을 쓰는 요소가 모두 함께 바뀌어요. 「CSS 디자인」 색 고르기에도 추천으로 나와요.</p>
       <label class="frow"><span>페이지 설명</span><input type="text" name="desc" value="${esc((((doc.extra?.head || []).find(s => /<meta[^>]+name="description"/i.test(s)) || '').match(/content="([^"]*)"/) || [])[1] || '')}" placeholder="검색 결과 · 링크 미리보기에 나오는 한 줄 소개"></label>
       <label class="frow top"><span>&lt;head&gt; 코드</span><textarea name="head" rows="3" spellcheck="false" placeholder='예: &lt;link rel="icon" href="images/favicon.png"&gt;'>${esc((doc.extra?.head || []).filter(s => !/<meta[^>]+name="description"/i.test(s)).join('\n'))}</textarea></label>
-      <p class="hint">파비콘 · 공유 미리보기(og:) 같은 태그를 한 줄에 하나씩. 웹 글꼴 링크는 탭2 에서 글꼴을 고르면 자동으로 들어가요.</p>`
+      <p class="hint">파비콘 · 공유 미리보기(og:) 같은 태그를 한 줄에 하나씩. 웹 글꼴 링크는 「CSS 디자인」에서 글꼴을 고르면 자동으로 들어가요.</p>`
       : '<p class="hint">HTML 페이지를 열면 페이지 설정을 바꿀 수 있어요.</p>'}
       <hr>
       <h4>편집기</h4>
@@ -579,7 +615,8 @@
       <p class="hint" style="line-height:2">
         <kbd>Ctrl</kbd>+<kbd>S</kbd> 저장 · <kbd>Ctrl</kbd>+<kbd>Z</kbd> 되돌리기 · <kbd>Ctrl</kbd>+<kbd>Y</kbd> 다시 하기 · <kbd>Delete</kbd> 삭제 ·
         <kbd>Ctrl</kbd>+<kbd>D</kbd> 복제 · <kbd>Ctrl</kbd>+<kbd>C</kbd>/<kbd>V</kbd> 요소 복사·붙여넣기 · <kbd>Alt</kbd>+<kbd>↑↓</kbd> 순서 바꾸기 ·
-        <kbd>Enter</kbd> 글자 고치기 · <kbd>Esc</kbd> 바깥 상자 선택 · <kbd>Ctrl</kbd>+<kbd>B</kbd> 탐색기 접기 · <kbd>Ctrl</kbd>+<kbd>J</kbd> 태그 패널 접기
+        <kbd>Enter</kbd> 글자 고치기 · <kbd>Esc</kbd> 바깥 상자 선택 · <kbd>Ctrl</kbd>+<kbd>B</kbd> 프로젝트 탭 열기/닫기 · <kbd>Ctrl</kbd>+<kbd>J</kbd> 도구 탭 열기/닫기 ·
+        <kbd>Ctrl</kbd>+<kbd>1</kbd> HTML 태그 · <kbd>Ctrl</kbd>+<kbd>2</kbd> CSS 디자인 · <kbd>Ctrl</kbd>+<kbd>3</kbd> JS 동작 (<kbd>Alt</kbd>+<kbd>1</kbd>~<kbd>3</kbd> 도 같아요)
       </p>`;
     form.querySelector('[name=theme]').value = WB.settings.theme;
     form.querySelector('[name=theme]').onchange = e => { WB.settings.theme = e.target.value; WB.saveSettings(); applyTheme(); };
@@ -683,7 +720,10 @@
     const key = e.key.toLowerCase();
     if (mod && key === 's') { e.preventDefault(); WB.saveDoc(WB.activeDoc(), e.shiftKey); return; }
     if (mod && key === 'b') { e.preventDefault(); WB.togglePanel('w1'); return; }
-    if (mod && key === 'j') { e.preventDefault(); WB.togglePanel('h4'); return; }
+    if (mod && key === 'j') { e.preventDefault(); WB.togglePanel('w5'); return; }
+    // 4번 탭 모드: Ctrl+1 · 2 · 3 (브라우저가 가로채는 환경을 위해 Alt+1 · 2 · 3 도)
+    const digit = /^Digit([123])$/.exec(e.code)?.[1];
+    if (digit && (mod || e.altKey) && !e.shiftKey) { e.preventDefault(); WB.setTool(TOOL_MODES[digit - 1]); return; }
     if (isTyping(e) || !WB.canvasDoc() || $('.modal-overlay') || e.target.closest?.('#tab1')) return;
 
     const id = WB.selectedId();
@@ -755,6 +795,7 @@
      ========================================================= */
   applyTheme();
   applyLayout();
+  WB.setTool(WB.settings.tool, true);
   WB.applyDevice();
 
   const drafts = WB.load('wb.drafts', []);
@@ -771,7 +812,7 @@
     const N = WB.makeNode;
     doc.root.children.push(
       N('h1', { text: '나의 첫 웹페이지' }),
-      N('p', { text: '글자를 두 번 클릭하면 고칠 수 있어요. 아래 「HTML 태그」에서 요소를 끌어다 놓아 보세요.' }),
+      N('p', { text: '글자를 두 번 클릭하면 고칠 수 있어요. 오른쪽 「HTML 태그」에서 요소를 끌어다 놓아 보세요.' }),
       WB.paletteItem('button').make(),
     );
     activate(doc.id);

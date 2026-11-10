@@ -7,7 +7,7 @@
   const panel = $('#tab5');
 
   panel.innerHTML = `
-    <div class="panel-head"><span class="panel-title">동작 <b>JS</b></span>
+    <div class="panel-head"><span class="panel-title">블록 · 코드</span>
       <div class="blk-mode seg mini" title="블록으로 만들기 / JavaScript 직접 쓰기">
         <button data-mode="blocks" class="on">블록</button><button data-mode="code">코드</button>
       </div>
@@ -172,7 +172,7 @@
       // 이름표: 캔버스 요소들의 이름표(class)에 쓰인 단어 목록
       if (!live) { wrap.append(h('span', { class: 'sl dd dark' }, v ? '.' + v : '이름표')); return wrap; }
       const names = classSet();
-      const sel = h('select', { class: 'sl dark', 'data-arg': name, title: '탭2 속성의 「이름표」에 적은 이름' });
+      const sel = h('select', { class: 'sl dark', 'data-arg': name, title: '「CSS 디자인」 속성의 「이름표」에 적은 이름' });
       sel.append(new Option(names.size ? '이름표 고르기…' : '(이름표 없음)', ''));
       for (const c of [...names].sort()) sel.append(new Option('.' + c, c));
       if (v && !names.has(v)) sel.append(new Option(`(없음: ${v})`, v));
@@ -700,6 +700,7 @@
 
   WB.on('change', () => { if (!drag?.started) { renderWs(); renderPalette(); } syncCode(); });
   WB.on('doc', () => { renderWs(); renderPalette(); syncCode(); });
+  WB.on('tool', m => { if (m === 'js') { renderWs(); renderPalette(); } });
   renderPalette();
   renderWs();
 })();

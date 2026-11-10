@@ -236,7 +236,7 @@
     <div class="insp-target">
       <span class="t-name">선택 없음</span>
       <span class="t-tag"></span>
-      <select class="t-fmt" data-fmt title="형식: 같은 형식을 쓰는 요소는 모양이 함께 바뀌어요 (탭4 「형식 · 이름」)"></select>
+      <select class="t-fmt" data-fmt title="형식: 같은 형식을 쓰는 요소는 모양이 함께 바뀌어요 (「HTML 태그」의 「형식 · 이름」)"></select>
       <div class="seg mini t-state" title="마우스를 올렸을 때(:hover)의 스타일을 따로 정해요">
         <button data-state="">기본</button><button data-state="hover">마우스 올림</button>
       </div>
@@ -872,6 +872,18 @@
     f.focus();
     f.select();
   });
+  // 그룹 제목을 누르면 접기 / 펴기 (피그마 오른쪽 패널처럼)
+  const shut = new Set(WB.settings.inspShut || []);
+  insp.querySelectorAll('.insp-group').forEach(g => g.classList.toggle('shut', shut.has(g.dataset.group)));
+  insp.addEventListener('click', e => {
+    const t = e.target.closest('.g-title');
+    if (!t) return;
+    const g = t.closest('.insp-group');
+    g.classList.toggle('shut');
+    if (g.classList.contains('shut')) shut.add(g.dataset.group); else shut.delete(g.dataset.group);
+    WB.settings.inspShut = [...shut];
+    WB.saveSettings();
+  });
   insp.addEventListener('input', onEdit);
   insp.addEventListener('change', onEdit);
   insp.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur(); });
@@ -1005,6 +1017,7 @@
   WB.on('doc', refresh);
   WB.on('device', refresh);
   WB.on('focus-text', () => {
+    if (WB.settings.tool !== 'css') WB.setTool('css'); // 글자 칸이 있는 CSS 디자인 탭으로
     const t = attrRow.querySelector('[data-node-text]');
     if (t) { t.focus(); t.select(); }
   });
