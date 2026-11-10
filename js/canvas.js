@@ -13,7 +13,8 @@
   const CANVAS_CSS = `
     :host { all: initial; }
     *, *::before, *::after { box-sizing: border-box; }
-    .wb-page { flex: 1; position: relative; }
+    .wb-page { flex: 1; position: relative; contain: layout; } /* contain: 「화면에 고정」 요소가 편집기 창이 아니라 페이지 안에 머물게 */
+    dialog[data-wb-id] { display: block; position: relative; margin: 12px auto; } /* 팝업 창도 편집할 수 있게 펼쳐 둠 */
     .wb-page:empty::before {
       content: '아래 「HTML 태그」에서 요소를 클릭하거나 이곳으로 끌어다 놓으세요';
       display: flex; align-items: center; justify-content: center; height: 220px; padding: 16px;
@@ -98,6 +99,7 @@
       try { el.setAttribute(k, v); } catch { /* 잘못된 속성 이름은 무시 */ }
     }
     applyStyle(el, viewStyle(node));
+    if (node.tag === 'details') el.open = true; // 접는 내용: 편집할 때는 펼쳐 둠
     const kind = WB.kindOf(node);
     if (kind === 'container') {
       el.setAttribute('data-wb-container', '');

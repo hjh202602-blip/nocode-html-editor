@@ -201,7 +201,7 @@
         const dir = node.path.split('/').slice(0, -1).join('/');
         const { html, inlined } = await inlineLocalFiles(original, dir);
         const parsed = WB.parseHTML(html);
-        doc = WB.newPageDoc({ name: node.name, handle: node.handle, path: node.path, title: parsed.title || node.name.replace(/\.html?$/i, ''), root: parsed.root, blocks: parsed.blocks, extra: parsed.extra, foreign: parsed.foreign, original });
+        doc = WB.newPageDoc({ name: node.name, handle: node.handle, path: node.path, title: parsed.title || node.name.replace(/\.html?$/i, ''), root: parsed.root, blocks: parsed.blocks, extra: parsed.extra, formats: parsed.formats, foreign: parsed.foreign, original });
         if (parsed.foreign) importNotice(node.name, parsed.report, inlined);
       } else if (IMAGE_EXT.has(ext)) {
         doc = { id: WB.newDocId(), kind: 'image', name: node.name, handle: node.handle, path: node.path, url: URL.createObjectURL(file), dirty: false };
@@ -375,7 +375,7 @@
   function saveDrafts() {
     clearTimeout(draftTimer);
     draftTimer = setTimeout(() => {
-      const drafts = S.docs.filter(d => d.kind === 'page' && !d.handle).map(d => ({ name: d.name, title: d.title, root: d.root, blocks: d.blocks, extra: d.extra }));
+      const drafts = S.docs.filter(d => d.kind === 'page' && !d.handle).map(d => ({ name: d.name, title: d.title, root: d.root, blocks: d.blocks, extra: d.extra, formats: d.formats }));
       WB.store('wb.drafts', drafts);
     }, 400);
   }
@@ -760,7 +760,7 @@
   const drafts = WB.load('wb.drafts', []);
   if (Array.isArray(drafts) && drafts.length) {
     for (const dr of drafts) {
-      const doc = WB.newPageDoc({ name: dr.name, title: dr.title, root: WB.reId(dr.root), blocks: WB.reIdBlocks(dr.blocks), extra: dr.extra });
+      const doc = WB.newPageDoc({ name: dr.name, title: dr.title, root: WB.reId(dr.root), blocks: WB.reIdBlocks(dr.blocks), extra: dr.extra, formats: dr.formats });
       doc.dirty = dr.root.children.length > 0;
       S.docs.push(doc);
     }

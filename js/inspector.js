@@ -151,6 +151,12 @@
       { type: 'gradient', cap: '그라데이션' },
       { type: 'bgimg', cap: '배경 그림' },
       { type: 'range', prop: 'opacity', cap: '진하기' },
+      { type: 'select', prop: 'transition', cap: '부드럽게 바뀌기', options: [['', '바로'], ['all 0.15s ease', '빠르게 (0.15초)'], ['all 0.3s ease', '보통 (0.3초)'], ['all 0.6s ease', '천천히 (0.6초)']] },
+      { type: 'num', prop: 'rotate', cap: '회전', unit: 'deg', step: 5 },
+      { type: 'fnnum', prop: 'filter', fn: 'blur', unit: 'px', cap: '흐리게', title: '요소를 뿌옇게 (예: 4)' },
+      { type: 'fnnum', prop: 'backdrop-filter', fn: 'blur', unit: 'px', cap: '뒤 배경 흐리게', title: '반투명 배경색과 함께 쓰면 유리처럼 보여요 (예: 12)' },
+      { type: 'select', prop: 'mix-blend-mode', cap: '겹침 방식', options: [['', '보통'], ['multiply', '곱하기 (어둡게)'], ['screen', '스크린 (밝게)'], ['overlay', '오버레이'], ['difference', '차이']] },
+      { type: 'select', prop: 'cursor', cap: '마우스 모양', options: [['', '기본'], ['pointer', '손가락 (누를 수 있음)'], ['grab', '잡기'], ['text', '글자'], ['not-allowed', '금지']] },
       { type: 'presets', cap: '빠른 꾸미기' },
     ] },
     { id: 'pos', title: '위치 (자유 배치 · 띄운 요소)', ctls: [
@@ -209,13 +215,15 @@
       case 'attrsel':
         return `<label class="ctl">${cap}<select data-attr-style="${c.attr}">${opts(c.options.map(([v, l]) => [v, l]))}</select></label>`;
       case 'sticky':
-        return `<label class="ctl" title="스크롤해도 화면(또는 스크롤 상자) 위쪽·왼쪽에 붙어 있어요. 메뉴 줄, 표의 제목 줄·번호 칸에 좋아요">${cap}<select data-sticky><option value="">없음</option><option value="top">위에 붙기</option><option value="left">왼쪽에 붙기</option></select></label>`;
+        return `<label class="ctl" title="스크롤해도 화면(또는 스크롤 상자) 위쪽·왼쪽에 붙어 있어요. 메뉴 줄, 표의 제목 줄·번호 칸에 좋아요">${cap}<select data-sticky><option value="">없음</option><option value="top">위에 붙기</option><option value="left">왼쪽에 붙기</option><option value="fixed-top">화면 위에 고정</option><option value="fixed-bottom">화면 아래에 고정</option><option value="fixed-br">화면 오른쪽 아래에 떠 있기</option></select></label>`;
       case 'attrcheck':
         return `<label class="ctl check" title="${c.title || ''}"><input type="checkbox" data-attr-flag="${c.attr}" data-on="${c.on}"><span class="cap">${c.cap}</span></label>`;
       case 'anchor': {
         const sides = c.axis === 'x' ? [['left', '왼쪽'], ['right', '오른쪽']] : [['top', '위'], ['bottom', '아래']];
         return `<div class="ctl">${cap}<span class="field"><div class="seg mini">${sides.map(([v, l]) => `<button data-anchor="${c.axis}" data-side="${v}" title="${l}에서 잰 거리">${l}</button>`).join('')}</div><input type="text" data-anchorval="${c.axis}" placeholder="0" spellcheck="false"></span></div>`;
       }
+      case 'fnnum':
+        return `<label class="ctl" title="${esc(c.title || '')}">${cap}<span class="field"><input type="number" data-fnprop="${c.prop}" data-fn="${c.fn}" data-unit="${c.unit}" min="0" step="${c.step || 1}" placeholder="—"><i>${c.unit}</i></span></label>`;
       case 'wraptext':
         return `<label class="ctl">${cap}<select data-wraptext><option value="">기본</option><option value="nowrap">한 줄로</option><option value="ellipsis">넘치면 …</option></select></label>`;
       case 'presets':
@@ -228,6 +236,7 @@
     <div class="insp-target">
       <span class="t-name">선택 없음</span>
       <span class="t-tag"></span>
+      <select class="t-fmt" data-fmt title="형식: 같은 형식을 쓰는 요소는 모양이 함께 바뀌어요 (탭4 「형식 · 이름」)"></select>
       <div class="seg mini t-state" title="마우스를 올렸을 때(:hover)의 스타일을 따로 정해요">
         <button data-state="">기본</button><button data-state="hover">마우스 올림</button>
       </div>
@@ -355,8 +364,7 @@
     if (['table', 'tr', 'td', 'th'].includes(node.tag)) f.push({ kind: 'table', cap: '표 편집' });
     if (node.tag === 'table') f.push({ attr: 'data-calc', bool: true, cap: '표 계산 (칸에 =A1+B1, =SUM(A1:A9) 쓰기)' });
     f.push({ attr: 'id', cap: '요소 이름 (id)', ph: '예: name-input' });
-    f.push({ attr: 'class', cap: '이름표 (같은 종류끼리 묶기)', ph: '예: card' });
-    if (node.attrs.class) f.push({ kind: 'link' });
+    f.push({ attr: 'class', cap: '이름표 (class, 띄어 써서 여러 개)', ph: '예: card', list: 'wb-classes' });
     return f;
   }
 
@@ -374,7 +382,7 @@
     if (f.check) return `<label class="ctl check"><input type="checkbox" data-attr-check="${f.attr}" data-on="${f.check}"><span class="cap">${f.cap}</span></label>`;
     if (f.options) return `<label class="ctl">${cap}<select data-attr="${f.attr}">${opts(f.options)}</select></label>`;
     const pick = f.pick ? `<button class="btn small pick" data-pick="${f.pick}" data-pick-attr="${f.attr}" title="내 컴퓨터에서 파일 고르기">파일…</button>` : '';
-    return `<div class="${cls}">${cap}<span class="field"><input type="text" data-attr="${f.attr}" placeholder="${esc(f.ph || '')}" spellcheck="false">${pick}</span></div>`;
+    return `<div class="${cls}">${cap}<span class="field"><input type="text" data-attr="${f.attr}" placeholder="${esc(f.ph || '')}" spellcheck="false"${f.list ? ` list="${f.list}"` : ''}>${pick}</span></div>`;
   }
 
   /* ---------- 표 편집 ---------- */
@@ -643,7 +651,24 @@
     sc.closest('.field').classList.toggle('empty', !sh.shape);
     // 마우스 올리면 · 스크롤하면 나타나기 (속성)
     insp.querySelectorAll('[data-attr-style]').forEach(s => (s.value = node.attrs[s.dataset.attrStyle] || ''));
-    insp.querySelector('[data-sticky]').value = st.position !== 'sticky' ? '' : st.left && !st.top ? 'left' : 'top';
+    insp.querySelector('[data-sticky]').value = st.position === 'fixed' ? (st.top === '0' ? 'fixed-top' : st.left === '0' ? 'fixed-bottom' : 'fixed-br') : st.position !== 'sticky' ? '' : st.left && !st.top ? 'left' : 'top';
+    insp.querySelectorAll('[data-fnprop]').forEach(t => {
+      if (t === focused) return;
+      const m = String(st[t.dataset.fnprop] || '').match(new RegExp(t.dataset.fn + '\\(([\\d.]+)'));
+      t.value = m ? m[1] : '';
+    });
+    // 형식 고르기
+    const fsel = insp.querySelector('[data-fmt]');
+    const fnames = Object.keys(doc.formats || {}), fnow = node.id === 'root' ? '' : WB.formatOf(doc, node);
+    fsel.hidden = node.id === 'root';
+    fsel.innerHTML = `<option value="">형식 없음</option>${fnames.map(n => `<option value="${esc(n)}">형식 .${esc(n)}</option>`).join('')}<option value="__new">＋ 이 모양으로 새 형식…</option>`;
+    fsel.value = fnow;
+    fsel.classList.toggle('on', !!fnow);
+    let dl = document.getElementById('wb-classes');
+    if (!dl) document.body.append((dl = h('datalist', { id: 'wb-classes' })));
+    const cls = new Set(fnames);
+    WB.walk(doc.root, n => (n.attrs?.class || '').split(/\s+/).filter(Boolean).forEach(c => cls.add(c)));
+    dl.innerHTML = [...cls].map(c => `<option value="${esc(c)}">`).join('');
     insp.querySelectorAll('[data-attr-flag]').forEach(c => (c.checked = node.attrs[c.dataset.attrFlag] === c.dataset.on));
     // 자유 배치 위치: 기준(왼쪽/오른쪽, 위/아래) + 거리
     for (const [axis, a, b] of [['x', 'left', 'right'], ['y', 'top', 'bottom']]) {
@@ -654,7 +679,8 @@
     }
     // 휴대폰 화면 전용으로 고치는 중이면 알려 줌
     const variant = WB.editVariant();
-    tHint.textContent = { mobile: '📱 휴대폰 화면 전용으로 고치는 중', tablet: '📱 태블릿 화면 전용으로 고치는 중 (휴대폰에도 적용)', hover: '🖱 마우스를 올렸을 때 모습을 고치는 중' }[variant] || '';
+    tHint.textContent = { mobile: '📱 휴대폰 화면 전용으로 고치는 중', tablet: '📱 태블릿 화면 전용으로 고치는 중 (휴대폰에도 적용)', hover: '🖱 마우스를 올렸을 때 모습을 고치는 중' }[variant]
+      || (fnow ? `🔗 요소 ${WB.formatMembers(doc, fnow).length}개가 모양을 함께 써요` : '');
     tHint.classList.toggle('mobile', !!variant);
     insp.querySelectorAll('[data-state]').forEach(b => b.classList.toggle('on', b.dataset.state === (WB.settings.state || '')));
     // 해당될 때만 보이는 칸들
@@ -702,11 +728,21 @@
     const id = targetId();
     if (!id) return;
     const isChange = e.type === 'change';
-    const changeOnly = t.tagName === 'SELECT' || t.type === 'checkbox';
+    const changeOnly = t.tagName === 'SELECT' || t.type === 'checkbox' || t.dataset.attr === 'class'; // 이름표는 다 쓴 뒤에 (쓰는 도중의 이름이 형식과 겹치지 않게)
     if (changeOnly !== isChange) return;
 
     const st = WB.selectedNode() ? WB.styleOf(WB.selectedNode()) : {};
-    if (t.dataset.bw !== undefined || t.dataset.bside !== undefined) {
+    if (t.dataset.fmt !== undefined) {
+      const doc = WB.canvasDoc();
+      if (id === 'root') return;
+      if (t.value === '__new') WB.formatCreateAsk();
+      else if (t.value) WB.formatApply(t.value, id);
+      else WB.formatDetach(id);
+      refresh();
+    } else if (t.dataset.fnprop) {
+      const v = t.value === '' || +t.value === 0 ? '' : `${t.dataset.fn}(${t.value}${t.dataset.unit})`;
+      WB.setStyle(id, t.dataset.fnprop, v);
+    } else if (t.dataset.bw !== undefined || t.dataset.bside !== undefined) {
       // 테두리: 두께와 그릴 쪽을 함께 'border-width' 로. 두께만 정해도 바로 보이도록 선 모양·색도 채움
       const w = insp.querySelector('[data-bw]').value;
       const side = insp.querySelector('[data-bside]').value;
@@ -731,7 +767,11 @@
         '': { position: '', top: '', left: '', 'z-index': '' },
         top: { position: 'sticky', top: '0', left: '', 'z-index': '10' },
         left: { position: 'sticky', left: '0', top: '', 'z-index': '5' },
+        'fixed-top': { position: 'fixed', top: '0', left: '0', right: '0', bottom: '', 'z-index': '100' },
+        'fixed-bottom': { position: 'fixed', bottom: '0', left: '0', right: '0', top: '', 'z-index': '100' },
+        'fixed-br': { position: 'fixed', right: '24px', bottom: '24px', left: '', top: '', 'z-index': '100' },
       };
+      if (!t.value) Object.assign(STICKY[''], { right: '', bottom: '' });
       WB.setStyles(id, STICKY[t.value]);
     } else if (t.dataset.attrFlag) {
       WB.setAttr(id, t.dataset.attrFlag, t.checked ? t.dataset.on : null);

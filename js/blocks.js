@@ -7,33 +7,36 @@
   const panel = $('#tab5');
 
   panel.innerHTML = `
-    <div class="panel-head"><span class="panel-title">블록 코딩 <b>JS</b></span>
+    <div class="panel-head"><span class="panel-title">동작 <b>JS</b></span>
       <div class="blk-mode seg mini" title="블록으로 만들기 / JavaScript 직접 쓰기">
         <button data-mode="blocks" class="on">블록</button><button data-mode="code">코드</button>
       </div>
       <div class="head-actions">
-        <button class="blk-run" data-act="run" title="페이지를 새 창에서 열어 블록을 실행해 봐요">▶ 시작하기</button>
+        <button class="blk-run" data-act="run" title="페이지를 새 창에서 열어 실행해 봐요">▶ 실행</button>
         <button class="icon-btn" data-act="max" title="블록 작업판 크게 / 원래대로">${icon('wide')}</button>
         <button class="icon-btn" data-act="tidy" title="블록 묶음 가지런히 정리">${icon('alignL')}</button>
         <button class="icon-btn" data-act="code" title="만들어진 JavaScript 보기">${icon('code')}</button>
       </div>
     </div>
     <div class="blk-body">
-      <div class="blk-cats">${WB.BLOCK_CATS.map((c, i) => `<button class="blk-cat ${i ? '' : 'on'}" data-cat="${c.id}" style="--c:${c.c}" title="${c.name}"><span class="ci">${c.icon}</span><span class="cn">${c.name}</span></button>`).join('')}</div>
-      <div class="blk-palette"></div>
-      <div class="blk-ws"><div class="blk-ws-inner"></div></div>
+      <div class="blk-cats">${WB.BLOCK_CATS.map((c, i) => `<button class="blk-cat ${i ? '' : 'on'}" data-cat="${c.id}" style="--c:${c.c}" title="${c.name}"><span class="ci"></span><span class="cn">${c.name}</span></button>`).join('')}</div>
+      <div class="blk-palbox"><input class="blk-search" type="text" placeholder="블록 찾기 (예: 클릭, 목록, 저장)" spellcheck="false"><div class="blk-palette"></div></div>
+      <div class="blk-ws" tabindex="0"><div class="blk-ws-inner"></div></div>
     </div>
     <div class="blk-codebox" hidden>
       <div class="blk-code-hint">블록과 함께 실행돼요. <code>el('id')</code> 로 요소 찾기, <code>on('id', 'click', () => { … })</code> 로 이벤트, 블록에서 만든 변수는 <code>vars['이름']</code>.</div>
       <div class="blk-code-wrap"><pre class="blk-code-gutter">1</pre><textarea class="blk-code" spellcheck="false" placeholder="// 여기에 JavaScript 를 직접 써요&#10;on('button1', 'click', () => {&#10;  alert('안녕!');&#10;});"></textarea></div>
       <div class="blk-code-err" hidden></div>
     </div>
-    <div class="blk-foot">블록을 작업판으로 끌어와 끼워 맞추세요. 지우려면 블록 꾸러미로 다시 끌어다 놓아요.</div>`;
+    <div class="blk-foot">끌어서 놓기 · 목록에서 두 번 클릭하면 고른 블록 아래에 추가 · 블록 클릭 후 Delete 로 지우기, Ctrl+D 로 복제</div>`;
   const pal = panel.querySelector('.blk-palette');
   const ws = panel.querySelector('.blk-ws');
   const inner = panel.querySelector('.blk-ws-inner');
   const snap = h('div', { class: 'bk-snap', hidden: true });
+  const searchEl = panel.querySelector('.blk-search');
   let cat = 'start';
+  let selBid = null; // 작업판에서 고른 블록
+  let picking = null; // 캔버스에서 요소를 클릭해 고르는 중: { owner, name }
   const blockData = () => WB.canvasDoc()?.blocks || WB.emptyBlocks();
 
   /* ---------- 캔버스 요소 목록 (블록에서 고를 대상) ---------- */
@@ -65,6 +68,7 @@
     if (cache) return cache;
     cache = { ids: new Set(), classes: new Set() };
     const doc = WB.canvasDoc();
+    Object.keys(doc?.formats || {}).forEach(f => cache.classes.add(f)); // 쓰는 요소가 없는 형식도 블록에서 붙일 수 있게
     if (doc) WB.walk(doc.root, n => {
       if (n.attrs.id) cache.ids.add(n.attrs.id);
       (n.attrs.class || '').split(/\s+/).filter(Boolean).forEach(c => cache.classes.add(c));
@@ -80,6 +84,7 @@
     const v = sel.value;
     sel.innerHTML = '';
     sel.append(new Option('요소 고르기…', ''));
+    sel.append(new Option('🎯 캔버스에서 클릭해서 고르기', '@canvas'));
     const sp = h('optgroup', { label: '그때그때 정해지는 요소' });
     for (const [k, l] of Object.entries(SPECIAL_EL)) sp.append(new Option('⟐ ' + l, k));
     sel.append(sp);
@@ -111,13 +116,13 @@
     const def = DEFS[b.type];
     const style = `--c:${WB.blockColor(b.type)}`;
     if (def.shape === 'c' || def.shape === 'c2') {
-      const wrap = h('div', { class: 'bk-c', 'data-bid': b.id, style });
+      const wrap = h('div', { class: 'bk-c' + (b.id === selBid ? ' sel' : ''), 'data-bid': b.id, style });
       wrap.append(bar(b, def.text, 'bk bk-top', mode), mouth(b, 'body', mode));
       if (def.shape === 'c2') wrap.append(h('div', { class: 'bk bk-mid2' }, h('span', { class: 'bk-t' }, def.text2)), mouth(b, 'body2', mode));
       wrap.append(h('div', { class: 'bk bk-bot' }));
       return wrap;
     }
-    const el = bar(b, def.text, 'bk ' + def.shape, mode);
+    const el = bar(b, def.text, 'bk ' + def.shape + (b.id === selBid ? ' sel' : ''), mode);
     el.setAttribute('data-bid', b.id);
     el.setAttribute('style', style);
     return el;
@@ -174,9 +179,9 @@
       sel.value = v || '';
       sel.classList.toggle('warn', !v || !names.has(v));
       wrap.append(sel);
-    } else if (spec.type === 'var' || spec.type === 'signal') {
-      const names = blockData()[spec.type === 'var' ? 'vars' : 'signals'] || [];
-      if (!live) { wrap.append(h('span', { class: 'sl dd dark' }, v || (spec.type === 'var' ? '변수' : '신호'))); return wrap; }
+    } else if (spec.type === 'var' || spec.type === 'signal' || spec.type === 'func') {
+      const names = blockData()[{ var: 'vars', signal: 'signals', func: 'funcs' }[spec.type]] || [];
+      if (!live) { wrap.append(h('span', { class: 'sl dd dark' }, v || { var: '변수', signal: '신호', func: '함수' }[spec.type])); return wrap; }
       const sel = h('select', { class: 'sl dark', 'data-arg': name });
       if (!names.includes(v)) sel.append(new Option(v ? `(없음: ${v})` : '고르기…', v));
       for (const n of names) sel.append(new Option(n, n));
@@ -195,8 +200,9 @@
     } else {
       wrap.append(h('input', {
         type: 'text', class: 'sl', 'data-arg': name, value: v ?? '', spellcheck: 'false', readonly: !live,
-        size: Math.max(2, String(v ?? '').length + 1), inputmode: spec.type === 'num' ? 'decimal' : null,
+        size: Math.max(2, Math.min(40, String(v ?? '').length + 1)), inputmode: spec.type === 'num' ? 'decimal' : null,
       }));
+      if (spec.type === 'code') wrap.lastChild.classList.add('code');
     }
     return wrap;
   }
@@ -205,14 +211,32 @@
   const LIST_INFO = {
     vars: { make: '변수 만들기', ask: '새 변수 이름', ph: '예: 점수', empty: '변수를 만들면 변수 블록이 나타나요.' },
     signals: { make: '신호 만들기', ask: '새 신호 이름', ph: '예: 게임 시작', empty: '신호를 만들면 신호 블록이 나타나요.' },
+    funcs: { make: '함수 만들기', ask: '새 함수 이름', ph: '예: 합계 구하기', empty: '함수를 만들면 함수 블록이 나타나요. 여러 곳에서 되풀이하는 동작을 한 번만 만들어 두고 불러 써요.' },
   };
-  const CAT_LIST = { start: 'signals', variable: 'vars' };
+  const CAT_LIST = { start: 'signals', variable: 'vars', func: 'funcs' };
 
   function renderPalette() {
     const info = WB.BLOCK_CATS.find(c => c.id === cat);
     const d = blockData();
+    const query = searchEl.value.trim().toLowerCase();
     pal.innerHTML = '';
     pal.style.setProperty('--c', info.c);
+    if (query) {
+      // 찾기: 모든 분류에서
+      let n = 0;
+      for (const [type, def] of Object.entries(DEFS)) {
+        if (def.hidden || (def.needs && !(d[def.needs] || []).length)) continue;
+        const c = WB.BLOCK_CATS.find(x => x.id === def.cat);
+        if (!`${def.text} ${def.text2 || ''} ${c.name}`.replace(/\{\w+\}/g, ' ').toLowerCase().includes(query)) continue;
+        const b = WB.newBlock(type, d);
+        b.id = 'pal:' + type;
+        pal.append(h('div', { class: 'pal-row' }, renderBlock(b, 'pal')));
+        n++;
+      }
+      if (!n) pal.append(h('div', { class: 'pal-hint' }, '찾는 블록이 없어요. 「고급」의 JS 실행 블록이나 「코드」로 직접 쓸 수 있어요.'));
+      panel.querySelectorAll('.blk-cat').forEach(x => x.classList.remove('on'));
+      return;
+    }
     pal.append(h('div', { class: 'pal-title' }, info.name));
     const listKey = CAT_LIST[cat];
     if (listKey) {
@@ -293,7 +317,7 @@
       inner.append(sc);
     });
     if (!d.scripts.length && !work)
-      inner.append(h('div', { class: 'blk-empty' }, '위에서 노란색 「…했을 때」 블록을 이곳으로 끌어온 다음, 그 아래에 파란 동작 블록을 붙여 보세요.'));
+      inner.append(h('div', { class: 'blk-empty' }, '「이벤트」의 「…했을 때」 블록을 이곳으로 끌어온 다음, 그 아래에 할 일을 차례로 붙이세요.'));
     snap.hidden = true;
     inner.append(snap);
     let w = 0, ht = 0;
@@ -324,7 +348,7 @@
 
   function begin() {
     work = JSON.parse(JSON.stringify(WB.canvasDoc().blocks));
-    if (!drag.fromWs) drag.stack = [WB.newBlock(drag.id.slice(4), work)];
+    if (!drag.fromWs) drag.stack = [prefill(WB.newBlock(drag.id.slice(4), work))];
     else {
       // 잡은 블록과 그 아래 블록들을 함께 떼어 냄 (값 블록은 그것만)
       const loc = WB.locateBlock(work, drag.id);
@@ -419,6 +443,7 @@
     removeEventListener('pointercancel', onUp);
     const d = drag;
     drag = null;
+    if (d && !d.started && d.fromWs) { selBid = d.id; ws.focus({ preventScroll: true }); markSel(); } // 클릭만: 블록 고르기
     if (!d || !d.started) return;
     const fr = ghost.querySelector('[data-bid]').getBoundingClientRect();
     ghost.remove();
@@ -440,8 +465,99 @@
       } else result.scripts.push({ x, y, blocks: d.stack });
     }
     // 작업판 밖(블록 목록 등)에 놓으면 지워짐
-    WB.commit(doc => (doc.blocks = result), 'blocks:' + Date.now());
+    WB.commit(doc => { doc.blocks = result; resolveRefs(doc); }, 'blocks:' + Date.now());
   }
+
+  /* ---------- 편하게 쓰기: 고른 요소 미리 채우기 · 블록 고르기 · 두 번 클릭으로 추가 ---------- */
+  /** 새 블록의 첫 요소 칸을 캔버스에서 고른 요소로 채움 */
+  function prefill(b) {
+    const sel = WB.selectedNode();
+    const entry = sel && Object.entries(DEFS[b.type].args).find(([, s]) => s.type === 'el');
+    if (entry && FILTERS[entry[1].filter](sel)) b.args[entry[0]] = sel.attrs.id || 'node:' + sel.id;
+    return b;
+  }
+  /** 'node:e12' 로 적어 둔 요소 칸 → 그 요소에 id 를 붙이고 id 로 바꿈 */
+  function resolveRefs(doc) {
+    doc.blocks.scripts.forEach(s => s.blocks.forEach(b => WB.walkBlock(b, x => {
+      for (const [k, v] of Object.entries(x.args)) {
+        if (typeof v !== 'string' || !v.startsWith('node:')) continue;
+        const n = WB.find(doc.root, v.slice(5))?.node;
+        if (n && !n.attrs.id) n.attrs.id = uniqueId(doc, n);
+        x.args[k] = n ? n.attrs.id : '';
+      }
+    })));
+  }
+  function markSel() {
+    inner.querySelectorAll('.sel').forEach(x => x.classList.remove('sel'));
+    if (selBid) inner.querySelector(`[data-bid="${selBid}"]`)?.classList.add('sel');
+  }
+  function removeBlock(doc, id) {
+    const loc = WB.locateBlock(doc.blocks, id);
+    if (!loc) return;
+    if (loc.list) {
+      loc.list.splice(loc.index, 1);
+      if (!loc.script.blocks.length) doc.blocks.scripts.splice(doc.blocks.scripts.indexOf(loc.script), 1);
+    } else loc.parent.args[loc.name] = DEFS[loc.parent.type].args[loc.name].def ?? '';
+  }
+  function duplicateBlock(doc, id) {
+    const loc = WB.locateBlock(doc.blocks, id);
+    if (!loc) return;
+    const b = loc.list ? loc.list[loc.index] : loc.parent.args[loc.name];
+    const copy = WB.cloneBlock(b);
+    if (loc.list && DEFS[b.type].shape !== 'hat') loc.list.splice(loc.index + 1, 0, copy);
+    else doc.blocks.scripts.push({ x: loc.script.x + 24, y: loc.script.y + 24, blocks: [copy] });
+    selBid = copy.id;
+  }
+  ws.addEventListener('keydown', e => {
+    if (e.target.matches('input, select') || !selBid || !WB.canvasDoc()) return;
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      e.preventDefault();
+      const id = selBid;
+      selBid = null;
+      WB.commit(doc => removeBlock(doc, id));
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+      e.preventDefault();
+      const id = selBid;
+      WB.commit(doc => duplicateBlock(doc, id));
+    } else if (e.key === 'Escape') { selBid = null; markSel(); }
+  });
+  /** 목록의 블록을 두 번 클릭: 고른 블록 바로 아래(없으면 마지막 묶음 끝)에 추가 */
+  pal.addEventListener('dblclick', e => {
+    const type = e.target.closest('[data-bid]')?.dataset.bid?.slice(4);
+    if (!type || !DEFS[type] || !WB.canvasDoc()) return;
+    WB.commit(doc => {
+      const b = prefill(WB.newBlock(type, doc.blocks));
+      const shape = DEFS[type].shape;
+      const scripts = doc.blocks.scripts;
+      const y = scripts.reduce((m, s) => Math.max(m, s.y), 0) + (scripts.length ? 120 : 12);
+      const loc = selBid && WB.locateBlock(doc.blocks, selBid);
+      const stackable = shape === 'stack' || shape === 'c' || shape === 'c2';
+      if (stackable && loc?.list) {
+        const cur = loc.list[loc.index];
+        if (cur.body && !cur.body.length) cur.body.push(b); // 빈 감싸기 블록을 골랐으면 그 안에
+        else loc.list.splice(loc.index + 1, 0, b);
+      } else if (stackable && scripts.length && !WB.isValueBlock(scripts[scripts.length - 1].blocks[0])) scripts[scripts.length - 1].blocks.push(b);
+      else scripts.push({ x: 12, y, blocks: [b] });
+      resolveRefs(doc);
+      selBid = b.id;
+    }, 'blocks:' + Date.now());
+  });
+  searchEl.addEventListener('input', () => renderPalette());
+  searchEl.addEventListener('keydown', e => { if (e.key === 'Escape') { searchEl.value = ''; renderPalette(); } });
+  // 캔버스에서 클릭해서 요소 고르기
+  WB.on('select', id => {
+    if (!picking || !id || id === 'root') return;
+    const { owner, name } = picking;
+    picking = null;
+    panel.classList.remove('picking');
+    WB.commit(doc => {
+      const b = blockById(doc.blocks, owner);
+      if (b) b.args[name] = 'node:' + id;
+      resolveRefs(doc);
+    }, 'blocks:' + Date.now());
+    WB.toast('블록에 요소를 넣었어요', 'ok');
+  });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && picking) { picking = null; panel.classList.remove('picking'); renderWs(); } });
 
   pal.addEventListener('pointerdown', onDown);
   ws.addEventListener('pointerdown', onDown);
@@ -453,6 +569,12 @@
     if (!name) return;
     const owner = t.closest('.sl-wrap').dataset.owner;
     let v = t.value;
+    if (v === '@canvas') {
+      picking = { owner, name };
+      panel.classList.add('picking');
+      t.value = '';
+      return WB.toast('캔버스에서 넣을 요소를 클릭하세요 (Esc: 취소)');
+    }
     WB.commit(doc => {
       if (v.startsWith('node:')) {
         const n = WB.find(doc.root, v.slice(5)).node;
@@ -478,19 +600,8 @@
     const items = [];
     if (id) {
       items.push(
-        { label: '복제', icon: 'copy', action: () => WB.commit(doc => {
-          const b = blockById(doc.blocks, id);
-          const loc = WB.locateBlock(doc.blocks, id);
-          const s = loc.script;
-          doc.blocks.scripts.push({ x: s.x + 24, y: s.y + 24, blocks: [WB.cloneBlock(b)] });
-        }) },
-        { label: '이 블록 삭제', icon: 'trash', danger: true, action: () => WB.commit(doc => {
-          const loc = WB.locateBlock(doc.blocks, id);
-          if (loc.list) {
-            loc.list.splice(loc.index, 1);
-            if (!loc.script.blocks.length) doc.blocks.scripts.splice(doc.blocks.scripts.indexOf(loc.script), 1);
-          } else loc.parent.args[loc.name] = DEFS[loc.parent.type].args[loc.name].def ?? '';
-        }) },
+        { label: '복제 (Ctrl+D)', icon: 'copy', action: () => WB.commit(doc => duplicateBlock(doc, id)) },
+        { label: '이 블록 삭제 (Delete)', icon: 'trash', danger: true, action: () => WB.commit(doc => removeBlock(doc, id)) },
         'sep');
     }
     items.push({ label: '가지런히 정리', icon: 'alignL', action: tidy });
@@ -511,7 +622,7 @@
   function showCode() {
     const doc = WB.canvasDoc();
     if (!doc) return;
-    const js = WB.generateJS(doc.blocks) || '// 아직 실행될 블록이 없어요.\n// 노란색 「…했을 때」 블록 아래에 동작 블록을 붙여 보세요.\n';
+    const js = WB.generateJS(doc.blocks) || '// 아직 실행될 블록이 없어요.\n// 「이벤트」의 「…했을 때」 블록 아래에 할 일을 붙여 보세요.\n';
     const n = js.split('\n').length;
     WB.modal({
       title: '만들어진 JavaScript',
@@ -536,6 +647,7 @@
   panel.querySelector('.blk-cats').addEventListener('click', e => {
     const b = e.target.closest('[data-cat]');
     if (!b) return;
+    searchEl.value = '';
     cat = b.dataset.cat;
     renderPalette();
   });

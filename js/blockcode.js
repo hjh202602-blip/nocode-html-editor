@@ -5,14 +5,16 @@
 (() => {
   /* 엔트리와 같은 분류 · 색 */
   WB.BLOCK_CATS = [
-    { id: 'start', name: '시작', c: '#00b400', icon: '▶' },
-    { id: 'flow', name: '흐름', c: '#19baea', icon: '⟳' },
-    { id: 'moving', name: '움직임', c: '#ad3efb', icon: '✥' },
-    { id: 'looks', name: '생김새', c: '#ff3a61', icon: '✦' },
-    { id: 'sound', name: '소리', c: '#67b100', icon: '♪' },
-    { id: 'judgement', name: '판단', c: '#4562f5', icon: '?' },
-    { id: 'calc', name: '계산', c: '#f4af18', icon: '±' },
-    { id: 'variable', name: '자료', c: '#dd47d8', icon: '▤' },
+    { id: 'start', name: '이벤트', c: '#c8862a', icon: '▶' },
+    { id: 'flow', name: '흐름', c: '#3f8fc4', icon: '⟳' },
+    { id: 'looks', name: '화면', c: '#2f9e8f', icon: '✦' },
+    { id: 'moving', name: '움직임', c: '#8472c9', icon: '✥' },
+    { id: 'sound', name: '소리', c: '#7d9440', icon: '♪' },
+    { id: 'judgement', name: '조건', c: '#5b72d6', icon: '?' },
+    { id: 'calc', name: '계산 · 글자', c: '#6b7c93', icon: '±' },
+    { id: 'variable', name: '데이터', c: '#b0609a', icon: '▤' },
+    { id: 'func', name: '함수', c: '#c06a4a', icon: 'ƒ' },
+    { id: 'adv', name: '고급', c: '#8a8f98', icon: '{}' },
   ];
 
   const KEYS = [
@@ -63,6 +65,9 @@
     onVisible: { cat: 'start', shape: 'hat', icon: '◉', text: '{el} 이(가) 화면에 보일 때', args: { el: { type: 'el', filter: 'any' } } },
     onSignal: { cat: 'start', shape: 'hat', icon: '◎', text: '{sig} 신호를 받았을 때', args: { sig: { type: 'signal' } }, needs: 'signals' },
     sendSignal: { cat: 'start', shape: 'stack', text: '{sig} 신호 보내기', args: { sig: { type: 'signal' } }, needs: 'signals' },
+    onEvent: { cat: 'start', shape: 'hat', icon: '◆', text: '{el} {ev} 때', args: { el: { type: 'el', filter: 'any' }, ev: { type: 'choice', options: [['dblclick', '을(를) 두 번 클릭했을'], ['mouseenter', '에 마우스를 올렸을'], ['mouseleave', '에서 마우스가 벗어났을'], ['change', '의 값이 바뀌었을'], ['focus', '에 입력을 시작했을'], ['blur', '의 입력을 마쳤을'], ['contextmenu', '을(를) 오른쪽 클릭했을']], def: 'mouseenter' } } },
+    onTimer: { cat: 'start', shape: 'hat', icon: '◷', text: '{n} 초마다', args: { n: { type: 'num', def: '1' } } },
+    onScroll: { cat: 'start', shape: 'hat', icon: '↕', text: '페이지를 스크롤했을 때', args: {} },
 
     // 흐름
     wait: { cat: 'flow', shape: 'stack', text: '{n} 초 기다리기', args: { n: { type: 'num', def: '2' } } },
@@ -75,6 +80,11 @@
     waitUntil: { cat: 'flow', shape: 'stack', text: '{cond} 이(가) 될 때까지 기다리기', args: { cond: { type: 'bool' } } },
     goto: { cat: 'flow', shape: 'stack', text: '{url} 페이지로 이동하기', args: { url: { type: 'text', def: 'https://' } } },
     scrollTo: { cat: 'flow', shape: 'stack', text: '{el} (으)로 부드럽게 스크롤하기', args: { el: { type: 'el', filter: 'any' } } },
+    openUrl: { cat: 'flow', shape: 'stack', text: '{url} 을(를) 새 탭에서 열기', args: { url: { type: 'text', def: 'https://' } } },
+    forEach: { cat: 'flow', shape: 'c', text: '{var} 목록의 항목마다 반복하기', args: { var: { type: 'var' } }, loop: true, needs: 'vars' },
+    loopItem: { cat: 'flow', shape: 'rep', text: '지금 항목', args: {} },
+    loopIndex: { cat: 'flow', shape: 'rep', text: '반복 순번 (1부터)', args: {} },
+    stopScript: { cat: 'flow', shape: 'stack', text: '이 묶음 여기서 끝내기', args: {} },
 
     // 움직임 (웹페이지에서 y 는 아래로 갈수록 커짐)
     moveBy: { cat: 'moving', shape: 'stack', text: '{el} 을(를) x: {x} y: {y} 만큼 움직이기', args: { el: { type: 'el', filter: 'any' }, x: { type: 'num', def: '10' }, y: { type: 'num', def: '0' } } },
@@ -103,6 +113,11 @@
     pickMove: { cat: 'looks', shape: 'stack', text: '고른 요소를 {dir} 옆으로 옮기기', args: { dir: { type: 'choice', options: [['up', '위'], ['down', '아래'], ['left', '왼쪽'], ['right', '오른쪽']], def: 'down' } } },
     cloneEl: { cat: 'looks', shape: 'stack', text: '{el} 을(를) 복제해서 {where} 넣기', args: { el: { type: 'el', filter: 'any' }, where: { type: 'choice', options: [['after', '바로 뒤에'], ['before', '바로 앞에'], ['end', '안쪽 맨 끝에']], def: 'after' } } },
     removeEl: { cat: 'looks', shape: 'stack', text: '{el} 지우기', args: { el: { type: 'el', filter: 'any' } } },
+    setClass: { cat: 'looks', shape: 'stack', text: '{el} 에 이름표 · 형식 {cls} {mode}', args: { el: { type: 'el', filter: 'any' }, cls: { type: 'cls' }, mode: { type: 'choice', options: [['add', '붙이기'], ['remove', '떼기'], ['toggle', '붙이기/떼기 바꾸기']], def: 'toggle' } } },
+    setAttrB: { cat: 'looks', shape: 'stack', text: '{el} 의 속성 {name} 을(를) {v} (으)로 정하기', args: { el: { type: 'el', filter: 'any' }, name: { type: 'text', def: 'src' }, v: { type: 'text', def: '' } } },
+    setCssAny: { cat: 'looks', shape: 'stack', text: '{el} 의 CSS {prop} 을(를) {v} (으)로 정하기', args: { el: { type: 'el', filter: 'any' }, prop: { type: 'text', def: 'background' }, v: { type: 'text', def: 'gold' } } },
+    dialog: { cat: 'looks', shape: 'stack', text: '팝업 창 {el} {mode}', args: { el: { type: 'el', filter: 'any' }, mode: { type: 'choice', options: [['open', '열기'], ['close', '닫기']], def: 'open' } } },
+    focusEl: { cat: 'looks', shape: 'stack', text: '{el} 에 커서 두기', args: { el: { type: 'el', filter: 'any' } } },
     tableEdit: { cat: 'looks', shape: 'stack', text: '{el} 칸 기준으로 표에 {act}', args: { el: { type: 'el', filter: 'any' }, act: { type: 'choice', options: [['rowAbove', '위에 줄 넣기'], ['rowBelow', '아래에 줄 넣기'], ['colLeft', '왼쪽에 칸 넣기'], ['colRight', '오른쪽에 칸 넣기'], ['rowDel', '이 줄 지우기'], ['colDel', '이 세로줄 지우기']], def: 'rowBelow' } } },
 
     // 소리
@@ -115,13 +130,26 @@
     not: { cat: 'judgement', shape: 'bool', text: '{a} (이)가 아니다', args: { a: { type: 'bool' } } },
     isEmpty: { cat: 'judgement', shape: 'bool', text: '{a} 이(가) 비어 있는가?', args: { a: { type: 'text', def: '' } } },
     checked: { cat: 'judgement', shape: 'bool', text: '{el} 이(가) 선택되었는가?', args: { el: { type: 'el', filter: 'check' } } },
+    hasClass: { cat: 'judgement', shape: 'bool', text: '{el} 에 이름표 {cls} 이(가) 붙어 있는가?', args: { el: { type: 'el', filter: 'any' }, cls: { type: 'cls' } } },
+    contains: { cat: 'judgement', shape: 'bool', text: '{a} 안에 {b} 이(가) 들어 있는가?', args: { a: { type: 'text', def: '안녕하세요' }, b: { type: 'text', def: '안녕' } } },
+    confirm: { cat: 'judgement', shape: 'bool', text: '{msg} 확인 창에서 [확인]을 눌렀는가?', args: { msg: { type: 'text', def: '정말 지울까요?' } } },
+    listHas: { cat: 'judgement', shape: 'bool', text: '{var} 목록에 {v} 이(가) 있는가?', args: { var: { type: 'var' }, v: { type: 'text', def: '' } }, needs: 'vars' },
     keyPressed: { cat: 'judgement', shape: 'bool', text: '{key} 키가 눌러져 있는가?', args: { key: { type: 'choice', options: KEYS, def: ' ' } } },
 
     // 계산
     calc: { cat: 'calc', shape: 'rep', text: '{a} {op} {b}', args: { a: { type: 'num', def: '10' }, op: { type: 'choice', options: [['+', '+'], ['-', '-'], ['*', 'x'], ['/', '/'], ['%', '나누기 나머지'], ['//', '나누기 몫']], def: '+' }, b: { type: 'num', def: '10' } } },
     pad: { cat: 'calc', shape: 'rep', text: '{n} 을(를) {k} 자리로 맞추기 (앞을 0으로)', args: { n: { type: 'num', def: '7' }, k: { type: 'num', def: '2' } } },
     random: { cat: 'calc', shape: 'rep', text: '{a} 부터 {b} 사이의 무작위 수', args: { a: { type: 'num', def: '1' }, b: { type: 'num', def: '10' } } },
-    join: { cat: 'calc', shape: 'rep', text: '{a} 과(와) {b} 를 합치기', args: { a: { type: 'text', def: '안녕' }, b: { type: 'text', def: '엔트리' } } },
+    join: { cat: 'calc', shape: 'rep', text: '{a} 과(와) {b} 를 합치기', args: { a: { type: 'text', def: '안녕' }, b: { type: 'text', def: '하세요' } } },
+    math: { cat: 'calc', shape: 'rep', text: '{n} 을(를) {fn}', args: { n: { type: 'num', def: '3.7' }, fn: { type: 'choice', options: [['round', '반올림'], ['floor', '내림'], ['ceil', '올림'], ['abs', '절댓값'], ['sqrt', '제곱근']], def: 'round' } } },
+    numFormat: { cat: 'calc', shape: 'rep', text: '{n} 에 쉼표 넣기 (1,234,567)', args: { n: { type: 'num', def: '1234567' } } },
+    strLen: { cat: 'calc', shape: 'rep', text: '{a} 의 글자 수', args: { a: { type: 'text', def: '안녕하세요' } } },
+    strPart: { cat: 'calc', shape: 'rep', text: '{a} 의 {from} 번째부터 {to} 번째 글자', args: { a: { type: 'text', def: '안녕하세요' }, from: { type: 'num', def: '1' }, to: { type: 'num', def: '2' } } },
+    strReplace: { cat: 'calc', shape: 'rep', text: '{a} 에서 {b} 을(를) {c} (으)로 바꾼 글자', args: { a: { type: 'text', def: '안녕하세요' }, b: { type: 'text', def: '안녕' }, c: { type: 'text', def: '반갑' } } },
+    dateNow: { cat: 'calc', shape: 'rep', text: '지금 {part}', args: { part: { type: 'choice', options: [['year', '연도'], ['month', '월'], ['day', '일'], ['hour', '시'], ['minute', '분'], ['second', '초'], ['weekday', '요일'], ['date', '날짜 (2026. 1. 2.)'], ['time', '시각 (오후 3:04)'], ['stamp', '시간 값 (1/1000초)']], def: 'hour' } } },
+    mousePos: { cat: 'calc', shape: 'rep', text: '마우스 {axis} 위치', args: { axis: { type: 'choice', options: [['x', '가로(x)'], ['y', '세로(y)']], def: 'x' } } },
+    scrollPos: { cat: 'calc', shape: 'rep', text: '스크롤한 거리', args: {} },
+    winSize: { cat: 'calc', shape: 'rep', text: '화면 {dim}', args: { dim: { type: 'choice', options: [['w', '너비'], ['h', '높이']], def: 'w' } } },
 
     // 자료
     ask: { cat: 'variable', shape: 'stack', text: '{q} 을(를) 묻고 대답 기다리기', args: { q: { type: 'text', def: '이름이 뭐예요?' } } },
@@ -132,9 +160,37 @@
     getVar: { cat: 'variable', shape: 'rep', text: '{var} 값', args: { var: { type: 'var' } }, needs: 'vars' },
     setVar: { cat: 'variable', shape: 'stack', text: '{var} 를 {v} (으)로 정하기', args: { var: { type: 'var' }, v: { type: 'text', def: '0' } }, needs: 'vars' },
     changeVar: { cat: 'variable', shape: 'stack', text: '{var} 에 {v} 만큼 더하기', args: { var: { type: 'var' }, v: { type: 'num', def: '1' } }, needs: 'vars' },
+    listAdd: { cat: 'variable', shape: 'stack', text: '{var} 목록에 {v} 추가하기', args: { var: { type: 'var' }, v: { type: 'text', def: '사과' } }, needs: 'vars' },
+    listRemove: { cat: 'variable', shape: 'stack', text: '{var} 목록의 {n} 번째 항목 지우기', args: { var: { type: 'var' }, n: { type: 'num', def: '1' } }, needs: 'vars' },
+    listClear: { cat: 'variable', shape: 'stack', text: '{var} 목록 비우기', args: { var: { type: 'var' } }, needs: 'vars' },
+    listItem: { cat: 'variable', shape: 'rep', text: '{var} 목록의 {n} 번째 항목', args: { var: { type: 'var' }, n: { type: 'num', def: '1' } }, needs: 'vars' },
+    listLen: { cat: 'variable', shape: 'rep', text: '{var} 목록의 항목 수', args: { var: { type: 'var' } }, needs: 'vars' },
+    listJoin: { cat: 'variable', shape: 'rep', text: '{var} 목록을 {sep} (으)로 이어 붙인 글자', args: { var: { type: 'var' }, sep: { type: 'text', def: ', ' } }, needs: 'vars' },
+    saveLocal: { cat: 'variable', shape: 'stack', text: '{key} 이름으로 {v} 저장하기 (다시 열어도 남음)', args: { key: { type: 'text', def: '점수' }, v: { type: 'text', def: '0' } } },
+    loadLocal: { cat: 'variable', shape: 'rep', text: '저장해 둔 {key} 값', args: { key: { type: 'text', def: '점수' } } },
+    fetchJson: { cat: 'variable', shape: 'stack', text: '{url} 에서 자료를 받아 {var} 에 넣기', args: { url: { type: 'text', def: 'data.json' }, var: { type: 'var' } }, needs: 'vars' },
+    jsonGet: { cat: 'variable', shape: 'rep', text: '{var} 자료의 {path} 값', args: { var: { type: 'var' }, path: { type: 'text', def: 'items.0.name' } }, needs: 'vars' },
+    getAttr: { cat: 'variable', shape: 'rep', text: '{el} 의 속성 {name}', args: { el: { type: 'el', filter: 'any' }, name: { type: 'text', def: 'href' } } },
+    elCount: { cat: 'variable', shape: 'rep', text: '이름표 {cls} 요소의 수', args: { cls: { type: 'cls' } } },
     cellAddr: { cat: 'variable', shape: 'rep', text: '{el} 의 표 칸 주소 (A1)', args: { el: { type: 'el', filter: 'any' } } },
     getFormula: { cat: 'variable', shape: 'rep', text: '{el} 의 수식', args: { el: { type: 'el', filter: 'any' } } },
     setFormula: { cat: 'variable', shape: 'stack', text: '{el} 칸에 {v} 쓰기 (=로 시작하면 수식)', args: { el: { type: 'el', filter: 'any' }, v: { type: 'text', def: '=A1+B1' } } },
+
+    // 함수: 여러 곳에서 다시 쓰는 블록 묶음 (값을 하나 받고, 결과를 돌려줄 수 있음)
+    defFn: { cat: 'func', shape: 'hat', icon: 'ƒ', text: '함수 {fn} 을(를) 실행하면', args: { fn: { type: 'func' } }, needs: 'funcs' },
+    callFn: { cat: 'func', shape: 'stack', text: '함수 {fn} 실행하기 (넘길 값 {v} )', args: { fn: { type: 'func' }, v: { type: 'text', def: '' } }, needs: 'funcs' },
+    callFnVal: { cat: 'func', shape: 'rep', text: '함수 {fn} 의 결과 (넘길 값 {v} )', args: { fn: { type: 'func' }, v: { type: 'text', def: '' } }, needs: 'funcs' },
+    fnInput: { cat: 'func', shape: 'rep', text: '넘겨받은 값', args: {}, needs: 'funcs' },
+    fnReturn: { cat: 'func', shape: 'stack', text: '결과로 {v} 돌려주고 끝내기', args: { v: { type: 'text', def: '0' } }, needs: 'funcs' },
+
+    // 고급: 블록에 없는 것은 JavaScript 한 줄로
+    jsRun: { cat: 'adv', shape: 'stack', text: 'JS 실행 {code}', args: { code: { type: 'code', def: "document.title = '안녕'" } } },
+    jsValue: { cat: 'adv', shape: 'rep', text: 'JS 값 {code}', args: { code: { type: 'code', def: 'Math.PI * 2' } } },
+    log: { cat: 'adv', shape: 'stack', text: '기록 남기기 {v} (개발자 도구 콘솔)', args: { v: { type: 'text', def: '확인' } } },
+    comment: { cat: 'adv', shape: 'stack', text: '메모: {t}', args: { t: { type: 'code', def: '여기서 하는 일' } } },
+    tryCatch: { cat: 'adv', shape: 'c2', text: '시도하기', text2: '오류가 나면', args: {} },
+    errorMsg: { cat: 'adv', shape: 'rep', text: '오류 내용', args: {} },
+    copyText: { cat: 'adv', shape: 'stack', text: '{v} 을(를) 클립보드에 복사하기', args: { v: { type: 'text', def: '복사할 글자' } } },
 
     // 예전 버전 블록 (다시 열기용)
     equals: { cat: 'judgement', shape: 'bool', hidden: true, text: '{a} = {b}', args: { a: { type: 'text', def: '' }, b: { type: 'text', def: '' } } },
@@ -149,7 +205,7 @@
   /* ---------- 블록 데이터 다루기 ---------- */
   let seq = 0;
   const newBid = () => 'b' + ++seq;
-  WB.emptyBlocks = () => ({ scripts: [], vars: [], signals: [], code: '' }); // code: 탭5 「코드」에 직접 쓴 JavaScript
+  WB.emptyBlocks = () => ({ scripts: [], vars: [], signals: [], funcs: [], code: '' }); // code: 탭5 「코드」에 직접 쓴 JavaScript
   /** data 를 주면 변수 · 신호 칸을 첫 번째 것으로 채움 */
   WB.newBlock = (type, data) => {
     const def = DEFS[type];
@@ -157,6 +213,7 @@
     for (const [k, spec] of Object.entries(def.args)) {
       if (spec.type === 'var') b.args[k] = data?.vars?.[0] ?? '';
       else if (spec.type === 'signal') b.args[k] = data?.signals?.[0] ?? '';
+      else if (spec.type === 'func') b.args[k] = data?.funcs?.[0] ?? '';
       else b.args[k] = spec.def ?? '';
     }
     if (def.shape === 'c' || def.shape === 'c2') b.body = [];
@@ -179,6 +236,7 @@
     data.scripts = (Array.isArray(data.scripts) ? data.scripts : []).filter(s => Array.isArray(s.blocks) && s.blocks.every(known));
     data.vars = Array.isArray(data.vars) ? data.vars.map(String) : [];
     data.signals = Array.isArray(data.signals) ? data.signals.map(String) : [];
+    data.funcs = Array.isArray(data.funcs) ? data.funcs.map(String) : [];
     data.code = typeof data.code === 'string' ? data.code : '';
     data.scripts.forEach(s => s.blocks.forEach(b => WB.walkBlock(b, x => {
       x.id = newBid();
@@ -269,6 +327,9 @@
     toggleText: 'const toggleText = (id, a, b) => { if (el(id)) el(id).textContent = el(id).textContent === a ? b : a; };',
     whenVisible: 'const whenVisible = (id, fn) => {\n  const e = el(id);\n  if (e) new IntersectionObserver(es => es.forEach(x => x.isIntersecting && fn()), { threshold: 0.2 }).observe(e);\n};',
     scrollToEl: "const scrollToEl = id => el(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });",
+    mouse: "const mouse = { x: 0, y: 0 };\naddEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });",
+    store: "const saveLocal = (key, v) => { try { localStorage.setItem('wb:' + key, JSON.stringify(v)); } catch { /* 저장소를 못 쓰는 환경 */ } };\nconst loadLocal = key => { try { return JSON.parse(localStorage.getItem('wb:' + key)) ?? ''; } catch { return ''; } };",
+    jsonGet: "const jsonGet = (data, path) => {\n  let v = data;\n  for (const k of String(path).split('.').filter(Boolean)) v = v?.[k];\n  return v ?? '';\n};",
     same: "const same =(a, b) => (a !== '' && b !== '' && !isNaN(a) && !isNaN(b) ? Number(a) === Number(b) : String(a) === String(b));",
   };
   const NEEDS = { rotate: ['el', 'xform'], scaleTo: ['el', 'xform'], css: ['el'], pick: ['el'], pickMove: ['pick', 'el'], cloneEl: ['el'], removeEl: ['el'], tableEdit: ['el', 'colName'], cellAddr: ['el', 'colName'], formula: ['el'], groupShow: ['all'], filterGroup: ['all'], activeOnly: ['all', 'el'], sortGroup: ['el'], toggleText: ['el'], whenVisible: ['el'], scrollToEl: ['el'],show: ['el'], setStyle: ['el'], move: ['el'], media: ['el'], beep: ['wait'], on: ['el'], val: ['el'], text: ['el'], checked: ['el'], setText: ['el'], setValue: ['el'] };
@@ -280,14 +341,17 @@
     const spec = DEFS[b.type].args[k];
     if (spec.type === 'choice') return (spec.options.find(o => o[0] === v) || [, v])[1];
     if (spec.type === 'el') return v ? (WB.SPECIAL_EL[v] ? `[${WB.SPECIAL_EL[v]}]` : '#' + v) : '(요소)';
-    if (spec.type === 'var' || spec.type === 'signal') return `[${v}]`;
+    if (spec.type === 'var' || spec.type === 'signal' || spec.type === 'func') return `[${v}]`;
     if (spec.type === 'cls') return v ? '.' + v : '(이름표)';
     return `"${v}"`;
   });
 
   WB.generateJS = data => {
     const used = new Set();
-    let usesVars = false, usesSignals = false, usesAnswer = false, usesPicked = false;
+    let usesVars = false, usesSignals = false, usesAnswer = false, usesPicked = false, usesFns = false;
+    /** 직접 쓴 JS 한 줄: 문법이 틀리면 전체 코드가 멈추지 않게 주석으로 바꿈 */
+    const jsOk = (code, asValue) => { try { new Function(asValue ? `return (async () => (${code}\n))` : `return (async () => {${code}\n})`); return true; } catch { return false; } };
+    const DATE = { year: 'getFullYear()', month: 'getMonth() + 1', day: 'getDate()', hour: 'getHours()', minute: 'getMinutes()', second: 'getSeconds()', stamp: 'getTime()', date: 'toLocaleDateString()', time: "toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })" };
     const q = s => JSON.stringify(String(s ?? ''));
     /** 요소 칸 값 → JS: id 글자, 또는 그때그때 정해지는 요소(이 요소 · 고른 요소 · 방금 복제한 요소) */
     const R = v => {
@@ -329,6 +393,32 @@
         case 'not': return `!${val(A.a, 'bool')}`;
         case 'keyPressed': use('keys'); return `keys.has(${q(A.key)})`;
         case 'equals': use('same'); return `same(${val(A.a)}, ${val(A.b)})`;
+        case 'loopItem': return "(typeof item === 'undefined' ? '' : item)";
+        case 'loopIndex': return "(typeof i === 'undefined' ? 0 : i + 1)";
+        case 'hasClass': use('el'); return `!!el(${R(A.el)})?.classList.contains(${q(A.cls)})`;
+        case 'contains': return `String(${val(A.a)}).includes(String(${val(A.b)}))`;
+        case 'confirm': return `confirm(${val(A.msg)})`;
+        case 'listHas': return `(Array.isArray(${varRef(A.var)}) && ${varRef(A.var)}.some(x => String(x) === String(${val(A.v)})))`;
+        case 'math': return `Math.${A.fn}(${num(A.n)})`;
+        case 'numFormat': return `Number(${num(A.n)}).toLocaleString()`;
+        case 'strLen': return `String(${val(A.a)}).length`;
+        case 'strPart': return `String(${val(A.a)}).slice(${num(A.from)} - 1, ${num(A.to)})`;
+        case 'strReplace': return `String(${val(A.a)}).split(String(${val(A.b)})).join(String(${val(A.c)}))`;
+        case 'dateNow': return A.part === 'weekday' ? "'일월화수목금토'[new Date().getDay()]" : `new Date().${DATE[A.part] || DATE.stamp}`;
+        case 'mousePos': use('mouse'); return `mouse.${A.axis === 'y' ? 'y' : 'x'}`;
+        case 'scrollPos': return 'Math.round(scrollY)';
+        case 'winSize': return A.dim === 'h' ? 'innerHeight' : 'innerWidth';
+        case 'listItem': return `((${varRef(A.var)})?.[${num(A.n)} - 1] ?? '')`;
+        case 'listLen': return `(Array.isArray(${varRef(A.var)}) ? ${varRef(A.var)}.length : 0)`;
+        case 'listJoin': return `(Array.isArray(${varRef(A.var)}) ? ${varRef(A.var)}.join(String(${val(A.sep)})) : '')`;
+        case 'loadLocal': use('store'); return `loadLocal(${val(A.key)})`;
+        case 'jsonGet': use('jsonGet'); return `jsonGet(${varRef(A.var)}, ${val(A.path)})`;
+        case 'getAttr': use('el'); return `(el(${R(A.el)})?.getAttribute(${q(A.name)}) ?? '')`;
+        case 'elCount': return `document.getElementsByClassName(${q(A.cls)}).length`;
+        case 'callFnVal': usesFns = true; return `(await fns[${q(A.fn)}]?.(${val(A.v)}))`;
+        case 'fnInput': return "(typeof input === 'undefined' ? '' : input)";
+        case 'jsValue': return jsOk(A.code, true) && String(A.code).trim() ? `(${A.code})` : 'undefined /* JS 값: 문법 오류 */';
+        case 'errorMsg': return "(typeof error === 'undefined' ? '' : String(error?.message ?? error))";
         case 'greater': return `(${num(A.a)} > ${num(A.b)})`;
       }
       return 'undefined';
@@ -353,7 +443,7 @@
         case 'goto': return `${p}location.href = ${val(A.url)};`;
         case 'scrollTo': use('scrollToEl'); return `${p}scrollToEl(${R(A.el)});`;
         case 'animate': use('animate', 'el'); return `${p}animate(el(${R(A.el)}), ${q(A.fx)}, ${num(A.n)});`;
-        case 'animateGroup': use('animate', 'all'); return `${p}all(${q(A.cls)}).forEach((e, i) => setTimeout(() => animate(e, ${q(A.fx)}, ${num(A.n)}), i * 80));`;
+        case 'animateGroup': use('animate', 'all'); return `${p}{ const sec = ${num(A.n)}; all(${q(A.cls)}).forEach((e, n) => setTimeout(() => animate(e, ${q(A.fx)}, sec), n * 80)); }`;
         case 'toggleText': use('toggleText'); return `${p}toggleText(${R(A.el)}, ${val(A.a)}, ${val(A.b)});`;
         case 'groupShow': use('groupShow'); return `${p}groupShow(${q(A.cls)}, ${q(A.mode)});`;
         case 'filterGroup': use('filterGroup'); return `${p}filterGroup(${q(A.cls)}, ${q(A.cls2)});`;
@@ -384,11 +474,32 @@
         case 'setValue': use('setValue'); return `${p}setValue(${R(A.el)}, ${val(A.v)});`;
         case 'setVar': return `${p}${varRef(A.var)} = ${val(A.v)};`;
         case 'changeVar': return `${p}${varRef(A.var)} = Number(${varRef(A.var)}) + ${num(A.v)};`;
+        case 'openUrl': return `${p}window.open(${val(A.url)}, '_blank');`;
+        case 'forEach': return `${p}for (const [i, item] of (Array.isArray(${varRef(A.var)}) ? [...${varRef(A.var)}] : []).entries()) {\n${body('body', true)}${p}}`;
+        case 'stopScript': return `${p}return;`;
+        case 'setClass': use('el'); return `${p}el(${R(A.el)})?.classList.${['add', 'remove'].includes(A.mode) ? A.mode : 'toggle'}(${q(A.cls)});`;
+        case 'setAttrB': use('el'); return `${p}el(${R(A.el)})?.setAttribute(${q(A.name)}, ${val(A.v)});`;
+        case 'setCssAny': use('el'); return `${p}el(${R(A.el)})?.style.setProperty(${q(A.prop)}, String(${val(A.v)}));`;
+        case 'dialog': use('el'); return `${p}el(${R(A.el)})?.${A.mode === 'close' ? 'close' : 'showModal'}?.();`;
+        case 'focusEl': use('el'); return `${p}el(${R(A.el)})?.focus();`;
+        case 'listAdd': return `${p}(Array.isArray(${varRef(A.var)}) ? ${varRef(A.var)} : (${varRef(A.var)} = [])).push(${val(A.v)});`;
+        case 'listRemove': return `${p}if (Array.isArray(${varRef(A.var)})) ${varRef(A.var)}.splice(${num(A.n)} - 1, 1);`;
+        case 'listClear': return `${p}${varRef(A.var)} = [];`;
+        case 'saveLocal': use('store'); return `${p}saveLocal(${val(A.key)}, ${val(A.v)});`;
+        case 'fetchJson': return `${p}try { ${varRef(A.var)} = await (await fetch(${val(A.url)})).json(); } catch { ${varRef(A.var)} = ''; }`;
+        case 'callFn': usesFns = true; return `${p}await fns[${q(A.fn)}]?.(${val(A.v)});`;
+        case 'fnReturn': return `${p}return ${val(A.v)};`;
+        case 'jsRun': return !String(A.code).trim() ? '' : jsOk(A.code) ? `${p}${String(A.code).trim().replace(/;?$/, ';')}` : `${p}// JS 실행: 문법 오류 → ${String(A.code).replace(/\n/g, ' ')}`;
+        case 'log': return `${p}console.log(${val(A.v)});`;
+        case 'comment': return `${p}// ${String(A.t).replace(/\n/g, ' ')}`;
+        case 'tryCatch': return `${p}try {\n${body('body')}${p}} catch (error) {\n${body('body2')}${p}}`;
+        case 'copyText': return `${p}navigator.clipboard?.writeText(String(${val(A.v)}));`;
       }
       return '';
     }
 
     const parts = [];
+    const fnParts = []; // 함수 정의는 맨 앞에 (어디서든 부를 수 있게)
     const onLoads = []; // 「페이지가 열렸을 때」는 다른 시작 블록이 모두 준비된 뒤 맨 마지막에 실행
     for (const s of data?.scripts || []) {
       const [hat, ...rest] = s.blocks;
@@ -397,12 +508,15 @@
       const comment = `// ${WB.describeBlock(hat)}`;
       const A = hat.args;
       // 「이 요소」를 쓰면 시작 블록마다 무엇인지 정해 줌
-      const THIS = { onClick: 'event.currentTarget', onInput: 'event.currentTarget', onSubmit: 'event.currentTarget', onDrop: 'event.currentTarget', onKey: 'event.target', onVisible: `el(${R(A.el)})` };
+      const THIS = { onClick: 'event.currentTarget', onInput: 'event.currentTarget', onSubmit: 'event.currentTarget', onDrop: 'event.currentTarget', onEvent: 'event.currentTarget', onKey: 'event.target', onVisible: `el(${R(A.el)})` };
       if (/\bthisEl\b/.test(body) && hat.type !== 'onGroup') {
         if (hat.type === 'onVisible') use('el');
         body = `  const thisEl = ${THIS[hat.type] || 'null'};\n` + body;
       }
-      if (hat.type === 'onLoad') onLoads.push(`${comment}\n(async () => {\n${body}})();`);
+      if (hat.type === 'defFn') { usesFns = true; fnParts.push(`${comment}\nfns[${q(A.fn)}] = async (input) => {\n${body}};`); }
+      else if (hat.type === 'onTimer') parts.push(`${comment}\nsetInterval(async () => {\n${body}}, ${num(A.n)} * 1000);`);
+      else if (hat.type === 'onScroll') parts.push(`${comment}\naddEventListener('scroll', async (event) => {\n${body}}, { passive: true });`);
+      else if (hat.type === 'onLoad') onLoads.push(`${comment}\n(async () => {\n${body}})();`);
       else if (hat.type === 'onKey') {
         // 글자를 입력하는 중에는 (입력칸 · 고칠 수 있는 칸) 키 블록이 움직이지 않게
         const guard = A.when === 'always' ? '' : "  if (event.target.isContentEditable || event.target.matches?.('input, textarea, select')) return;\n";
@@ -419,11 +533,12 @@
         parts.push(`${comment}\nsignals.addEventListener(${q(A.sig)}, async () => {\n${body}});`);
       } else {
         use('on');
-        const type = { onClick: 'click', onInput: 'input', onSubmit: 'submit', onDrop: 'wb-drop' }[hat.type];
+        const type = { onClick: 'click', onInput: 'input', onSubmit: 'submit', onDrop: 'wb-drop' }[hat.type] || String(A.ev).replace(/[^a-z]/g, '');
         const pre = hat.type === 'onSubmit' ? '  event.preventDefault(); // 페이지가 새로 고쳐지지 않게\n' : '';
         parts.push(`${comment}\non(${R(A.el)}, '${type}', async (event) => {\n${pre}${body}});`);
       }
     }
+    parts.unshift(...fnParts);
     parts.push(...onLoads);
     // 직접 쓴 코드가 있으면 그 코드에서도 el() · on() · vars 를 쓸 수 있게 준비 (코드 자체는 따로 <script> 로)
     const userCode = !!(data?.code || '').trim();
@@ -440,6 +555,7 @@
     if (usesAnswer) state.push("let answer = '';");
     if (usesSignals) state.push('const signals = new EventTarget();');
     if (usesPicked) state.push('let picked = null, made = null; // 고른 요소 · 방금 복제한 요소');
+    if (usesFns) state.push('const fns = {}; // 함수');
     if (state.length) head.push('// 변수 · 대답 · 신호\n' + state.join('\n'));
     return [...head, ...parts].join('\n\n') + '\n';
   };

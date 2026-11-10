@@ -72,7 +72,7 @@ WB.emit = (ev, data) => (listeners[ev] || []).forEach(fn => fn(data));
 
 /* ---------- 태그 정보 ---------- */
 const KIND = {};
-'div section header footer nav main article aside form ul ol table thead tbody tr select figure body'
+'div section header footer nav main article aside form ul ol table thead tbody tr select figure body details dialog'
   .split(' ').forEach(t => (KIND[t] = 'container'));
 'img input hr br video audio iframe textarea svg'.split(' ').forEach(t => (KIND[t] = 'void'));
 /** container = 안에 다른 요소를 담음, text = 글자를 담음, void = 아무것도 담지 않음
@@ -92,6 +92,7 @@ WB.TAG_LABEL = {
   aside: '곁 내용', figure: '그림 묶음', hr: '구분선', br: '줄바꿈', a: '링크', button: '버튼', img: '이미지',
   video: '동영상', audio: '오디오', iframe: '웹페이지 삽입', ul: '글머리 목록', ol: '번호 목록', li: '목록 항목',
   table: '표', thead: '표 머리', tbody: '표 본문', tr: '표 줄', td: '표 칸', th: '표 제목 칸',
+  details: '접는 내용', summary: '접는 제목', dialog: '팝업 창',
   svg: '차트', form: '입력 양식', input: '입력칸', textarea: '여러 줄 입력', select: '선택 목록', option: '선택 항목', label: '라벨',
 };
 const INPUT_LABEL = { checkbox: '체크박스', radio: '라디오 버튼', password: '비밀번호 칸', email: '이메일 칸', number: '숫자 칸', date: '날짜 칸', submit: '제출 버튼', color: '색 고르기', range: '슬라이더' };
@@ -185,6 +186,7 @@ WB.newPageDoc = opts => ({
   blocks: opts.blocks || WB.emptyBlocks(), // 탭5 블록 코딩
   // 가져온 페이지에서 편집기가 요소로 바꿀 수 없어 그대로 보존하는 것: 추가 CSS · <head> 의 링크 · 외부 스크립트
   extra: opts.extra || WB.emptyExtra(),
+  formats: opts.formats || {}, // 형식: 이름 → 함께 쓰는 모양 (아래 「형식」 참고)
   foreign: !!opts.foreign, // 다른 곳에서 만든 페이지 (처음 저장할 때 원본을 남김)
   original: opts.original || null,
   selectedId: null,
@@ -217,7 +219,7 @@ WB.select = id => {
 
 /* ---------- 변경 · 실행 취소 ----------
    같은 key 로 1.2초 안에 이어지는 변경(색 고르기, 글자 입력 등)은 한 번의 실행 취소로 묶음 */
-const snapshot = doc => JSON.stringify({ title: doc.title, root: doc.root, blocks: doc.blocks });
+const snapshot = doc => JSON.stringify({ title: doc.title, root: doc.root, blocks: doc.blocks, formats: doc.formats || {} });
 WB.commit = function (mutate, key) {
   const doc = WB.canvasDoc();
   if (!doc) return;
@@ -230,6 +232,7 @@ WB.commit = function (mutate, key) {
   doc.lastKey = key || null;
   doc.lastTime = now;
   mutate(doc);
+  WB.syncFormats(doc);
   doc.dirty = true;
   WB.emit('change', doc);
 };
@@ -241,6 +244,8 @@ function travel(from, to) {
   doc.title = s.title;
   doc.root = s.root;
   doc.blocks = s.blocks || WB.emptyBlocks();
+  doc.formats = s.formats || {};
+  doc._fm = WB.formatMemberIds(doc);
   doc.lastKey = null;
   doc.dirty = true;
   if (doc.selectedId && !WB.find(doc.root, doc.selectedId)) doc.selectedId = null;
@@ -368,14 +373,129 @@ WB.styleTarget = n => {
   return v ? (n[WB.VARIANT_KEYS[v]] ||= {}) : n.style;
 };
 WB.groupOf = n => (n?.attrs?.class || '').trim().split(/\s+/)[0] || '';
-function targetsFor(doc, id) {
-  const n = nodeIn(doc, id);
-  const g = WB.settings.linkGroup && WB.groupOf(n);
-  if (!g) return [n];
-  const out = [];
-  WB.walk(doc.root, x => { if (WB.groupOf(x) === g) out.push(x); });
+const targetsFor = (doc, id) => [nodeIn(doc, id)]; // 형식이 같은 요소는 commit 뒤 syncFormats 가 맞춤
+
+/* ---------- 형식 (함께 쓰는 모양) ----------
+   doc.formats = { 이름: { style, styleTablet?, styleMobile?, styleHover? } }
+   이름표(class)의 첫 단어가 형식 이름인 요소는 그 형식의 「구성원」. 구성원은 모양(색 · 글자 · 테두리 · 여백 · 배치)이 늘 같고,
+   크기 · 위치(INSTANCE_PROPS)만 요소마다 따로 가짐 — 피그마의 스타일 · 컴포넌트처럼.
+   구성원 하나를 고치면 commit 뒤에 나머지도 똑같이 맞춤. 코드에서는 .이름 { … } 규칙 하나로 나감 */
+WB.INSTANCE_PROPS = new Set(['position', 'left', 'top', 'right', 'bottom', 'z-index', 'width', 'height', 'min-width', 'min-height', 'max-width', 'flex-grow', 'flex-shrink', 'align-self']);
+WB.FORMAT_NAME = /^[\p{L}_][\p{L}\p{N}_-]*$/u;
+const STYLE_KEYS = ['style', 'styleTablet', 'styleMobile', 'styleHover'];
+const pickStyle = (s, inst) => Object.fromEntries(Object.entries(s || {}).filter(([k]) => WB.INSTANCE_PROPS.has(k) === inst));
+/** 요소의 모양 (크기 · 위치를 뺀 스타일 묶음들) */
+WB.lookOf = n => {
+  const out = {};
+  for (const k of STYLE_KEYS) {
+    const s = pickStyle(n[k], false);
+    if (k === 'style' || Object.keys(s).length) out[k] = s;
+  }
   return out;
-}
+};
+WB.lookKey = look => JSON.stringify(STYLE_KEYS.map(k => Object.entries(look?.[k] || {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))));
+/** 요소에 모양을 입힘 (요소의 크기 · 위치는 그대로) */
+WB.applyLook = (n, look) => {
+  for (const k of STYLE_KEYS) {
+    const s = { ...(look[k] || {}), ...pickStyle(n[k], true) };
+    if (k === 'style' || Object.keys(s).length) n[k] = s;
+    else delete n[k];
+  }
+};
+WB.formatOf = (doc, n) => {
+  const g = WB.groupOf(n);
+  return g && doc?.formats && Object.hasOwn(doc.formats, g) ? g : '';
+};
+WB.formatMembers = (doc, name) => {
+  const out = [];
+  WB.walk(doc.root, n => { if (n.id !== 'root' && WB.groupOf(n) === name) out.push(n); });
+  return out;
+};
+WB.formatMemberIds = doc => {
+  const m = {};
+  for (const name of Object.keys(doc.formats || {})) m[name] = new Set();
+  WB.walk(doc.root, n => { const f = n.id !== 'root' && WB.formatOf(doc, n); if (f) m[f].add(n.id); });
+  return m;
+};
+/** 구성원들의 모양을 하나로 맞춤: 원래 구성원이 바뀌었으면 그 모양이 형식이 되고, 새로 들어온 요소는 형식 모양을 입음 */
+WB.syncFormats = doc => {
+  const names = Object.keys(doc.formats || {});
+  if (!names.length) { doc._fm = {}; return; }
+  const lists = Object.fromEntries(names.map(n => [n, []]));
+  WB.walk(doc.root, n => { const f = n.id !== 'root' && WB.formatOf(doc, n); if (f) lists[f].push(n); });
+  const prev = doc._fm || {}, next = {};
+  for (const name of names) {
+    const list = lists[name];
+    next[name] = new Set(list.map(n => n.id));
+    if (!list.length) continue;
+    let look = doc.formats[name], key = WB.lookKey(look);
+    const keys = new Map(list.map(n => [n, WB.lookKey(WB.lookOf(n))]));
+    const changed = list.filter(n => prev[name]?.has(n.id) && keys.get(n) !== key);
+    if (changed.length) {
+      const src = changed.find(n => n.id === doc.selectedId) || changed[0];
+      look = doc.formats[name] = JSON.parse(JSON.stringify(WB.lookOf(src)));
+      key = WB.lookKey(look);
+    }
+    for (const n of list) if (keys.get(n) !== key) WB.applyLook(n, look);
+  }
+  doc._fm = next;
+};
+const setFirstClass = (n, name) => {
+  const rest = (n.attrs.class || '').split(/\s+/).filter(c => c && c !== name);
+  n.attrs.class = [name, ...rest].join(' ');
+};
+/** 고른 요소의 모양으로 새 형식을 만듦 */
+WB.formatCreate = (name, id) => WB.commit(doc => {
+  const n = nodeIn(doc, id);
+  doc.formats = { ...(doc.formats || {}), [name]: JSON.parse(JSON.stringify(WB.lookOf(n))) };
+  setFirstClass(n, name);
+}, `fmt:${Date.now()}`);
+/** 요소에 형식 입히기 (이미 다른 형식이면 바꿈) */
+WB.formatApply = (name, id) => WB.commit(doc => {
+  const n = nodeIn(doc, id), old = WB.formatOf(doc, n);
+  if (old) n.attrs.class = (n.attrs.class || '').split(/\s+/).filter(c => c && c !== old).join(' ');
+  setFirstClass(n, name);
+  WB.applyLook(n, doc.formats[name]);
+  if (doc._fm?.[name]) doc._fm[name].add(n.id); // 이미 입혔으니 「새 구성원」 처리는 필요 없음
+}, `fmt:${Date.now()}`);
+/** 요소를 형식에서 뗌 (모양은 그대로 남음) */
+WB.formatDetach = id => WB.commit(doc => {
+  const n = nodeIn(doc, id), f = WB.formatOf(doc, n);
+  if (!f) return;
+  const rest = (n.attrs.class || '').split(/\s+/).filter(c => c && c !== f);
+  if (rest.length) n.attrs.class = rest.join(' ');
+  else delete n.attrs.class;
+}, `fmt:${Date.now()}`);
+/** 형식 풀기: 이름표와 모양은 요소에 그대로 두고, 함께 바뀌는 연결만 끊음 */
+WB.formatRemove = name => WB.commit(doc => {
+  const f = { ...(doc.formats || {}) };
+  delete f[name];
+  doc.formats = f;
+}, `fmt:${Date.now()}`);
+const mapBlockArgs = (blocks, type, fn) => (blocks?.scripts || []).forEach(s => s.blocks.forEach(b => WB.walkBlock(b, x => {
+  for (const [k, spec] of Object.entries(WB.BLOCK_DEFS[x.type]?.args || {})) if (spec.type === type && typeof x.args[k] === 'string') x.args[k] = fn(x.args[k]);
+})));
+/** 형식 · 이름표 이름 바꾸기 (요소의 이름표와 블록에서 쓰는 곳까지) */
+WB.classRename = (from, to) => WB.commit(doc => {
+  WB.walk(doc.root, n => {
+    const cs = (n.attrs?.class || '').split(/\s+/).filter(Boolean);
+    if (cs.includes(from)) n.attrs.class = [...new Set(cs.map(c => (c === from ? to : c)))].join(' ');
+  });
+  if (doc.formats && Object.hasOwn(doc.formats, from)) {
+    doc.formats = Object.fromEntries(Object.entries(doc.formats).map(([k, v]) => [k === from ? to : k, v]));
+    if (doc._fm?.[from]) { doc._fm[to] = doc._fm[from]; delete doc._fm[from]; }
+  }
+  mapBlockArgs(doc.blocks, 'cls', v => (v === from ? to : v));
+}, `fmt:${Date.now()}`);
+/** 요소 이름(id) 바꾸기 · 지우기 (to 가 없으면 지움). 블록 · 라벨 · #링크에서 쓰는 곳도 함께 */
+WB.idRename = (from, to) => WB.commit(doc => {
+  WB.walk(doc.root, n => {
+    if (n.attrs?.id === from) { if (to) n.attrs.id = to; else delete n.attrs.id; }
+    if (to && n.attrs?.for === from) n.attrs.for = to;
+    if (to && n.attrs?.href === '#' + from) n.attrs.href = '#' + to;
+  });
+  if (to) mapBlockArgs(doc.blocks, 'el', v => (v === from ? to : v));
+}, `id:${Date.now()}`);
 function writeStyle(n, obj) {
   const t = WB.styleTarget(n);
   for (const [k, v] of Object.entries(obj)) {

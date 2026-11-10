@@ -50,7 +50,17 @@
 
     /* 1) 요소마다 스타일 열쇠(기본 · 태블릿 · 휴대폰 · 마우스 올림) → 같은 열쇠끼리 한 클래스 */
     const keyOf = new Map(), byKey = new Map(), byLabel = new Map();
-    const parts = n => [D(n.style, '      '), D(n.styleTablet, '        '), D(n.styleMobile, '        '), D(n.styleHover, '      ')];
+    // 형식: 구성원이 함께 쓰는 모양은 .형식이름 규칙으로, 요소마다 다른 부분(크기 · 위치)만 요소 클래스로
+    const formats = Object.fromEntries(Object.entries(doc.formats || {}).filter(([k]) => WB.FORMAT_NAME.test(k) && !GEN_CLASS.test(k)));
+    const fmtOf = n => { const g = WB.groupOf(n); return g && Object.hasOwn(formats, g) ? g : ''; };
+    const SKEYS = ['style', 'styleTablet', 'styleMobile', 'styleHover'];
+    const restOf = (n, look) => SKEYS.map(k => Object.fromEntries(Object.entries(n[k] || {}).filter(([p, v]) => look[k]?.[p] !== v)));
+    const parts = n => {
+      const f = fmtOf(n);
+      const [s, t, m, hv] = f ? restOf(n, formats[f]) : SKEYS.map(k => n[k]);
+      return [D(s, '      '), D(t, '        '), D(m, '        '), D(hv, '      ')];
+    };
+    for (const look of Object.values(formats)) for (const k of SKEYS) for (const p of ['font-family', '--hl-font']) if (look[k]?.[p]) WB.webFontsIn(look[k][p]).forEach(f => fonts.add(f));
     WB.walk(doc.root, n => {
       for (const s of [n.style, n.styleTablet, n.styleMobile, n.styleHover]) for (const k of ['font-family', '--hl-font']) if (s?.[k]) WB.webFontsIn(s[k]).forEach(f => fonts.add(f));
       if (n.id === 'root') return;
@@ -65,6 +75,14 @@
     });
     const nameOf = new Map(), used = new Set(), counters = {};
     const rules = [], hoverRules = [], tabletRules = [], mobileRules = [];
+    for (const [name, look] of Object.entries(formats)) {
+      used.add(name);
+      const [d, dt, dm, dh] = [D(look.style, '      '), D(look.styleTablet, '        '), D(look.styleMobile, '        '), D(look.styleHover, '      ')];
+      if (d) rules.push(`    .${name} {\n${d}\n    }`);
+      if (dh) hoverRules.push(`    .${name}:hover {\n${dh}\n    }`);
+      if (dt) tabletRules.push(`      .${name} {\n${dt}\n      }`);
+      if (dm) mobileRules.push(`      .${name} {\n${dm}\n      }`);
+    }
     for (const [key, nodes] of byKey) {
       const label = WB.groupOf(nodes[0]);
       const same = label && /^[a-z_][\w-]*$/i.test(label) && !GEN_CLASS.test(label) && !used.has(label)
@@ -101,7 +119,7 @@
       if (node.attrs['data-drag'] || node.attrs['data-resize']) drag = true;
       if (node.attrs['data-ui']) ui = true;
       const named = nameOf.get(keyOf.get(node));
-      if (named) opts.classMap?.set(node.id, named.name);
+      if (named || fmtOf(node)) opts.classMap?.set(node.id, named ? named.name : fmtOf(node));
       const cls = named && !named.own ? named.name : ''; // 이름표 이름을 그대로 쓰면 더 붙일 것이 없음
       if (inCalc && WB.kindOf(node) === 'text' && /^=/.test((node.text || '').trim())) {
         // 계산 칸: 수식은 data-formula 로, 글자는 페이지가 열릴 때 계산해서 채움
@@ -166,6 +184,8 @@
       const data = JSON.stringify(doc.blocks, (k, v) => (k === 'id' || (k === 'code' && !v) ? undefined : v)).replace(/</g, '\\u003c');
       scripts += `\n  <script type="application/json" id="wb-blocks">${data}</script>`;
     }
+    // 형식 목록 (다시 열 때 「함께 바뀌는 요소」를 되살림)
+    if (Object.keys(formats).length) scripts += `\n  <script type="application/json" id="wb-formats">${JSON.stringify(formats).replace(/</g, '\\u003c')}</script>`;
 
     return `<!DOCTYPE html>
 <html lang="ko">
@@ -321,6 +341,8 @@ ${body}${scripts}
   WB.parseHTML = function (source) {
     const d = new DOMParser().parseFromString(source, 'text/html');
     const madeHere = !!d.querySelector(`meta[name="generator"][content="${GENERATOR}"]`) || !!d.getElementById('wb-blocks');
+    let savedFormats = {};
+    try { savedFormats = JSON.parse(d.getElementById('wb-formats')?.textContent || '{}') || {}; } catch { /* 형식 정보가 깨졌으면 형식 없이 */ }
     const report = { inlined: 0, kept: 0, scripts: 0, rich: 0 };
     let ownShape = true; // 규칙이 모두 편집기가 만드는 모양인지 (예전 파일 알아보기)
 
@@ -367,7 +389,11 @@ ${body}${scripts}
           if (DYNAMIC.test(sel) || sel === '*') { left.push(part); continue; }
           let els;
           try { els = [...d.querySelectorAll(sel)].filter(e => e === d.body || d.body.contains(e)); } catch { els = []; }
-          if (!els.length) { left.push(part); continue; } // 맞는 요소가 없음 (스크립트가 나중에 만드는 요소 등)
+          if (!els.length) {
+            // 맞는 요소가 없음 (스크립트가 나중에 만드는 요소 등) → 그대로 둠. 단, 쓰는 요소가 없는 형식 규칙은 형식 목록에서 다시 만들어짐
+            if (!(own && sel[0] === '.' && Object.hasOwn(savedFormats, sel.slice(1)))) left.push(part);
+            continue;
+          }
           const spec = specificity(sel);
           for (const e of els) {
             if (!matched.has(e)) matched.set(e, []);
@@ -455,7 +481,7 @@ ${body}${scripts}
     let code = '';
     const scripts = [], head = [];
     for (const s of d.querySelectorAll('script')) {
-      if (s.id === 'wb-blocks' || s.hasAttribute('data-wb')) continue;
+      if (s.id === 'wb-blocks' || s.id === 'wb-formats' || s.hasAttribute('data-wb')) continue;
       const type = (s.getAttribute('type') || '').toLowerCase();
       const classic = !type || /^(text|application)\/javascript$/.test(type);
       if (s.hasAttribute('src') || !classic) { scripts.push(s.outerHTML); continue; } // 외부 · module 스크립트는 그대로
@@ -478,7 +504,21 @@ ${body}${scripts}
     if (code) blocks = WB.reIdBlocks({ ...(blocks || {}), code: [blocks?.code, code].filter(Boolean).join('\n\n') });
     const extra = { cssTop: keepTop.join('\n'), css: keep.join('\n'), head, scripts, vars };
     const foreign = !madeHere && (!ownShape || report.rich > 0 || !!code || scripts.length > 0 || head.length > 0);
-    return { title: d.title, root, blocks, extra, foreign, report };
+    // 형식: 저장해 둔 목록을 되살림 (모양은 첫 구성원 기준). 다른 곳에서 만든 페이지는 같은 클래스 · 같은 모양인 요소 묶음을 형식으로
+    const groups = new Map();
+    WB.walk(root, n => { const g = n.id !== 'root' && WB.groupOf(n); if (g) { if (!groups.has(g)) groups.set(g, []); groups.get(g).push(n); } });
+    const formats = {};
+    for (const [name, look] of Object.entries(savedFormats)) {
+      if (!WB.FORMAT_NAME.test(name)) continue;
+      formats[name] = groups.has(name) ? WB.lookOf(groups.get(name)[0]) : look && typeof look === 'object' ? look : { style: {} };
+    }
+    if (!madeHere) for (const [name, list] of groups) {
+      if (list.length < 2 || !WB.FORMAT_NAME.test(name) || GEN_CLASS.test(name)) continue;
+      const key = WB.lookKey(WB.lookOf(list[0]));
+      if (key !== WB.lookKey({ style: {} }) && list.every(n => WB.lookKey(WB.lookOf(n)) === key)) formats[name] = WB.lookOf(list[0]);
+    }
+    report.formats = Object.keys(formats).length;
+    return { title: d.title, root, blocks, extra, foreign, report, formats };
   };
 
   /* ---------- 코드 색칠 (코드 보기 창) ---------- */

@@ -104,6 +104,58 @@
       { key: 'select', name: '선택 목록', icon: '▾', desc: '펼쳐서 고르는 목록', make: () => N('select', { style: { padding: '6px' }, children: ['선택 1', '선택 2', '선택 3'].map(t => N('option', { text: t })) }) },
       { key: 'label', name: '라벨', icon: 'lbl', desc: '입력칸에 붙이는 이름표', make: () => N('label', { text: '라벨' }) },
     ] },
+    // 부품: 자주 쓰는 묶음을 한 번에 (모두 HTML + CSS 만으로 동작)
+    { cat: '부품', color: '#f59e0b', items: [
+      { key: 'part-header', name: '머리말 메뉴', icon: '☰', desc: '로고 + 메뉴 + 버튼. 스크롤해도 위에 붙어 있음', make: () => N('header', {
+        style: { display: 'flex', 'flex-direction': 'row', 'align-items': 'center', 'justify-content': 'space-between', gap: '16px', padding: '14px 24px', 'background-color': '#ffffff', 'border-width': '0 0 1px 0', 'border-style': 'solid', 'border-color': '#e5e7eb', position: 'sticky', top: '0', 'z-index': '10' },
+        children: [
+          N('strong', { text: '로고', style: { 'font-size': '20px' } }),
+          N('nav', { style: { display: 'flex', gap: '20px' }, children: ['소개', '서비스', '문의'].map(t => N('a', { text: t, attrs: { href: '#' }, style: { color: '#374151', 'text-decoration': 'none' } })) }),
+          N('a', { text: '시작하기', attrs: { href: '#' }, style: { padding: '8px 16px', 'background-color': '#111827', color: '#ffffff', 'border-radius': '6px', 'text-decoration': 'none' } }),
+        ],
+      }) },
+      { key: 'part-hero', name: '첫 화면 (히어로)', icon: '▀', desc: '큰 제목 + 설명 + 버튼 두 개', make: () => N('section', {
+        style: { display: 'flex', 'flex-direction': 'column', 'align-items': 'center', gap: '16px', padding: '72px 24px', 'text-align': 'center', 'background-color': '#f8fafc' },
+        children: [
+          N('h1', { text: '한 줄로 전하는 큰 제목', style: { margin: '0', 'font-size': 'clamp(32px, 5vw, 56px)', 'line-height': '1.2' } }),
+          N('p', { text: '무엇을 하는 곳인지 한두 문장으로 설명하세요.', style: { margin: '0', color: '#64748b', 'font-size': '18px', 'max-width': '560px' } }),
+          N('div', { style: { display: 'flex', 'flex-direction': 'row', gap: '10px' }, children: [
+            N('a', { text: '시작하기', attrs: { href: '#' }, style: { padding: '12px 22px', 'background-color': '#2563eb', color: '#ffffff', 'border-radius': '8px', 'text-decoration': 'none', 'font-weight': '700' } }),
+            N('a', { text: '더 알아보기', attrs: { href: '#' }, style: { padding: '12px 22px', color: '#111827', 'border-width': '1px', 'border-style': 'solid', 'border-color': '#cbd5e1', 'border-radius': '8px', 'text-decoration': 'none' } }),
+          ] }),
+        ],
+      }) },
+      { key: 'part-cards', name: '카드 3칸', icon: '▦', desc: '제목 + 설명 카드 세 장 (휴대폰에서는 화면 보기에서 1칸으로)', make: () => N('div', {
+        style: { display: 'grid', 'grid-template-columns': 'repeat(3, 1fr)', gap: '16px', padding: '24px' },
+        children: ['빠르게', '쉽게', '안전하게'].map(t => N('div', {
+          style: { display: 'flex', 'flex-direction': 'column', gap: '8px', padding: '20px', 'background-color': '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': '#e5e7eb', 'border-radius': '12px' },
+          children: [N('h3', { text: t, style: { margin: '0' } }), N('p', { text: '이 장점을 한두 문장으로 설명하세요.', style: { margin: '0', color: '#64748b' } })],
+        })),
+      }) },
+      { key: 'part-details', name: '접는 내용', icon: '▸', desc: '제목을 누르면 내용이 펼쳐짐 (자주 묻는 질문). JS 없이 <details> 로', make: () => N('details', {
+        style: { padding: '12px 16px', 'border-width': '1px', 'border-style': 'solid', 'border-color': '#e5e7eb', 'border-radius': '8px' },
+        children: [N('summary', { text: '자주 묻는 질문을 적으세요', style: { 'font-weight': '700', cursor: 'pointer' } }), N('p', { text: '제목을 누르면 보이는 답변이에요.', style: { margin: '10px 0 0', color: '#475569' } })],
+      }) },
+      { key: 'part-slider', name: '가로 넘기기', icon: '⇄', desc: '옆으로 밀어 넘기는 카드 줄 (한 장씩 딱 멈춤). JS 없이 CSS 로', make: () => N('div', {
+        style: { display: 'flex', 'flex-direction': 'row', gap: '12px', padding: '8px', 'overflow-x': 'auto', 'scroll-snap-type': 'x mandatory' },
+        children: ['첫 번째', '두 번째', '세 번째', '네 번째'].map((t, i) => N('div', {
+          style: { 'flex-shrink': '0', width: '260px', height: '160px', padding: '16px', 'border-radius': '12px', 'scroll-snap-align': 'start', 'background-color': ['#dbeafe', '#dcfce7', '#fef3c7', '#fce7f3'][i] },
+          children: [N('strong', { text: t + ' 카드' })],
+        })),
+      }) },
+      { key: 'part-dialog', name: '팝업 창', icon: '▣', desc: '화면 가운데 뜨는 창. 탭5 블록 「팝업 열기」로 열고, 안의 닫기 버튼으로 닫음', make: () => N('dialog', {
+        style: { padding: '24px', 'border-style': 'none', 'border-radius': '12px', 'max-width': '360px', 'box-shadow': '0 12px 32px rgba(0, 0, 0, 0.22)' },
+        children: [
+          N('h3', { text: '알림', style: { margin: '0 0 8px' } }),
+          N('p', { text: '여기에 알릴 내용을 적으세요.', style: { margin: '0 0 16px', color: '#475569' } }),
+          N('form', { attrs: { method: 'dialog' }, children: [N('button', { text: '닫기', attrs: { type: 'submit' }, style: { padding: '8px 16px', 'background-color': '#111827', color: '#ffffff', 'border-style': 'none', 'border-radius': '6px' } })] }),
+        ],
+      }) },
+      { key: 'part-fab', name: '떠 있는 버튼', icon: '◉', desc: '스크롤해도 화면 오른쪽 아래에 떠 있는 버튼 (맨 위로, 문의하기)', make: () => N('a', {
+        text: '↑', attrs: { href: '#' },
+        style: { position: 'fixed', right: '24px', bottom: '24px', 'z-index': '100', width: '48px', height: '48px', 'line-height': '48px', 'text-align': 'center', 'background-color': '#2563eb', color: '#ffffff', 'border-radius': '50%', 'text-decoration': 'none', 'font-size': '20px', 'box-shadow': '0 4px 12px rgba(0, 0, 0, 0.15)' },
+      }) },
+    ] },
     // 선 아이콘: 글자색을 따라가고, 크기는 너비 · 높이로. 넣은 뒤 탭2 속성에서 다른 아이콘으로 바꿀 수 있음
     { cat: '아이콘', color: '#14b8a6', items: Object.entries(WB.ICON_SET).map(([k, [label, paths]]) => ({
       key: 'icon-' + k, name: label, icon: '', desc: `선 아이콘 (${k})`,
@@ -151,12 +203,16 @@
   const panel = WB.$('#tab4');
   panel.innerHTML = `
     <div class="panel-head pal-head">
-      <span class="panel-title">HTML 태그</span>
+      <div class="seg mini pal-mode" title="태그: 넣을 요소 · 형식: 함께 쓰는 모양과 이름 · 구조: 페이지 요소 나무">
+        <button data-pm="tags" class="on">HTML 태그</button><button data-pm="formats">형식 · 이름</button><button data-pm="tree">구조</button>
+      </div>
       <input class="pal-search" type="text" placeholder="태그 찾기 (예: 버튼, img)" spellcheck="false">
       <div class="pal-cats"></div>
       <span class="head-actions" style="font-size:11px;color:var(--text-faint);white-space:nowrap;padding-right:6px">클릭하면 넣기 · 끌어서 원하는 곳에 놓기</span>
     </div>
-    <div class="pal-body"></div>`;
+    <div class="pal-body"></div>
+    <div class="fmt-body" hidden></div>
+    <div class="tree-body" hidden></div>`;
   const search = panel.querySelector('.pal-search');
   const cats = panel.querySelector('.pal-cats');
   const body = panel.querySelector('.pal-body');
