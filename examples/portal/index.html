@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>모아 - 연습용 포털</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 14px 24px 40px;
+      font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.5;
+      color: #1f2937;
+      background-color: #fafafc;
+    }
+    .c1 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .c2 {
+      color: #4f46e5;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    .c3 {
+      display: flex;
+      flex-direction: row;
+      gap: 18px;
+      font-size: 14px;
+      color: #555566;
+    }
+    .c7 {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 28px 0 0;
+    }
+    .c8 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+      width: 640px;
+      height: 56px;
+      padding: 0 8px 0 22px;
+      background-color: #ffffff;
+      border-width: 2px;
+      border-style: solid;
+      border-color: #4f46e5;
+      border-radius: 14px;
+    }
+    .c10 {
+      border-style: none;
+      padding: 8px;
+      font-size: 17px;
+      flex-grow: 1;
+    }
+    .c12 {
+      background-color: #4f46e5;
+      color: #ffffff;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 10px;
+    }
+    .c13 {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 18px;
+      margin: 18px 0 34px;
+    }
+    .c14 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 60px;
+    }
+    .c15 {
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #eef0ff;
+      color: #4f46e5;
+      font-size: 20px;
+    }
+    .c16 {
+      font-size: 13px;
+      color: #333344;
+    }
+    .c29 {
+      display: flex;
+      flex-direction: row;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .c30 {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 64%;
+    }
+    .c31 {
+      background-color: #ffffff;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e5e5ee;
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+    .c32 {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      margin: 0 0 12px;
+    }
+    .c33 {
+      font-size: 17px;
+    }
+    .c34 {
+      font-size: 14px;
+      color: #8a8a99;
+    }
+    .c35 {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0;
+      padding: 0 0 0 18px;
+      font-size: 15px;
+    }
+    .c39 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .c48 {
+      height: 110px;
+      background-color: #f1f1f6;
+      border-radius: 10px;
+      padding: 10px;
+      color: #666677;
+      font-size: 13px;
+    }
+    .c49 {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 34%;
+    }
+    .c50 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      background-color: #ffffff;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e5e5ee;
+      border-radius: 14px;
+      padding: 24px 20px 18px;
+    }
+    .c51 {
+      color: #333344;
+      font-size: 15px;
+    }
+    .c52 {
+      width: 100%;
+      height: 52px;
+      background-color: #4f46e5;
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      border-style: none;
+      border-radius: 10px;
+    }
+    .c53 {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      font-size: 13px;
+      color: #666677;
+    }
+    .c54 {
+      color: #dddddd;
+    }
+    .c61 {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: #ffffff;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background-image: linear-gradient(to right, #6366f1, #06b6d4);
+    }
+    .c62 {
+      font-size: 19px;
+    }
+    .c63 {
+      font-size: 13px;
+    }
+    .c64 {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background-color: #ffffff;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e5e5ee;
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="c1">
+    <span class="c2">MOA</span>
+    <div class="c3">
+      <span>알림</span>
+      <span>설정</span>
+    </div>
+  </div>
+  <div class="c7">
+    <div class="c8">
+      <input class="c10" type="text" placeholder="무엇이든 찾아보세요">
+      <span class="c12">검색</span>
+    </div>
+  </div>
+  <div class="c13">
+    <div class="c14">
+      <span class="c15">✉</span>
+      <span class="c16">메일</span>
+    </div>
+    <div class="c14">
+      <span class="c15">☁</span>
+      <span class="c16">날씨</span>
+    </div>
+    <div class="c14">
+      <span class="c15">✎</span>
+      <span class="c16">메모</span>
+    </div>
+    <div class="c14">
+      <span class="c15">▤</span>
+      <span class="c16">소식</span>
+    </div>
+    <div class="c14">
+      <span class="c15">◷</span>
+      <span class="c16">일정</span>
+    </div>
+    <div class="c14">
+      <span class="c15">⌂</span>
+      <span class="c16">동네</span>
+    </div>
+    <div class="c14">
+      <span class="c15">♪</span>
+      <span class="c16">음악</span>
+    </div>
+    <div class="c14">
+      <span class="c15">···</span>
+      <span class="c16">더보기</span>
+    </div>
+  </div>
+  <div class="c29">
+    <div class="c30">
+      <div class="c31">
+        <div class="c32">
+          <strong class="c33">오늘의 소식</strong>
+          <span class="c34">· 연습용 예시 글</span>
+        </div>
+        <ul class="c35">
+          <li>우리 동네 도서관, 이번 주말 밤늦게까지 문을 열어요</li>
+          <li>가을 산책하기 좋은 공원 다섯 곳을 모았어요</li>
+          <li>초보도 쉽게 따라 하는 웹페이지 만들기 강좌가 열려요</li>
+          <li>이번 주 날씨: 맑다가 목요일부터 쌀쌀해져요</li>
+        </ul>
+      </div>
+      <div class="c31">
+        <div class="c32">
+          <strong class="c33">추천 모음</strong>
+          <span class="c34">/ 요리</span>
+          <span class="c34">/ 여행</span>
+          <span class="c34">/ 취미</span>
+        </div>
+        <div class="c39">
+          <div class="c48">
+            <span>집밥 반찬</span>
+          </div>
+          <div class="c48">
+            <span>당일치기 여행</span>
+          </div>
+          <div class="c48">
+            <span>홈 카페</span>
+          </div>
+          <div class="c48">
+            <span>그림 그리기</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="c49">
+      <div class="c50">
+        <span class="c51">로그인하고 내 소식을 모아 보세요</span>
+        <button class="c52" type="button" id="login-button">로그인</button>
+        <div class="c53">
+          <span>아이디 찾기</span>
+          <span class="c54">|</span>
+          <span>비밀번호 찾기</span>
+          <span class="c54">|</span>
+          <span>회원가입</span>
+        </div>
+      </div>
+      <div class="c61">
+        <strong class="c62">이번 주 이벤트</strong>
+        <span class="c63">출석 체크하고 연습용 배지를 받아 보세요</span>
+      </div>
+      <div class="c64">
+        <strong>날씨</strong>
+        <span>맑음 · 18° / 9°</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 도우미 함수
+    const el = id => document.getElementById(id);
+    const on = (id, type, fn) => el(id)?.addEventListener(type, fn);
+
+    // #login-button 을(를) 클릭했을 때
+    on("login-button", 'click', async (event) => {
+      location.href = "login.html";
+    });
+  </script>
+  <script type="application/json" id="wb-blocks">{"scripts":[{"x":10,"y":10,"blocks":[{"type":"onClick","args":{"el":"login-button"}},{"type":"goto","args":{"url":"login.html"}}]}],"vars":[],"signals":[]}</script>
+</body>
+</html>

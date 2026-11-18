@@ -1,0 +1,1173 @@
+app.js | )} 을(를) 페이지 안으로 읽어 들였어요` :
+app.js | )}.원본.html
+app.js | , '맑은 고딕'], [
+app.js | .원본.html
+app.js | 5MB 보다 큰 파일은 먼저 페이지를 프로젝트에 저장(Ctrl+S)한 뒤 넣어 주세요
+app.js | <>|]/.test(name)) { WB.toast('이름에 \\ / : * ?
+app.js | <p class="hint">HTML 페이지를 열면 페이지 설정을 바꿀 수 있어요.</p>
+app.js | ><span>&lt;head&gt; 코드</span><textarea name=
+app.js | ><span>가져온 CSS</span><textarea name=
+app.js | ><span>기본 글꼴</span><select name=
+app.js | ><span>기본 글자색</span><span class=
+app.js | ><span>내용 최대 너비</span><input type=
+app.js | ><span>배경색</span><span class=
+app.js | ><span>색 팔레트<br><button class=
+app.js | ><span>요소 윤곽선</span><span class=
+app.js | ><span>탭 배치</span><span class=
+app.js | ><span>페이지 설명</span><input type=
+app.js | ><span>페이지 여백</span><input type=
+app.js | ><span>페이지 제목</span><input type=
+app.js | ><span>화면 테마</span><select name=
+app.js | >어둡게</option><option value=
+app.js | >페이지에서 찾기</button></span><textarea name=
+app.js | CSS 디자인 ·
+app.js | HTML 태그
+app.js | HTML 태그 ·
+app.js | HTML 파일
+app.js | HTML 페이지를 열었을 때 쓸 수 있어요
+app.js | JS 동작 (
+app.js | placeholder='예: &lt;link rel=
+app.js | var(--이름)
+app.js | — 아직 파일로 저장하지 않음 (Ctrl+S)
+app.js | 검색 결과 · 링크 미리보기에 나오는 한 줄 소개
+app.js | 글자 고치기 ·
+app.js | 글자를 두 번 클릭하면 고칠 수 있어요. 오른쪽 「HTML 태그」에서 요소를 끌어다 놓아 보세요.
+app.js | 나눔고딕
+app.js | 나의 첫 웹페이지
+app.js | 내용 최대 너비를 정하면 넓은 화면에서 내용이 가운데에 모여요.
+app.js | 눌러서 작업 공간 폭에 맞추기 · 두 번 누르면 100%
+app.js | 다시 하기 (Ctrl+Y)
+app.js | 다시 하기 ·
+app.js | 다운로드
+app.js | 다운로드 폴더에 저장했어요
+app.js | 단축키
+app.js | 닫기
+app.js | 되돌리기 (Ctrl+Z)
+app.js | 되돌리기 ·
+app.js | 로 남겨 두었어요)` :
+app.js | 로 복사했어요`,
+app.js | 먼저 스타일을 복사해 주세요 (Ctrl+Shift+C)
+app.js | 미리보기
+app.js | 바깥 상자 선택 ·
+app.js | 바탕
+app.js | 밝게
+app.js | 복사
+app.js | 복사하지 못했어요
+app.js | 복사했어요
+app.js | 복제 ·
+app.js | 비우면 화면 가득 (예: 960px)
+app.js | 새 창에서 미리보기
+app.js | 새 페이지.html
+app.js | 설정
+app.js | 설정 (페이지 · 편집기 · 단축키)
+app.js | 설정 줄
+app.js | 세 번 이상 쓰인 새 색이 없어요
+app.js | 스타일을 복사했어요 — 다른 요소를 고르고 붙여넣기 (Ctrl+Shift+V)
+app.js | 스타일을 붙여넣었어요
+app.js | 아래
+app.js | 아무 곳에나 놓기: 끌어 놓은 자리에 그대로 놓여요 (Alt 를 누르고 놓으면 칸에 맞춰)
+app.js | 에 저장할 이름`, doc.name,
+app.js | 에서 색·크기·모양을 바꿀 수 있어요
+app.js | 에서 요소를 클릭하거나 가운데로 끌어오세요
+app.js | 예: .btn:hover { opacity: .8; }
+app.js | 예: 24px
+app.js | 왼쪽 「프로젝트」에서 프로젝트를 고르거나 새로 만드세요
+app.js | 요소 복사·붙여넣기 ·
+app.js | 요소를 복사했어요
+app.js | 요소를 클릭하면 위쪽
+app.js | 을 누르면 완성된 HTML 코드가 나와요
+app.js | 이 형식의 파일은 열 수 없어요
+app.js | 이름: 색 (한 줄에 하나)&#10;blue: #2b2df2&#10;cream: #f2eee6
+app.js | 작게 보기 (Ctrl + 휠)
+app.js | 저장 (Ctrl+S)
+app.js | 저장 ·
+app.js | 저장하지 못했어요:
+app.js | 저장했어요` + (backup ? ` (원본은
+app.js | 처음 크기로 되돌리기
+app.js | 칸에 맞춰 놓기: 위아래 · 옆 순서로 놓여요 (Alt 를 누르고 놓으면 아무 곳에나)
+app.js | 캔버스에서 만든 화면이 이 HTML 코드가 돼요.
+app.js | 캔버스에서 요소마다 점선 테두리 보기
+app.js | 코드로 변환
+app.js | 코드로 변환 — 만든 화면을 HTML 코드로 보기
+app.js | 코드에서 이 색들은
+app.js | 코딩 없이 끌어다 놓아서 웹페이지를 만들어요.
+app.js | 크게 보기 (Ctrl + 휠)
+app.js | 파일로 저장…
+app.js | 파일에 저장
+app.js | 파일을 열지 못했어요:
+app.js | 페이지에 적용
+app.js | 편집기
+app.js | 프로젝트 탭 열기/닫기 ·
+assets.js | 고리 행성과 별
+assets.js | 남색 하늘에 별
+assets.js | 노을 그라데이션
+assets.js | 노을 진 하늘과 겹겹이 산
+assets.js | 대륙이 보이는 지구와 궤도
+assets.js | 대화
+assets.js | 둥근 나무와 길
+assets.js | 둥근 물방울
+assets.js | 따뜻한 미색 종이
+assets.js | 로켓
+assets.js | 말풍선 두 개
+assets.js | 모눈
+assets.js | 모서리 장식
+assets.js | 물결
+assets.js | 바다
+assets.js | 밤 도시
+assets.js | 밤하늘
+assets.js | 부드러운 색 덩어리 세 개
+assets.js | 불 켜진 건물이 늘어선 밤
+assets.js | 빛나는 전구
+assets.js | 산과 해
+assets.js | 성장 그래프
+assets.js | 숲
+assets.js | 아래쪽 물결 세 겹
+assets.js | 아이디어
+assets.js | 연한 모눈종이
+assets.js | 연한 점이 고르게
+assets.js | 오르는 막대와 화살표
+assets.js | 왼쪽 위 · 오른쪽 아래에 색 띠
+assets.js | 우주
+assets.js | 점 무늬
+assets.js | 종이 질감
+assets.js | 주황에서 보라로
+assets.js | 지구
+assets.js | 책
+assets.js | 책상에 둘러앉은 세 사람
+assets.js | 파도와 돛단배
+assets.js | 펼친 책과 연필
+assets.js | 하늘로 올라가는 로켓
+assets.js | 함께 일하기
+assetwin.js | 고른 상자
+assetwin.js | 고른 상자 · 슬라이드의 배경으로 (아무것도 안 골랐으면 페이지 배경)
+assetwin.js | 그림
+assetwin.js | 그림 ·
+assetwin.js | 넣기
+assetwin.js | 배경
+assetwin.js | 배경 ·
+assetwin.js | 배경으로
+assetwin.js | 새 페이지로 열기
+assetwin.js | 에셋 가져오기
+assetwin.js | 에셋 찾기 (예: 게임, 로그인, 파랑)
+assetwin.js | 전체
+assetwin.js | 지금 페이지 맨 아래에 통째로 넣어요 (게임 · 로그인의 움직임 코드는 빼고)
+assetwin.js | 지금 페이지에 넣기
+assetwin.js | 찾는 에셋이 없어요.
+assetwin.js | 페이지
+assetwin.js | 편집기가 주는 무료 페이지 · 그림 · 배경 — 직접 만든 것이라 출처 표시 없이 써도 돼요
+blockcode.js | '일월화수목금토'[new Date().getDay()]
+blockcode.js | (요소)
+blockcode.js | (이름표)
+blockcode.js | // 도우미 함수\n
+blockcode.js | // 변수 · 대답 · 신호\n
+blockcode.js | JS 값 {code}
+blockcode.js | JS 실행 {code}
+blockcode.js | const fns = {}; // 함수
+blockcode.js | document.title = '안녕'
+blockcode.js | event.preventDefault(); // 페이지가 새로 고쳐지지 않게\n
+blockcode.js | event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게\n
+blockcode.js | let picked = null, made = null; // 고른 요소 · 방금 복제한 요소
+blockcode.js | {a} (이)가 아니다
+blockcode.js | {a} 과(와) {b} 를 합치기
+blockcode.js | {a} 부터 {b} 사이의 무작위 수
+blockcode.js | {a} 안에 {b} 이(가) 들어 있는가?
+blockcode.js | {a} 에서 {b} 을(를) {c} (으)로 바꾼 글자
+blockcode.js | {a} 의 {from} 번째부터 {to} 번째 글자
+blockcode.js | {a} 의 글자 수
+blockcode.js | {a} 이(가) 비어 있는가?
+blockcode.js | {cond} 이(가) 될 때까지 기다리기
+blockcode.js | {cond} 이(가) 될 때까지 반복하기
+blockcode.js | {el} (으)로 부드럽게 스크롤하기
+blockcode.js | {el} {ev} 때
+blockcode.js | {el} 안의 요소를 이름표 {cls} 의 숫자로 {order} 정렬
+blockcode.js | {el} 양식을 보냈을 때
+blockcode.js | {el} 에 {fx} 효과 주기 ({n} 초)
+blockcode.js | {el} 에 이름표 {cls} 이(가) 붙어 있는가?
+blockcode.js | {el} 에 이름표 · 형식 {cls} {mode}
+blockcode.js | {el} 에 입력했을 때
+blockcode.js | {el} 에 커서 두기
+blockcode.js | {el} 을(를) x: {x} y: {y} 만큼 움직이기
+blockcode.js | {el} 을(를) x: {x} y: {y} 위치로 이동하기
+blockcode.js | {el} 을(를) {deg} 도 회전하기
+blockcode.js | {el} 을(를) 고른 요소로 정하기 (파란 테두리)
+blockcode.js | {el} 을(를) 끌어서 놓았을 때
+blockcode.js | {el} 을(를) 복제해서 {where} 넣기
+blockcode.js | {el} 을(를) 클릭했을 때
+blockcode.js | {el} 의 CSS {prop} 을(를) {v} (으)로 정하기
+blockcode.js | {el} 의 {prop} 을 {color} (으)로 정하기
+blockcode.js | {el} 의 {prop} 을(를) {a} ↔ {b} 로 번갈아 바꾸기
+blockcode.js | {el} 의 {prop} 을(를) {v} (으)로 정하기
+blockcode.js | {el} 의 각도를 {deg} 도로 정하기
+blockcode.js | {el} 의 글자
+blockcode.js | {el} 의 글자 크기를 {n} 로 정하기
+blockcode.js | {el} 의 글자를 {a} ↔ {b} 로 번갈아 바꾸기
+blockcode.js | {el} 의 글자를 {v} (으)로 바꾸기
+blockcode.js | {el} 의 속성 {name}
+blockcode.js | {el} 의 속성 {name} 을(를) {v} (으)로 정하기
+blockcode.js | {el} 의 수식
+blockcode.js | {el} 의 입력값
+blockcode.js | {el} 의 입력값을 {v} (으)로 정하기
+blockcode.js | {el} 의 크기 배율을 {n} % 로 정하기
+blockcode.js | {el} 의 투명도를 {n} % 로 정하기
+blockcode.js | {el} 의 표 칸 주소 (A1)
+blockcode.js | {el} 이(가) 선택되었는가?
+blockcode.js | {el} 이(가) 화면에 보일 때
+blockcode.js | {el} 지우기
+blockcode.js | {el} 칸 기준으로 표에 {act}
+blockcode.js | {el} 칸에 {v} 쓰기 (=로 시작하면 수식)
+blockcode.js | {key} 이름으로 {v} 저장하기 (다시 열어도 남음)
+blockcode.js | {key} 키가 눌러져 있는가?
+blockcode.js | {key} 키를 눌렀을 때 ({when})
+blockcode.js | {msg} 확인 창에서 [확인]을 눌렀는가?
+blockcode.js | {n} 번 반복하기
+blockcode.js | {n} 에 쉼표 넣기 (1,234,567)
+blockcode.js | {n} 을(를) {fn}
+blockcode.js | {n} 을(를) {k} 자리로 맞추기 (앞을 0으로)
+blockcode.js | {n} 초 기다리기
+blockcode.js | {n} 초마다
+blockcode.js | {q} 을(를) 묻고 대답 기다리기
+blockcode.js | {sig} 신호 보내기
+blockcode.js | {sig} 신호를 받았을 때
+blockcode.js | {url} 에서 자료를 받아 {var} 에 넣기
+blockcode.js | {url} 을(를) 새 탭에서 열기
+blockcode.js | {url} 페이지로 이동하기
+blockcode.js | {var} 값
+blockcode.js | {var} 를 {v} (으)로 정하기
+blockcode.js | {var} 목록 비우기
+blockcode.js | {var} 목록에 {v} 이(가) 있는가?
+blockcode.js | {var} 목록에 {v} 추가하기
+blockcode.js | {var} 목록을 {sep} (으)로 이어 붙인 글자
+blockcode.js | {var} 목록의 {n} 번째 항목
+blockcode.js | {var} 목록의 {n} 번째 항목 지우기
+blockcode.js | {var} 목록의 항목 수
+blockcode.js | {var} 목록의 항목마다 반복하기
+blockcode.js | {var} 에 {v} 만큼 더하기
+blockcode.js | {var} 자료의 {path} 값
+blockcode.js | {v} 을(를) 클립보드에 복사하기
+blockcode.js | 가로(x)
+blockcode.js | 강조 테두리 (예: 2px solid red)
+blockcode.js | 결과로 {v} 돌려주고 끝내기
+blockcode.js | 계산 · 글자
+blockcode.js | 계속 반복하기
+blockcode.js | 고급
+blockcode.js | 고르기 시작했을
+blockcode.js | 고른 요소
+blockcode.js | 고른 요소를 {dir} 옆으로 옮기기
+blockcode.js | 고쳤을
+blockcode.js | 굵기 (400 / 700)
+blockcode.js | 그리고
+blockcode.js | 글자 입력 중이 아닐 때만
+blockcode.js | 글자 정렬 (left / center / right)
+blockcode.js | 글자 크기
+blockcode.js | 글자색
+blockcode.js | 기록 남기기 {v} (개발자 도구 콘솔)
+blockcode.js | 기울임 (normal / italic)
+blockcode.js | 끌어서 놓았을
+blockcode.js | 나누기 나머지
+blockcode.js | 나누기 몫
+blockcode.js | 날짜 (2026. 1. 2.)
+blockcode.js | 내림
+blockcode.js | 너비
+blockcode.js | 넘겨받은 값
+blockcode.js | 높이
+blockcode.js | 대답
+blockcode.js | 데이터
+blockcode.js | 두 번 클릭했을
+blockcode.js | 둥글게
+blockcode.js | 떼기
+blockcode.js | 또는
+blockcode.js | 마우스 {axis} 위치
+blockcode.js | 마우스 모양 (pointer / grab)
+blockcode.js | 만일 {cond} (이)라면
+blockcode.js | 멈추기
+blockcode.js | 메모: {t}
+blockcode.js | 밑줄 (none / underline)
+blockcode.js | 바로 뒤에
+blockcode.js | 바로 앞에
+blockcode.js | 반가워요!
+blockcode.js | 반갑
+blockcode.js | 반복 순번 (1부터)
+blockcode.js | 반복 중단하기
+blockcode.js | 반올림
+blockcode.js | 방금 복제한 요소
+blockcode.js | 배경색
+blockcode.js | 백스페이스
+blockcode.js | 보이기
+blockcode.js | 보이기/숨기기 바꾸기
+blockcode.js | 복사할 글자
+blockcode.js | 분
+blockcode.js | 붙이기
+blockcode.js | 붙이기/떼기 바꾸기
+blockcode.js | 삐 소리 {n} 초 내기
+blockcode.js | 사과
+blockcode.js | 서서히 나타나기
+blockcode.js | 서서히 사라지기
+blockcode.js | 세로(y)
+blockcode.js | 소리
+blockcode.js | 숨기기
+blockcode.js | 스크롤한 거리
+blockcode.js | 스페이스
+blockcode.js | 시
+blockcode.js | 시각 (오후 3:04)
+blockcode.js | 시간 값 (1/1000초)
+blockcode.js | 시도하기
+blockcode.js | 아니면
+blockcode.js | 아래에 줄 넣기
+blockcode.js | 아래에서 올라오기
+blockcode.js | 아래쪽 화살표
+blockcode.js | 안녕
+blockcode.js | 안녕!
+blockcode.js | 안녕하세요
+blockcode.js | 안쪽 맨 끝에
+blockcode.js | 안쪽 여백
+blockcode.js | 알림창에 {msg} 띄우기
+blockcode.js | 언제나
+blockcode.js | 에 마우스를 올렸을
+blockcode.js | 에 입력을 시작했을
+blockcode.js | 에서 마우스가 벗어났을
+blockcode.js | 엔터
+blockcode.js | 여기서 하는 일
+blockcode.js | 연도
+blockcode.js | 열기
+blockcode.js | 오류 내용
+blockcode.js | 오류가 나면
+blockcode.js | 오른쪽
+blockcode.js | 오른쪽 화살표
+blockcode.js | 오른쪽에 칸 넣기
+blockcode.js | 올림
+blockcode.js | 왼쪽
+blockcode.js | 왼쪽 위치
+blockcode.js | 왼쪽 화살표
+blockcode.js | 왼쪽에 칸 넣기
+blockcode.js | 왼쪽에서 들어오기
+blockcode.js | 요일
+blockcode.js | 움직임
+blockcode.js | 월
+blockcode.js | 위
+blockcode.js | 위에 줄 넣기
+blockcode.js | 위쪽 위치
+blockcode.js | 위쪽 화살표
+blockcode.js | 을(를) 두 번 클릭했을
+blockcode.js | 을(를) 오른쪽 클릭했을
+blockcode.js | 의 값이 바뀌었을
+blockcode.js | 의 입력을 마쳤을
+blockcode.js | 이 묶음 여기서 끝내기
+blockcode.js | 이 세로줄 지우기
+blockcode.js | 이 요소 (방금 누르거나 바뀐 요소)
+blockcode.js | 이 줄 지우기
+blockcode.js | 이름이 뭐예요?
+blockcode.js | 이름표 {cls} 요소 모두 {fx} 효과 주기 ({n} 초)
+blockcode.js | 이름표 {cls} 요소 모두 {mode}
+blockcode.js | 이름표 {cls} 요소를 {ev} 때
+blockcode.js | 이름표 {cls} 요소의 수
+blockcode.js | 이름표 {cls} 중 {el} 만 {prop} 을 {color} 로 (나머지는 원래대로)
+blockcode.js | 이름표 {cls} 중에서 이름표 {cls2} 도 있는 것만 보이기
+blockcode.js | 이벤트
+blockcode.js | 일
+blockcode.js | 작은 것부터
+blockcode.js | 재생하기
+blockcode.js | 저장해 둔 {key} 값
+blockcode.js | 절댓값
+blockcode.js | 점수
+blockcode.js | 정말 지울까요?
+blockcode.js | 제곱근
+blockcode.js | 조건
+blockcode.js | 지금 {part}
+blockcode.js | 지금 항목
+blockcode.js | 처음부터 재생하기
+blockcode.js | 초
+blockcode.js | 커지며 나타나기
+blockcode.js | 큰 것부터
+blockcode.js | 클릭했을
+blockcode.js | 탭
+blockcode.js | 테두리 (예: 1px solid #ccc)
+blockcode.js | 테두리 강조
+blockcode.js | 테두리 색
+blockcode.js | 통통 튀기
+blockcode.js | 팝업 창 {el} {mode}
+blockcode.js | 페이지가 열렸을 때
+blockcode.js | 페이지를 스크롤했을 때
+blockcode.js | 표시 방식 (none / block / flex)
+blockcode.js | 하세요
+blockcode.js | 한 바퀴 돌기
+blockcode.js | 함수
+blockcode.js | 함수 {fn} 실행하기 (넘길 값 {v} )
+blockcode.js | 함수 {fn} 을(를) 실행하면
+blockcode.js | 함수 {fn} 의 결과 (넘길 값 {v} )
+blockcode.js | 화면
+blockcode.js | 화면 {dim}
+blockcode.js | 확인
+blockcode.js | 흐름
+blockcode.js | 흔들기
+blocks.js | (이름표 없음)
+blocks.js | )</code> 로 요소 찾기, <code>on(
+blocks.js | , () => { … })</code> 로 이벤트, 블록에서 만든 변수는 <code>vars[
+blocks.js | // 아직 실행될 블록이 없어요.\n// 「이벤트」의 「…했을 때」 블록 아래에 할 일을 붙여 보세요.\n
+blocks.js | >블록</button><button data-mode=
+blocks.js | HTML 페이지를 열면 블록을 쓸 수 있어요.
+blocks.js | ▶ 실행
+blocks.js | 「CSS 디자인」 속성의 「이름표」에 적은 이름
+blocks.js | 「이벤트」의 「…했을 때」 블록을 이곳으로 끌어온 다음, 그 아래에 할 일을 차례로 붙이세요.
+blocks.js | 가지런히 정리
+blocks.js | 고르기…
+blocks.js | 그때그때 정해지는 요소
+blocks.js | 만들기
+blocks.js | 만들어진 JavaScript
+blocks.js | 만들어진 JavaScript 보기
+blocks.js | 문법 오류:
+blocks.js | 변수
+blocks.js | 변수 만들기
+blocks.js | 변수를 만들면 변수 블록이 나타나요.
+blocks.js | 복제 (Ctrl+D)
+blocks.js | 블록 · 코드
+blocks.js | 블록 묶음 가지런히 정리
+blocks.js | 블록 작업판 크게 / 원래대로
+blocks.js | 블록 찾기 (예: 클릭, 목록, 저장)
+blocks.js | 블록과 함께 실행돼요.
+blocks.js | 블록에 요소를 넣었어요
+blocks.js | 블록으로 만들기 / JavaScript 직접 쓰기
+blocks.js | 새 변수 이름
+blocks.js | 새 신호 이름
+blocks.js | 새 함수 이름
+blocks.js | 신호
+blocks.js | 신호 만들기
+blocks.js | 신호를 만들면 신호 블록이 나타나요.
+blocks.js | 예: 게임 시작
+blocks.js | 예: 점수
+blocks.js | 예: 합계 구하기
+blocks.js | 요소
+blocks.js | 요소 고르기…
+blocks.js | 은(는) 이미 있어요`,
+blocks.js | 이 블록 삭제 (Delete)
+blocks.js | 이름표
+blocks.js | 이름표 고르기…
+blocks.js | 지우기
+blocks.js | 찾는 블록이 없어요. 「고급」의 JS 실행 블록이나 「코드」로 직접 쓸 수 있어요.
+blocks.js | 초록색 참/거짓 블록을 끼워 넣으세요
+blocks.js | 취소
+blocks.js | 캔버스에 있는 요소 고르기
+blocks.js | 캔버스에서 넣을 요소를 클릭하세요 (Esc: 취소)
+blocks.js | 캔버스의 요소
+blocks.js | 코드로 변환하면 HTML 의 <script> 안에 들어가요
+blocks.js | 페이지를 새 창에서 열어 실행해 봐요
+blocks.js | 함수 만들기
+blocks.js | 함수를 만들면 함수 블록이 나타나요. 여러 곳에서 되풀이하는 동작을 한 번만 만들어 두고 불러 써요.
+blocks.js | 🎯 캔버스에서 클릭해서 고르기
+canvas.js | ); return; } // 버튼 안은 위쪽
+canvas.js | 「클릭했을 때」 블록을 만들었어요. 그 아래에 할 일을 붙이세요
+canvas.js | 가로 가운데에 놓기
+canvas.js | 가로 배치로 감싸기
+canvas.js | 곁 내용
+canvas.js | 구역
+canvas.js | 구조에서 보기
+canvas.js | 굵은 글자
+canvas.js | 글 묶음
+canvas.js | 글자 고치기
+canvas.js | 꼬리말
+canvas.js | 눈금자 단위: px (페이지 왼쪽 위가 0)
+canvas.js | 데이터로 반복해서 만들기
+canvas.js | 두 번 클릭: 글자 고치기 · Delete: 삭제 · Ctrl+Z: 되돌리기
+canvas.js | 뒤로 옮기기 (Alt+↓)
+canvas.js | 뒤에 붙여넣기
+canvas.js | 라벨
+canvas.js | 링크
+canvas.js | 머리말
+canvas.js | 메뉴 영역
+canvas.js | 문단
+canvas.js | 바깥 상자 고르기
+canvas.js | 바깥 상자 선택 (Esc)
+canvas.js | 바꾸기
+canvas.js | 바탕화면 CSS
+canvas.js | 버튼
+canvas.js | 복제
+canvas.js | 본문
+canvas.js | 삭제
+canvas.js | 삭제 (Delete)
+canvas.js | 상자
+canvas.js | 상자 풀기 (안의 요소만 남기기)
+canvas.js | 상자로 감싸기
+canvas.js | 선택한 요소 없음
+canvas.js | 스타일 복사
+canvas.js | 스타일 복사 (Ctrl+Shift+C)
+canvas.js | 스타일 붙여넣기
+canvas.js | 스타일 붙여넣기 (Ctrl+Shift+V)
+canvas.js | 안에 붙여넣기
+canvas.js | 앞으로 옮기기 (Alt+↑)
+canvas.js | 에셋 가져오기…
+canvas.js | 여기에 끌어다 놓기
+canvas.js | 영문 · 숫자 · - · _ (페이지에서 하나뿐인 이름). 블록과 #링크에서 써요
+canvas.js | 영문으로 시작하고 영문 · 숫자 · - · _ 만 쓸 수 있어요
+canvas.js | 예: login-button
+canvas.js | 오른쪽 「HTML 태그」에서 요소를 클릭하거나 이곳으로 끌어다 놓으세요
+canvas.js | 요소 이름 (id)
+canvas.js | 요소 이름 바꾸기
+canvas.js | 요소 이름(id) 붙이기…
+canvas.js | 은(는) 이미 있는 이름이에요`,
+canvas.js | 이 모양으로 형식 만들기…
+canvas.js | 인용문
+canvas.js | 입력 양식
+canvas.js | 자유 배치 — 요소를 아무 곳에나 끌어다 놓으세요
+canvas.js | 작은 글자
+canvas.js | 작은 제목
+canvas.js | 잘라내기
+canvas.js | 정한 크기를 지웠어요 (내용에 맞춤)
+canvas.js | 중간 제목
+canvas.js | 짧은 글자
+canvas.js | 크기를 내용에 맞추기
+canvas.js | 큰 제목
+canvas.js | 클릭했을 때 동작 만들기 (JS)
+canvas.js | 태그 바꾸기 ▸
+canvas.js | 휴대폰에서 다시 보이기
+canvas.js | 휴대폰에서 숨기기
+codegen.js | // ── 원래 페이지의 스크립트 ──\n
+codegen.js | 이름표 (class)
+codegen.js | 코드로 변환하면 이 요소의 스타일이 들어가는 클래스 (편집기가 자동으로 붙임)
+codeview.js | 고치는 중 — 「적용」을 누르면 반영돼요
+codeview.js | 고치던 것을 버리고 지금 페이지의 코드로 다시
+codeview.js | 고친 코드를 페이지에 반영 (Ctrl+Enter)
+codeview.js | 되돌리기
+codeview.js | 반영했어요 (Ctrl+Z 로 되돌리기)
+codeview.js | 읽지 못했어요:
+codeview.js | 적용
+codeview.js | 지금 페이지의 코드
+core.js | 가로 배치
+core.js | 격자 배치
+core.js | 구분선
+core.js | 그림 (SVG)
+core.js | 그림 묶음
+core.js | 글머리 목록
+core.js | 기울임 글자
+core.js | 꼬리표
+core.js | 날짜 칸
+core.js | 네모
+core.js | 도형
+core.js | 동영상
+core.js | 둥근 네모
+core.js | 라디오 버튼
+core.js | 목록 항목
+core.js | 번호 목록
+core.js | 비밀번호 칸
+core.js | 색 고르기
+core.js | 선
+core.js | 선택 목록
+core.js | 선택 항목
+core.js | 세로 배치
+core.js | 세로선
+core.js | 숫자 칸
+core.js | 스위치
+core.js | 슬라이더
+core.js | 슬라이드
+core.js | 아래첨자
+core.js | 아이콘
+core.js | 여러 줄 입력
+core.js | 오디오
+core.js | 원
+core.js | 웹페이지 삽입
+core.js | 위첨자
+core.js | 이메일 칸
+core.js | 이미지
+core.js | 입력칸
+core.js | 자유 배치
+core.js | 접는 내용
+core.js | 접는 제목
+core.js | 제목 4
+core.js | 제목 5
+core.js | 제목 6
+core.js | 제출 버튼
+core.js | 줄바꿈
+core.js | 쪽 번호
+core.js | 차트
+core.js | 체크박스
+core.js | 팝업 창
+core.js | 표
+core.js | 표 머리
+core.js | 표 본문
+core.js | 표 제목 칸
+core.js | 표 줄
+core.js | 표 칸
+core.js | 화살표
+effects.js | #0으로 나눔
+effects.js | #순환
+effects.js | #오류
+effects.js | (웹)
+effects.js | 격자
+effects.js | 결제
+effects.js | 과녁
+effects.js | 나가기
+effects.js | 내려받기
+effects.js | 달력
+effects.js | 더하기
+effects.js | 도움말
+effects.js | 메뉴
+effects.js | 메일
+effects.js | 밑줄
+effects.js | 바깥으로
+effects.js | 밝아지기
+effects.js | 별
+effects.js | 보고서
+effects.js | 보기
+effects.js | 보안
+effects.js | 사람
+effects.js | 사람들
+effects.js | 살짝 떠오르기
+effects.js | 아래 꺾쇠
+effects.js | 안내
+effects.js | 알림
+effects.js | 없음
+effects.js | 연락처
+effects.js | 영상
+effects.js | 오른쪽에서 들어오기
+effects.js | 왼쪽 꺾쇠
+effects.js | 위치
+effects.js | 잠금
+effects.js | 장바구니
+effects.js | 전화
+effects.js | 조금 커지기
+effects.js | 조절
+effects.js | 집
+effects.js | 찾기
+effects.js | 켜기 / 끄기
+effects.js | 파일
+effects.js | 폴더
+effects.js | 하트
+effects.js | 흐려지기
+explorer.js | ? `폴더
+explorer.js | zip 으로 내보내기 (백업 · 옮기기)
+explorer.js | zip 은 새 프로젝트로, 페이지 · 그림은 지금 프로젝트로
+explorer.js | — 눌러서 프로젝트 메뉴
+explorer.js | 가져오기
+explorer.js | 가져오기 (zip · 페이지 · 그림)
+explorer.js | 과(와) 그 안의 모든 파일` : `
+explorer.js | 글자를 두 번 클릭하면 고칠 수 있어요.
+explorer.js | 내 컴퓨터
+explorer.js | 내 컴퓨터 폴더 (Chrome · Edge)
+explorer.js | 내 컴퓨터 폴더 열기 (Chrome · Edge)
+explorer.js | 내 컴퓨터 폴더:
+explorer.js | 내 프로젝트
+explorer.js | 내보낼 파일이 없어요
+explorer.js | 먼저 프로젝트를 열어 주세요
+explorer.js | 모두 접기
+explorer.js | 불러오는 중…
+explorer.js | 브라우저
+explorer.js | 브라우저 안 프로젝트:
+explorer.js | 브라우저 저장소를 열지 못했어요:
+explorer.js | 빈 폴더예요. 위의 [새 파일] 버튼으로 HTML 파일을 만들어 보세요.
+explorer.js | 삭제하지 못했어요:
+explorer.js | 새 파일
+explorer.js | 새 페이지
+explorer.js | 새 폴더
+explorer.js | 새 프로젝트
+explorer.js | 새로 고침
+explorer.js | 아직 프로젝트가 없어요. [새 프로젝트]로 시작하거나 [예제]를 불러와 보세요.
+explorer.js | 연습 예제
+explorer.js | 예: 우리 가게 홈페이지
+explorer.js | 예제
+explorer.js | 예제 파일이 없어요
+explorer.js | 예제를 불러오지 못했어요:
+explorer.js | 을(를) 만들었어요`,
+explorer.js | 이름 바꾸기
+explorer.js | 이름에 \\ / : * ? " < > | 는 쓸 수 없어요
+explorer.js | 이름을 바꾸지 못했어요:
+explorer.js | 파일 이름 (예: index.html)
+explorer.js | 파일을 만들지 못했어요:
+explorer.js | 포털 · 쇼핑몰 · 대시보드 · 포트폴리오 · 스프레드시트 · 영상 편집 예제
+explorer.js | 폴더 열기
+explorer.js | 폴더 이름
+explorer.js | 폴더를 다시 열지 못했어요. [폴더 열기]로 골라 주세요.
+explorer.js | 폴더를 만들지 못했어요:
+explorer.js | 폴더를 열지 못했어요:
+explorer.js | 프로젝트 메뉴 (목록 · 새로 만들기 · zip 내보내기 · 가져오기)
+explorer.js | 프로젝트 목록
+explorer.js | 프로젝트 삭제
+explorer.js | 프로젝트 이름 바꾸기
+explorer.js | 프로젝트는 이 브라우저 안에 저장돼요. 다른 컴퓨터로 옮기거나 백업하려면 프로젝트 메뉴에서 zip 으로 내보내세요.
+explorer.js | 프로젝트를 삭제했어요
+explorer.js | 프로젝트를 찾지 못했어요
+formats.js | HTML 페이지를 열면 쓸 수 있어요.
+formats.js | 가나 Aa
+formats.js | 같은 형식을 쓰는 요소는 모양(색 · 글자 · 테두리 · 여백)이 함께 바뀌어요. 크기와 위치는 요소마다 따로예요.
+formats.js | 고른 요소만 이 형식에서 떼기
+formats.js | 고른 요소에 입히기
+formats.js | 고른 요소의 모양을 형식으로 저장해요
+formats.js | 누르면 고른 요소에 이 형식을 입혀요
+formats.js | 누르면 이 이름표가 붙은 요소를 차례로 골라요 · 오른쪽 클릭: 형식으로 만들기
+formats.js | 누르면 이 형식을 쓰는 요소를 차례로 골라요
+formats.js | 먼저 캔버스에서 본보기가 될 요소를 고르세요
+formats.js | 먼저 캔버스에서 요소를 고르세요
+formats.js | 묶어 부르기만 하는 이름 (모양은 따로). 블록의 「이름표 ~ 요소」에서 써요.
+formats.js | 블록과 #링크에서 쓰는 곳도 함께 바뀌어요
+formats.js | 새 형식 이름
+formats.js | 쓰는 요소 차례로 고르기
+formats.js | 아직 이름 붙인 요소가 없어요. 블록에서 요소를 고르면 자동으로 붙어요.
+formats.js | 영문 · 숫자 · - · _ (페이지에서 하나뿐인 이름)
+formats.js | 예: 카드, 제목, main-button
+formats.js | 요소 하나만 가리키는 이름. 블록 · 「#이름」 링크에서 써요.
+formats.js | 은(는) 이미 쓰고 있는 이름이에요`,
+formats.js | 을(를) 만들었어요. 다른 요소를 고르고 이 형식을 누르면 같은 모양이 돼요`,
+formats.js | 을(를) 입혔어요`,
+formats.js | 이 이름은 형식으로 쓸 수 없어요
+formats.js | 이 이름을 쓰는 블록 수
+formats.js | 이 이름을 쓰는 요소가 아직 없어요
+formats.js | 이 이름표가 맨 앞에 붙은 요소가 없어요
+formats.js | 이름 바꾸기 · 풀기
+formats.js | 이름 지우기
+formats.js | 이름에 띄어쓰기나 기호는 쓸 수 없어요
+formats.js | 이름표 이름 바꾸기
+formats.js | 한글 · 영문 · 숫자 · - · _ 를 쓸 수 있어요 (띄어쓰기 없이, 숫자로 시작하지 않게)
+formats.js | 형식
+formats.js | 형식 이름 바꾸기
+formats.js | 형식 풀기 (요소 모양은 그대로)
+formats.js | 형식으로 만들기 (모양을 함께 쓰기)
+formats.js | ＋ 고른 요소로 새 형식
+formats.js | ＋ 고른 요소에 이름 붙이기
+index.html | >비코더</button><button data-cm=
+index.html | CSS 디자인 — 고른 요소 꾸미기 (Ctrl+2)
+index.html | HTML 태그 — 요소 넣기 · 형식 · 구조 (Ctrl+1)
+index.html | JS 동작 — 블록 · 코드 (Ctrl+3)
+index.html | ▶ 발표
+index.html | ✦ 에셋 가져오기
+index.html | 끌어서 크기 조절 · 두 번 클릭하면 접기/펴기 (Ctrl+B)
+index.html | 끌어서 크기 조절 · 두 번 클릭하면 접기/펴기 (Ctrl+J)
+index.html | 동작
+index.html | 디자인
+index.html | 밝게 / 어둡게
+index.html | 블록 웹 편집기
+index.html | 비코더: 화면에서 고르고 끌어서 · 코드: 직접 써서
+index.html | 슬라이드를 새 창에서 발표 (← → 넘기기 · F 전체 화면 · N 발표자 메모)
+index.html | 코드
+index.html | 태그
+index.html | 편집기가 주는 무료 페이지 · 그림 · 배경 (작업 공간 빈 곳을 오른쪽 클릭해도 열려요)
+index.html | 프로젝트
+index.html | 프로젝트 탭 열기/닫기 (Ctrl+B)
+inspector.js | *별표* 부분만 다른 글꼴로 (예: IDEAS WITH *visual impact.*)
+inspector.js | , '굴림'], [
+inspector.js | >기본</button><button data-state=
+inspector.js | >기본</option><option value=
+inspector.js | >없음</option><option value=
+inspector.js | >왼쪽에 붙기</option><option value=
+inspector.js | >위에 붙기</option><option value=
+inspector.js | >한 줄로</option><option value=
+inspector.js | >화면 아래에 고정</option><option value=
+inspector.js | >화면 위에 고정</option><option value=
+inspector.js | HTML 페이지를 열면 쓸 수 있어요
+inspector.js | Work⁰⁵ 처럼 글자를 위로 올리기 (위첨자) 등
+inspector.js | data-bgimg>그림…</button><select data-bgasset title=
+inspector.js | https:// 또는 images/사진.png
+inspector.js | 가로
+inspector.js | 가로 기준
+inspector.js | 가로 배치에서 크기 · 글꼴이 다른 글자들의 밑줄 높이를 맞춰요
+inspector.js | 가로/세로 배치 안에서 자리가 모자라도 이 크기를 지켜요
+inspector.js | 가로로만
+inspector.js | 가로세로 비율
+inspector.js | 가운데
+inspector.js | 가운데 놓기
+inspector.js | 가운데 아래
+inspector.js | 가운데 위
+inspector.js | 간격
+inspector.js | 강조 · 움직임
+inspector.js | 강조 글꼴
+inspector.js | 강조 글자색
+inspector.js | 강조 모양
+inspector.js | 강하게
+inspector.js | 겹침 방식
+inspector.js | 고정
+inspector.js | 고정: 정한 크기 그대로
+inspector.js | 곱하기 (어둡게)
+inspector.js | 굵게
+inspector.js | 굵기
+inspector.js | 그대로
+inspector.js | 그라데이션
+inspector.js | 그림 맞추기
+inspector.js | 그림자
+inspector.js | 그림자 모양과 색 (빛나기는 색이 퍼져요)
+inspector.js | 글꼴
+inspector.js | 글자
+inspector.js | 글자 간격
+inspector.js | 글자 그림자
+inspector.js | 글자 기준선 맞춤
+inspector.js | 글자 중 *이렇게* 별표로 감싼 부분의 색
+inspector.js | 금지
+inspector.js | 기본
+inspector.js | 기울임
+inspector.js | 꺼짐 색
+inspector.js | 꽉 채우기 (잘림)
+inspector.js | 꾸미기 모두 지우기
+inspector.js | 날짜
+inspector.js | 너비에 맞춰 높이가 정해져요 (예: 1, 4 / 3, 16 / 9)
+inspector.js | 넓은 화면에서도 이보다 커지지 않아요 (예: 720, 60%)
+inspector.js | 넘치는 부분 숨기기
+inspector.js | 넘치면 …
+inspector.js | 네 면
+inspector.js | 늘이기
+inspector.js | 뒤 배경 흐리게
+inspector.js | 띄워서 겹치기
+inspector.js | 라디오
+inspector.js | 링크 주소
+inspector.js | 마우스 모양
+inspector.js | 마우스 올리면
+inspector.js | 마우스 올림
+inspector.js | 마우스로 아무 위치에나 놓기
+inspector.js | 마우스를 올렸을 때(:hover)의 스타일을 따로 정해요
+inspector.js | 맞춤
+inspector.js | 맞춤: 내용만큼만
+inspector.js | 맨 왼쪽에 1, 2, 3 … 번호 칸
+inspector.js | 맨 위에 A, B, C … 제목 줄
+inspector.js | 모양
+inspector.js | 바깥 여백
+inspector.js | 바로
+inspector.js | 반투명 배경색과 함께 쓰면 유리처럼 보여요 (예: 12)
+inspector.js | 방향
+inspector.js | 배경 그림
+inspector.js | 배경 그림 지우기
+inspector.js | 배경색에서 이 색으로 자연스럽게 바뀌어요
+inspector.js | 배치 (Auto layout)
+inspector.js | 보는 사람이 글자를 고칠 수 있게
+inspector.js | 보는 사람이 끌어서 옮기기
+inspector.js | 보는 사람이 왼쪽·오른쪽 끝을 잡아 길이를 늘이고 줄여요 (영상 클립처럼)
+inspector.js | 보통
+inspector.js | 보통 (0.3초)
+inspector.js | 부드럽게 바뀌기
+inspector.js | 비밀번호
+inspector.js | 빛나게
+inspector.js | 빛나기
+inspector.js | 빠르게 (0.15초)
+inspector.js | 빠른 꾸미기
+inspector.js | 빨간 강조
+inspector.js | 새 탭에서 열기
+inspector.js | 색
+inspector.js | 색 지우기
+inspector.js | 선 모양
+inspector.js | 선택 없음
+inspector.js | 세로
+inspector.js | 세로 기준
+inspector.js | 세로 위치
+inspector.js | 세로로만
+inspector.js | 속성
+inspector.js | 손가락 (누를 수 있음)
+inspector.js | 숫자
+inspector.js | 숫자가 클수록 앞에 보여요 (예: 1, 10). 겹친 요소의 순서
+inspector.js | 숫자만 쓰면 px (예: 200, 50%)
+inspector.js | 숫자만 쓰면 px. 2rem, 5vw, clamp(32px, 6vw, 96px) 도 돼요
+inspector.js | 숫자만 쓰면 px. 50% 는 원. 모서리 따로: 왼쪽위 오른쪽위 오른쪽아래 왼쪽아래 (예: 8 8 0 0)
+inspector.js | 스크롤하면 나타나기
+inspector.js | 스크롤해도 붙어 있기
+inspector.js | 스크롤해도 화면(또는 스크롤 상자) 위쪽·왼쪽에 붙어 있어요. 메뉴 줄, 표의 제목 줄·번호 칸에 좋아요
+inspector.js | 스크린 (밝게)
+inspector.js | 실선
+inspector.js | 아무 방향
+inspector.js | 아주 굵게
+inspector.js | 안 됨
+inspector.js | 안의 그림이 둥근 모서리 밖으로 나가지 않아요
+inspector.js | 안의 요소를 모을 자리
+inspector.js | 안쪽 여백: 가로(왼쪽·오른쪽) / 세로(위·아래)
+inspector.js | 알약 버튼
+inspector.js | 앞뒤 순서
+inspector.js | 약하게
+inspector.js | 얇게
+inspector.js | 양 끝을 끌어 길이 조절
+inspector.js | 양끝 벌리기
+inspector.js | 양쪽 맞춤
+inspector.js | 영문 대소문자
+inspector.js | 옆으로 나란히
+inspector.js | 옆으로 놓다가 자리가 없으면 다음 줄로
+inspector.js | 오른쪽 가운데
+inspector.js | 오른쪽 아래
+inspector.js | 오른쪽 위
+inspector.js | 오버레이
+inspector.js | 왼쪽 가운데
+inspector.js | 왼쪽 아래
+inspector.js | 왼쪽 위
+inspector.js | 요소를 뿌옇게 (예: 4)
+inspector.js | 원래대로 (위에서 아래로 쌓기)
+inspector.js | 위아래로 간격을 두고 나란히
+inspector.js | 위치 (자유 배치 · 띄운 요소)
+inspector.js | 이 요소만 제자리에서 띄워 다른 요소 위에 겹쳐 놓아요 (나머지는 그대로). 아래 「위치」에서 옮기고, 화살표 키로도 옮겨요
+inspector.js | 이 줄을 제목 칸(th) ↔ 일반 칸(td)으로 바꾸기
+inspector.js | 이 칸(세로줄) 지우기
+inspector.js | 이메일
+inspector.js | 이미지 주소
+inspector.js | 있던 칸의 글자는 그대로 남아요. 칸 수를 줄이면 오른쪽부터, 줄 수를 줄이면 아래부터 지워져요.
+inspector.js | 자동
+inspector.js | 자유
+inspector.js | 자유 배치는 컴퓨터 화면 보기에서 바꿔 주세요
+inspector.js | 자유 배치에서는 요소를 직접 끌어서 놓아요
+inspector.js | 잡기
+inspector.js | 전부 보이기
+inspector.js | 전화번호
+inspector.js | 점
+inspector.js | 점선
+inspector.js | 정가운데
+inspector.js | 정렬
+inspector.js | 정하기
+inspector.js | 제목칸
+inspector.js | 조금 굵게
+inspector.js | 줄 간격
+inspector.js | 줄 수
+inspector.js | 줄 수 × 칸 수를 한 번에 정하기 (스프레드시트처럼 A, B, C 제목 줄과 1, 2, 3 번호 칸도)
+inspector.js | 줄×
+inspector.js | 줄↑
+inspector.js | 줄↓
+inspector.js | 줄어들지 않게
+inspector.js | 진하게
+inspector.js | 진하기
+inspector.js | 진하기 % (낮추면 반투명)
+inspector.js | 차이
+inspector.js | 채우기
+inspector.js | 채우기: 남은 자리를 가득
+inspector.js | 처음과 끝에 붙이고 사이를 똑같이 벌려요
+inspector.js | 천천히 (0.6초)
+inspector.js | 체크 색
+inspector.js | 체크박스 · 라디오 · 슬라이더의 색
+inspector.js | 최대 너비
+inspector.js | 최소 높이
+inspector.js | 취소선
+inspector.js | 카드
+inspector.js | 칸 수
+inspector.js | 칸×
+inspector.js | 칸←
+inspector.js | 칸→
+inspector.js | 캔버스에서 요소를 클릭하세요
+inspector.js | 켜짐 색
+inspector.js | 크기
+inspector.js | 크기 · 여백
+inspector.js | 크기…
+inspector.js | 테두리
+inspector.js | 테두리를 그릴 쪽
+inspector.js | 테두리색
+inspector.js | 텍스트
+inspector.js | 파일을 넣지 못했어요:
+inspector.js | 페이지 제목 (브라우저 탭에 보임)
+inspector.js | 표 크기 정하기
+inspector.js | 표처럼 칸을 나눠 차례로 채우기
+inspector.js | 한 줄 칸 수
+inspector.js | 형광펜
+inspector.js | 형식: 같은 형식을 쓰는 요소는 모양이 함께 바뀌어요 (「HTML 태그」의 「형식 · 이름」)
+inspector.js | 화면 오른쪽 아래에 떠 있기
+inspector.js | 화면: 브라우저 화면 높이(너비)만큼 — 편집 프로그램처럼 한 화면을 꽉 채울 때
+inspector.js | 회전
+inspector.js | 흐리게
+inspector.js | ＋ 이 모양으로 새 형식…
+inspector.js | 📱 태블릿 화면 전용으로 고치는 중 (휴대폰에도 적용)
+inspector.js | 📱 휴대폰 화면 전용으로 고치는 중
+inspector.js | 🖱 마우스를 올렸을 때 모습을 고치는 중
+palette.js | 1, 2, 3 번호가 붙는 목록
+palette.js | 120만 원
+palette.js | 1280 × 720 빈 슬라이드
+palette.js | 1분기,2분기,3분기,4분기
+palette.js | 1월,2월,3월,4월
+palette.js | 1월,2월,3월,4월,5월
+palette.js | 3.2만
+palette.js | 3주
+palette.js | 5주
+palette.js | 90만 원
+palette.js | <div class="pal-empty">찾는 태그가 없어요.</div>
+palette.js | >HTML 태그</button><button data-pm=
+palette.js | >슬라이드</button><button data-pm=
+palette.js | >형식 · 이름</button><button data-pm=
+palette.js | A안
+palette.js | B안
+palette.js | © 2026 나의 웹사이트
+palette.js | — 누르면 이 에셋으로 새 페이지
+palette.js | — 말한 사람
+palette.js | — 상자 · 슬라이드를 고르고 누르면 그 배경으로
+palette.js | — 편집기 무료 그림
+palette.js | 가로 넘기기
+palette.js | 가로선 (두께는 높이로)
+palette.js | 감사합니다
+palette.js | 감사합니다 + 연락처
+palette.js | 값을 막대로 비교 (여러 묶음 가능)
+palette.js | 과정 도식
+palette.js | 구역의 제목
+palette.js | 구조
+palette.js | 굵게 보이는 머리 칸
+palette.js | 그래프에서 말하고 싶은 한 가지를 적어요.
+palette.js | 그림 설명
+palette.js | 그림·사진
+palette.js | 그림에 대한 설명을 적어요. 오른쪽 그림은 「CSS 디자인」 속성에서 다른 그림으로 바꿀 수 있어요.
+palette.js | 글 + 그림
+palette.js | 글자 오른쪽 위에 작게 (예: Work⁰⁵, m²)
+palette.js | 글자 입력칸
+palette.js | 기간
+palette.js | 긴 글 입력
+palette.js | 김철수
+palette.js | 나이
+palette.js | 낮음
+palette.js | 내용
+palette.js | 내용을 나누는 가로줄
+palette.js | 내용을 입력하세요
+palette.js | 네 단계 상자 + 화살표
+palette.js | 네 번째
+palette.js | 누르면 다른 페이지로 이동
+palette.js | 누를 수 있는 버튼
+palette.js | 다른 곳에서 가져온 말
+palette.js | 다른 웹페이지·지도·유튜브 넣기
+palette.js | 다른 페이지로 가는 링크 모음
+palette.js | 더 알아보기
+palette.js | 도넛 그래프
+palette.js | 동그라미 (가로세로 같게)
+palette.js | 동영상 파일 재생
+palette.js | 두 번째
+palette.js | 두 번째 단계
+palette.js | 두 번째 요점
+palette.js | 두 번째 항목
+palette.js | 둥근 꼬리표 글자
+palette.js | 떠 있는 버튼
+palette.js | 라벨 + 입력칸 + 버튼 묶음
+palette.js | 레이아웃
+palette.js | 로고
+palette.js | 로고 + 메뉴 + 버튼. 스크롤해도 위에 붙어 있음
+palette.js | 링크 글자
+palette.js | 링크·버튼
+palette.js | 마무리
+palette.js | 마음에 남기고 싶은 한 문장을 적으세요.
+palette.js | 막대 그래프
+palette.js | 만족도
+palette.js | 머리말 메뉴
+palette.js | 모서리가 둥근 네모
+palette.js | 목록 안에 넣는 한 줄
+palette.js | 목록·표
+palette.js | 무엇을 하는 곳인지 한두 문장으로 설명하세요.
+palette.js | 문의
+palette.js | 미디어
+palette.js | 바로 가기
+palette.js | 발표 제목을 적으세요
+palette.js | 발표 주제 · 2026
+palette.js | 발표할 때 몇 번째 슬라이드인지 저절로 채워지는 번호
+palette.js | 버튼 모양 링크
+palette.js | 버튼처럼 생긴 링크
+palette.js | 변화량을 면으로
+palette.js | 보내기
+palette.js | 부산
+palette.js | 부제 · 발표자 이름
+palette.js | 부품
+palette.js | 비교 표
+palette.js | 비용
+palette.js | 빈 슬라이드
+palette.js | 빠르게
+palette.js | 사용자
+palette.js | 삽입한 페이지
+palette.js | 새 항목
+palette.js | 색을 채운 네모 (크기는 테두리를 끌어서)
+palette.js | 서비스
+palette.js | 서울
+palette.js | 선 그래프
+palette.js | 선택 1
+palette.js | 선택 2
+palette.js | 선택 3
+palette.js | 성장
+palette.js | 세 번째
+palette.js | 세 번째 단계
+palette.js | 세 번째 요점
+palette.js | 세 번째 항목
+palette.js | 세로선 (두께는 너비로)
+palette.js | 소개
+palette.js | 소리 파일 재생
+palette.js | 수치를 보여 주는 제목
+palette.js | 숫자 카드
+palette.js | 숫자만 입력
+palette.js | 쉽게
+palette.js | 스크롤해도 화면 오른쪽 아래에 떠 있는 버튼 (맨 위로, 문의하기)
+palette.js | 시간에 따른 변화
+palette.js | 시작하기
+palette.js | 안에 넣은 요소를 마우스로 아무 위치에나 놓기
+palette.js | 안에 넣은 요소를 옆으로 나란히
+palette.js | 안에 넣은 요소를 위아래로
+palette.js | 안전하게
+palette.js | 에셋
+palette.js | 여기에 내용을 입력하세요. 두 번 클릭하면 글자를 고칠 수 있어요.
+palette.js | 여기에 설명을 적어요. 두 번 클릭하면 바로 고칠 수 있어요.
+palette.js | 여기에 알릴 내용을 적으세요.
+palette.js | 여기에 입력
+palette.js | 여러 개 중 하나 고르기
+palette.js | 여러 요소를 담는 기본 상자
+palette.js | 여러 줄의 글
+palette.js | 영역 그래프
+palette.js | 옆으로 밀어 넘기는 카드 줄 (한 장씩 딱 멈춤). JS 없이 CSS 로
+palette.js | 오른쪽 화살표 (색은 글자색, 방향은 「회전」)
+palette.js | 온라인,매장,제휴,기타
+palette.js | 왼쪽에 글, 오른쪽에 그림
+palette.js | 원 그래프
+palette.js | 월,6월,9월,11월
+palette.js | 위험
+palette.js | 이 장점을 한두 문장으로 설명하세요.
+palette.js | 이름
+palette.js | 이름을 입력하세요
+palette.js | 이메일 주소 입력
+palette.js | 이미지 설명
+palette.js | 인용
+palette.js | 인용할 문장을 입력하세요.
+palette.js | 일하는 순서
+palette.js | 입력칸에 붙이는 이름표
+palette.js | 입력한 글자가 가려짐
+palette.js | 자주 묻는 질문을 적으세요
+palette.js | 작은 머리글 + 큰 제목 + 부제
+palette.js | 작은 묶음의 제목
+palette.js | 전체 중 비율
+palette.js | 전체 중 비율 (꽉 찬 원)
+palette.js | 점(•)으로 시작하는 목록
+palette.js | 제목
+palette.js | 제목 + 막대 그래프 + 설명
+palette.js | 제목 + 본문
+palette.js | 제목 + 설명 카드 세 장 (휴대폰에서는 화면 보기에서 1칸으로)
+palette.js | 제목 + 표
+palette.js | 제목, 줄글, 글머리 목록
+palette.js | 제목을 누르면 내용이 펼쳐짐 (자주 묻는 질문). JS 없이 <details> 로
+palette.js | 제목을 누르면 보이는 답변이에요.
+palette.js | 제목을 적으세요
+palette.js | 준비
+palette.js | 줄과 칸으로 된 표
+palette.js | 중요한 글자
+palette.js | 중요해서 굵게 보이는 글자
+palette.js | 지역
+palette.js | 질문 · 연락처를 적으세요
+palette.js | 첫 번째
+palette.js | 첫 번째 단계
+palette.js | 첫 번째 요점
+palette.js | 첫 번째 항목
+palette.js | 첫 화면 (히어로)
+palette.js | 카드 3칸
+palette.js | 켜고 끄는 네모 칸
+palette.js | 켜고 끄는 토글 (JS 없이 CSS 로). 색은 「CSS 디자인」 모양에서
+palette.js | 큰 따옴표 + 한 문장
+palette.js | 큰 숫자 세 개로 요약
+palette.js | 큰 제목 + 설명 + 버튼 두 개
+palette.js | 클릭하면 넣기 · 끌어서 원하는 곳에 놓기
+palette.js | 태그 찾기 (예: 버튼, img)
+palette.js | 태그: 넣을 요소 · 형식: 함께 쓰는 모양과 이름 · 구조: 페이지 요소 나무
+palette.js | 페이지 맨 아래 (저작권, 연락처)
+palette.js | 페이지 맨 위 (로고, 메뉴)
+palette.js | 페이지를 나누는 큰 구역
+palette.js | 페이지에서 가장 중요한 제목
+palette.js | 펼쳐서 고르는 목록
+palette.js | 표 줄에 칸 하나 더하기
+palette.js | 표에 한 줄 더하기
+palette.js | 표지
+palette.js | 표처럼 칸을 나눠 차례로 채우기 (칸 수는 위쪽 배치에서)
+palette.js | 한 줄 글자 입력
+palette.js | 한 줄 안에 들어가는 짧은 글자
+palette.js | 한 줄로 전하는 큰 제목
+palette.js | 한눈에 보는 숫자
+palette.js | 항목
+palette.js | 홈
+palette.js | 홍길동
+palette.js | 화면 가운데 뜨는 창. 「JS 동작」 블록 「팝업 열기」로 열고, 안의 닫기 버튼으로 닫음
+repeater.js | 그림 주소
+repeater.js | 반복할 요소(예: 카드)를 먼저 고르세요
+repeater.js | 이 요소 안에는 바꿀 글자나 그림이 없어요
+repeater.js | 줄 추가
+repeater.js | 줄이 하나 이상 있어야 해요
+slides.js | ▶ 발표하기
+slides.js | 뒤로
+slides.js | 발표자 메모:
+slides.js | 새 창에서 발표 (← → 넘기기 · F 전체 화면 · N 발표자 메모 · Esc 모두 보기)
+slides.js | 새 창에서 인쇄 창을 열어요. 「대상: PDF로 저장」을 고르세요 (한 장에 한 슬라이드)
+slides.js | 아직 슬라이드가 없어요.
+slides.js | 앞으로
+slides.js | 이 장부터 발표
+slides.js | 지금 슬라이드 뒤에 새 슬라이드 (틀 고르기)
+slides.js | ＋ 새 슬라이드
+vfs.js | zip 파일이 아니에요
+vfs.js | 이(가) 없어요`,
+vfs.js | 폴더가 비어 있지 않아요
+vfs.js | 프로젝트id:경로
+1172

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.5;
+      color: #1f2937;
+      background-color: #f4f5fa;
+    }
+    .c1 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 14px 28px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+    .c2 {
+      color: #9ca3af;
+      font-size: 13px;
+    }
+    .c3 {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: center;
+      color: #6b7280;
+    }
+    .c4 {
+      font-size: 14px;
+    }
+    .c5 {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #7c5c45;
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .c6 {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 24px 28px;
+    }
+    .c7 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .c8 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .c9 {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+    .c10 {
+      background-color: #ffffff;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e5e7eb;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: #4b5563;
+    }
+    .c11 {
+      background-color: #5b5ce6;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #5b5ce6;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: #ffffff;
+    }
+    .c12 {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .c13 {
+      display: flex;
+      flex-direction: column;
+      width: 240px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      padding: 18px;
+      gap: 10px;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .c14 {
+      font-weight: 600;
+      font-size: 14px;
+      padding: 0 0 12px;
+      border-width: 0 0 1px 0;
+      border-style: solid;
+      border-color: #eeeeee;
+    }
+    .c15 {
+      font-weight: 600;
+      margin: 8px 0 0;
+    }
+    .c16 {
+      color: #4b5563;
+    }
+    .c17 {
+      font-weight: 600;
+      margin: 10px 0 0;
+    }
+    .c18 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      color: #4b5563;
+    }
+    .c19 {
+      color: #9ca3af;
+      font-size: 11px;
+    }
+    .c20 {
+      color: #5b5ce6;
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .c21 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      color: #4b5563;
+    }
+    .c22 {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+    }
+    .c23 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .c24 {
+      color: #f59e0b;
+      font-size: 12px;
+    }
+    .c25 {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .c26 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .c27 {
+      width: 210px;
+      padding: 9px 16px;
+      border-radius: 20px;
+      border-style: none;
+      background-color: #ffffff;
+    }
+    .c28 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      margin: 0 0 0 auto;
+    }
+    .c29 {
+      display: flex;
+      flex-direction: row;
+      background-color: #ffffff;
+      border-radius: 6px;
+      padding: 4px;
+    }
+    .c30 {
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .c31 {
+      font-size: 15px;
+      color: #5b5ce6;
+      margin: 0 0 0 8px;
+    }
+    .c32 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .c33 {
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+    .c34 {
+      position: relative;
+      height: 150px;
+      background-color: #f3f4f6;
+    }
+    .c35 {
+      width: 100%;
+      height: 150px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      object-fit: cover;
+    }
+    .c36 {
+      position: absolute;
+      top: 10px;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #ffffff;
+      color: #ef4444;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      right: 10px;
+    }
+    .c37 {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 14px 14px;
+      gap: 6px;
+    }
+    .c38 {
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .c39 {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+    }
+    .c40 {
+      color: #5b5ce6;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .c41 {
+      color: #9ca3af;
+      text-decoration: line-through;
+    }
+    .c42 {
+      color: #ec4899;
+    }
+    .c43 {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      align-items: center;
+      font-size: 11px;
+    }
+    .c44 {
+      color: #f59e0b;
+    }
+    .c45 {
+      font-weight: 600;
+    }
+    .c46 {
+      color: #9ca3af;
+    }
+    .c47 {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      margin: 6px 0 0;
+    }
+    .c48 {
+      padding: 7px 10px;
+      font-size: 11px;
+      background-color: #ffffff;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e5e7eb;
+      border-radius: 4px;
+      color: #4b5563;
+    }
+    .c49 {
+      padding: 7px 14px;
+      font-size: 11px;
+      background-color: #5b5ce6;
+      color: #ffffff;
+      border-style: none;
+      border-radius: 4px;
+    }
+    .c50 {
+      position: absolute;
+      top: 10px;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #ffffff;
+      color: #9ca3af;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      right: 10px;
+    }
+    [data-hover] {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+    }
+    [data-hover="lift"]:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    }
+    [data-hover="grow"]:hover {
+      transform: scale(1.05);
+    }
+    [data-hover="dim"]:hover {
+      opacity: 0.7;
+    }
+    /* 휴대폰 화면 */
+    @media (max-width: 640px) {
+      .c1 {
+        padding: 12px 16px;
+      }
+      .c6 {
+        padding: 16px;
+      }
+      .c7 {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .c9 {
+        flex-wrap: wrap;
+      }
+      .c12 {
+        flex-direction: column;
+      }
+      .c13 {
+        width: 100%;
+      }
+      .c25 {
+        width: 100%;
+      }
+      .c26 {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .c27 {
+        width: 100%;
+      }
+      .c28 {
+        margin: 0;
+      }
+      .c32 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="c1">
+    <span class="c2">🔍 Search...</span>
+    <div class="c3">
+      <span class="c4">✉</span>
+      <span class="c4">🔔</span>
+      <span class="c4">⚙</span>
+      <span class="c4">?</span>
+      <span class="c4">EN</span>
+      <span class="c5">A</span>
+    </div>
+  </div>
+  <div class="c6">
+    <div class="c7">
+      <h2 class="c8">Shop</h2>
+      <div class="c9">
+        <button class="c10" type="button">📅 Oct 30, 2019 - Nov 30, 2019 ▾</button>
+        <button class="c10" type="button">⤓ Export</button>
+        <button class="c10" type="button">⇪ Share</button>
+        <button class="c11" type="button">+ Add New</button>
+      </div>
+    </div>
+    <div class="c12">
+      <div class="c13">
+        <span class="c14">☷ Filters</span>
+        <span class="c15">Price Range</span>
+        <input type="range" placeholder="여기에 입력" id="price" min="0" max="2000" value="2000">
+        <span class="c16" id="price-label">$0 - $2000</span>
+        <span class="c17">Category</span>
+        <div class="c18 cat" id="cat-accessories" data-hover="dim">
+          <span>Accessories</span>
+          <span class="c19">1</span>
+        </div>
+        <div class="c18 cat" id="cat-appliances" data-hover="dim">
+          <span>Appliances</span>
+          <span class="c19">2</span>
+        </div>
+        <div class="c18 cat" id="cat-bags" data-hover="dim">
+          <span>Bags</span>
+          <span class="c19">2</span>
+        </div>
+        <div class="c18 cat" id="cat-electronic" data-hover="dim">
+          <span>Electronic</span>
+          <span class="c19">1</span>
+        </div>
+        <div class="c18 cat" id="cat-entertainment" data-hover="dim">
+          <span>Entertainment</span>
+          <span class="c19">1</span>
+        </div>
+        <div class="c18 cat" id="cat-induction" data-hover="dim">
+          <span>Induction</span>
+          <span class="c19">0</span>
+        </div>
+        <div class="c18 cat" id="cat-mobile" data-hover="dim">
+          <span>Mobile Phone</span>
+          <span class="c19">1</span>
+        </div>
+        <span class="c20 cat" id="cat-all">Show all</span>
+        <span class="c17">Brands</span>
+        <div class="c21">
+          <div class="c22">
+            <input type="checkbox">
+            <label>Appliances</label>
+          </div>
+          <span class="c19">25</span>
+        </div>
+        <div class="c21">
+          <div class="c22">
+            <input type="checkbox" checked>
+            <label>Bags</label>
+          </div>
+          <span class="c19">54</span>
+        </div>
+        <div class="c21">
+          <div class="c22">
+            <input type="checkbox">
+            <label>Electronic</label>
+          </div>
+          <span class="c19">78</span>
+        </div>
+        <div class="c21">
+          <div class="c22">
+            <input type="checkbox">
+            <label>Entertainment</label>
+          </div>
+          <span class="c19">42</span>
+        </div>
+        <div class="c21">
+          <div class="c22">
+            <input type="checkbox">
+            <label>Induction</label>
+          </div>
+          <span class="c19">35</span>
+        </div>
+        <div class="c21">
+          <div class="c22">
+            <input type="checkbox">
+            <label>Laptops</label>
+          </div>
+          <span class="c19">64</span>
+        </div>
+        <span class="c17">Ratings</span>
+        <div class="c23">
+          <div class="c22">
+            <input type="checkbox">
+            <span class="c24">★★★★★</span>
+          </div>
+          <span class="c19">25</span>
+        </div>
+        <div class="c23">
+          <div class="c22">
+            <input type="checkbox" checked>
+            <span class="c24">★★★★☆ and up</span>
+          </div>
+          <span class="c19">54</span>
+        </div>
+        <div class="c23">
+          <div class="c22">
+            <input type="checkbox">
+            <span class="c24">★★★☆☆ and up</span>
+          </div>
+          <span class="c19">78</span>
+        </div>
+        <div class="c23">
+          <div class="c22">
+            <input type="checkbox">
+            <span class="c24">★★☆☆☆ and up</span>
+          </div>
+          <span class="c19">42</span>
+        </div>
+        <div class="c23">
+          <div class="c22">
+            <input type="checkbox">
+            <span class="c24">★☆☆☆☆ and up</span>
+          </div>
+          <span class="c19">35</span>
+        </div>
+      </div>
+      <div class="c25">
+        <div class="c26">
+          <input class="c27" type="text" placeholder="🔍  Search">
+          <span>Showing 8 results</span>
+          <div class="c28">
+            <span>Sort by:</span>
+            <div class="c29">
+              <span class="c30 sort" id="sort-top">Top Rated</span>
+              <span class="c30 sort" id="sort-popular">Popular</span>
+              <span class="c30 sort" id="sort-discount">Discount</span>
+              <span class="c30 sort" id="sort-price">Price ↕</span>
+            </div>
+            <span class="c31">▦ ☰</span>
+          </div>
+        </div>
+        <div class="c32" id="products">
+          <div class="c33 card bags" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c36" data-hover="grow">♥</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Montes Scelerisque</span>
+              <div class="c39">
+                <span class="c40 price">$250</span>
+                <span class="c41">$650</span>
+                <span class="c42 off">62% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★★★</span>
+                <span class="c45 rating">4.9</span>
+                <span class="c46 reviews">778 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button" id="button1">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="c33 card electronic" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c50" data-hover="grow">♡</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Leo Sodales Varius</span>
+              <div class="c39">
+                <span class="c40 price">$120</span>
+                <span class="c41">$200</span>
+                <span class="c42 off">40% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★★☆</span>
+                <span class="c45 rating">4.0</span>
+                <span class="c46 reviews">312 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="c33 card appliances" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c50" data-hover="grow">♡</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Hanging Lamp Berlingo</span>
+              <div class="c39">
+                <span class="c40 price">$89</span>
+                <span class="c41">$129</span>
+                <span class="c42 off">31% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★★★</span>
+                <span class="c45 rating">4.8</span>
+                <span class="c46 reviews">1204 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="c33 card accessories" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c50" data-hover="grow">♡</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Commodo Adipiscing</span>
+              <div class="c39">
+                <span class="c40 price">$45</span>
+                <span class="c41">$90</span>
+                <span class="c42 off">50% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★☆☆</span>
+                <span class="c45 rating">3.6</span>
+                <span class="c46 reviews">95 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="c33 card mobile" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c50" data-hover="grow">♡</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Pellentesque Phone</span>
+              <div class="c39">
+                <span class="c40 price">$310</span>
+                <span class="c41">$420</span>
+                <span class="c42 off">26% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★★☆</span>
+                <span class="c45 rating">4.3</span>
+                <span class="c46 reviews">2051 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="c33 card bags" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c50" data-hover="grow">♡</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Varius Tote Bag</span>
+              <div class="c39">
+                <span class="c40 price">$199</span>
+                <span class="c41">$249</span>
+                <span class="c42 off">20% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★★☆</span>
+                <span class="c45 rating">4.1</span>
+                <span class="c46 reviews">530 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="c33 card appliances" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c50" data-hover="grow">♡</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Berlingo Desk Lamp</span>
+              <div class="c39">
+                <span class="c40 price">$75</span>
+                <span class="c41">$150</span>
+                <span class="c42 off">50% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★★★</span>
+                <span class="c45 rating">4.7</span>
+                <span class="c46 reviews">860 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="c33 card entertainment" data-hover="lift">
+            <div class="c34" data-layout="free">
+              <img class="c35" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22200%22%20viewBox%3D%220%200%20320%20200%22%3E%3Crect%20width%3D%22320%22%20height%3D%22200%22%20fill%3D%22%23e5e9f0%22%2F%3E%3Cpath%20d%3D%22M110%20140l40-48%2030%2034%2020-22%2030%2036z%22%20fill%3D%22%23b8c1cf%22%2F%3E%3Ccircle%20cx%3D%22205%22%20cy%3D%2274%22%20r%3D%2214%22%20fill%3D%22%23b8c1cf%22%2F%3E%3C%2Fsvg%3E" alt="이미지 설명">
+              <span class="c50" data-hover="grow">♡</span>
+            </div>
+            <div class="c37">
+              <span class="c38">Adipiscing Speaker</span>
+              <div class="c39">
+                <span class="c40 price">$60</span>
+                <span class="c41">$80</span>
+                <span class="c42 off">25% off</span>
+              </div>
+              <div class="c43">
+                <span class="c44">★★★☆☆</span>
+                <span class="c45 rating">3.2</span>
+                <span class="c46 reviews">148 Reviews</span>
+              </div>
+              <div class="c47">
+                <button class="c48" type="button">🛒 Add To Cart</button>
+                <button class="c49" type="button">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 도우미 함수
+    const el = id => (id && typeof id === 'object' ? id : document.getElementById(id));
+    const on = (id, type, fn) => el(id)?.addEventListener(type, fn);
+    const val = id => el(id)?.value ?? '';
+    const setText = (id, v) => { if (el(id)) el(id).textContent = v; };
+    const all = cls => [...document.getElementsByClassName(cls)];
+    const groupShow = (cls, mode) => all(cls).forEach(e => (e.style.display = mode === 'hide' ? 'none' : ''));
+    const filterGroup = (cls, keep) => all(cls).forEach(e => (e.style.display = e.classList.contains(keep) ? '' : 'none'));
+    const sortGroup = (id, cls, order) => {
+      const box = el(id);
+      if (!box) return;
+      const num = e => parseFloat((e.getElementsByClassName(cls)[0]?.textContent || '').replace(/[^0-9.-]/g, '')) || 0;
+      [...box.children].sort((a, b) => (order === 'asc' ? num(a) - num(b) : num(b) - num(a))).forEach(c => box.appendChild(c));
+    };
+    const activeOnly = (cls, id, prop, v) => {
+      const set = (e, x) => {
+        if (prop !== 'outline') return (e.style[prop] = x);
+        e.style.outline = x ? '2px solid ' + x : '';
+        e.style.outlineOffset = x ? '-2px' : '';
+      };
+      all(cls).forEach(e => set(e, '')); // 나머지는 원래 스타일로
+      if (el(id)) set(el(id), v);
+    };
+    const animFrames = {"fade":[{"opacity":0},{"opacity":1}],"up":[{"opacity":0,"transform":"translateY(40px)"},{"opacity":1,"transform":"none"}],"left":[{"opacity":0,"transform":"translateX(-60px)"},{"opacity":1,"transform":"none"}],"zoom":[{"opacity":0,"transform":"scale(0.8)"},{"opacity":1,"transform":"none"}],"shake":[{"transform":"translateX(0)"},{"transform":"translateX(-8px)"},{"transform":"translateX(8px)"},{"transform":"translateX(-5px)"},{"transform":"translateX(0)"}],"bounce":[{"transform":"translateY(0)"},{"transform":"translateY(-16px)"},{"transform":"translateY(0)"},{"transform":"translateY(-6px)"},{"transform":"translateY(0)"}],"spin":[{"transform":"rotate(0)"},{"transform":"rotate(360deg)"}],"out":[{"opacity":1},{"opacity":0}]};
+    const animate = (e, fx, sec) => e?.animate(animFrames[fx], { duration: sec * 1000, easing: 'ease-out', fill: fx === 'out' ? 'forwards' : 'none' });
+
+    // #price 에 입력했을 때
+    on("price", 'input', async (event) => {
+      setText("price-label", (String("$0 - $") + String(val("price"))));
+    });
+
+    // #button1 을(를) 클릭했을 때
+    on("button1", 'click', async (event) => {
+      alert("Montes Scelerisque 를 장바구니에 담았어요!");
+    });
+
+    // #cat-all 을(를) 클릭했을 때
+    on("cat-all", 'click', async (event) => {
+      groupShow("card", "show");
+      all("card").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-all", "color", "#5b5ce6");
+    });
+
+    // #cat-accessories 을(를) 클릭했을 때
+    on("cat-accessories", 'click', async (event) => {
+      filterGroup("card", "accessories");
+      all("accessories").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-accessories", "color", "#5b5ce6");
+    });
+
+    // #cat-appliances 을(를) 클릭했을 때
+    on("cat-appliances", 'click', async (event) => {
+      filterGroup("card", "appliances");
+      all("appliances").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-appliances", "color", "#5b5ce6");
+    });
+
+    // #cat-bags 을(를) 클릭했을 때
+    on("cat-bags", 'click', async (event) => {
+      filterGroup("card", "bags");
+      all("bags").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-bags", "color", "#5b5ce6");
+    });
+
+    // #cat-electronic 을(를) 클릭했을 때
+    on("cat-electronic", 'click', async (event) => {
+      filterGroup("card", "electronic");
+      all("electronic").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-electronic", "color", "#5b5ce6");
+    });
+
+    // #cat-entertainment 을(를) 클릭했을 때
+    on("cat-entertainment", 'click', async (event) => {
+      filterGroup("card", "entertainment");
+      all("entertainment").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-entertainment", "color", "#5b5ce6");
+    });
+
+    // #cat-induction 을(를) 클릭했을 때
+    on("cat-induction", 'click', async (event) => {
+      filterGroup("card", "induction");
+      all("induction").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-induction", "color", "#5b5ce6");
+    });
+
+    // #cat-mobile 을(를) 클릭했을 때
+    on("cat-mobile", 'click', async (event) => {
+      filterGroup("card", "mobile");
+      all("mobile").forEach((e, i) => setTimeout(() => animate(e, "up", 0.4), i * 80));
+      activeOnly("cat", "cat-mobile", "color", "#5b5ce6");
+    });
+
+    // #sort-top 을(를) 클릭했을 때
+    on("sort-top", 'click', async (event) => {
+      sortGroup("products", "rating", "desc");
+      activeOnly("sort", "sort-top", "color", "#5b5ce6");
+      activeOnly("sort", "sort-top", "backgroundColor", "#eef0ff");
+    });
+
+    // #sort-popular 을(를) 클릭했을 때
+    on("sort-popular", 'click', async (event) => {
+      sortGroup("products", "reviews", "desc");
+      activeOnly("sort", "sort-popular", "color", "#5b5ce6");
+      activeOnly("sort", "sort-popular", "backgroundColor", "#eef0ff");
+    });
+
+    // #sort-discount 을(를) 클릭했을 때
+    on("sort-discount", 'click', async (event) => {
+      sortGroup("products", "off", "desc");
+      activeOnly("sort", "sort-discount", "color", "#5b5ce6");
+      activeOnly("sort", "sort-discount", "backgroundColor", "#eef0ff");
+    });
+
+    // #sort-price 을(를) 클릭했을 때
+    on("sort-price", 'click', async (event) => {
+      sortGroup("products", "price", "asc");
+      activeOnly("sort", "sort-price", "color", "#5b5ce6");
+      activeOnly("sort", "sort-price", "backgroundColor", "#eef0ff");
+    });
+
+    // 페이지가 열렸을 때
+    (async () => {
+      activeOnly("sort", "sort-top", "color", "#5b5ce6");
+      activeOnly("sort", "sort-top", "backgroundColor", "#eef0ff");
+    })();
+  </script>
+  <script type="application/json" id="wb-blocks">{"scripts":[{"x":10,"y":10,"blocks":[{"type":"onLoad","args":{}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-top","prop":"color","color":"#5b5ce6"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-top","prop":"backgroundColor","color":"#eef0ff"}}]},{"x":10,"y":174,"blocks":[{"type":"onInput","args":{"el":"price"}},{"type":"setText","args":{"el":"price-label","v":{"type":"join","args":{"a":"$0 - $","b":{"type":"getValue","args":{"el":"price"}}}}}}]},{"x":10,"y":300,"blocks":[{"type":"onClick","args":{"el":"button1"}},{"type":"alert","args":{"msg":"Montes Scelerisque 를 장바구니에 담았어요!"}}]},{"x":10,"y":426,"blocks":[{"type":"onClick","args":{"el":"cat-all"}},{"type":"groupShow","args":{"cls":"card","mode":"show"}},{"type":"animateGroup","args":{"cls":"card","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-all","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":628,"blocks":[{"type":"onClick","args":{"el":"cat-accessories"}},{"type":"filterGroup","args":{"cls":"card","cls2":"accessories"}},{"type":"animateGroup","args":{"cls":"accessories","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-accessories","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":830,"blocks":[{"type":"onClick","args":{"el":"cat-appliances"}},{"type":"filterGroup","args":{"cls":"card","cls2":"appliances"}},{"type":"animateGroup","args":{"cls":"appliances","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-appliances","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":1032,"blocks":[{"type":"onClick","args":{"el":"cat-bags"}},{"type":"filterGroup","args":{"cls":"card","cls2":"bags"}},{"type":"animateGroup","args":{"cls":"bags","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-bags","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":1234,"blocks":[{"type":"onClick","args":{"el":"cat-electronic"}},{"type":"filterGroup","args":{"cls":"card","cls2":"electronic"}},{"type":"animateGroup","args":{"cls":"electronic","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-electronic","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":1436,"blocks":[{"type":"onClick","args":{"el":"cat-entertainment"}},{"type":"filterGroup","args":{"cls":"card","cls2":"entertainment"}},{"type":"animateGroup","args":{"cls":"entertainment","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-entertainment","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":1638,"blocks":[{"type":"onClick","args":{"el":"cat-induction"}},{"type":"filterGroup","args":{"cls":"card","cls2":"induction"}},{"type":"animateGroup","args":{"cls":"induction","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-induction","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":1840,"blocks":[{"type":"onClick","args":{"el":"cat-mobile"}},{"type":"filterGroup","args":{"cls":"card","cls2":"mobile"}},{"type":"animateGroup","args":{"cls":"mobile","fx":"up","n":"0.4"}},{"type":"activeOnly","args":{"cls":"cat","el":"cat-mobile","prop":"color","color":"#5b5ce6"}}]},{"x":10,"y":2042,"blocks":[{"type":"onClick","args":{"el":"sort-top"}},{"type":"sortGroup","args":{"el":"products","cls":"rating","order":"desc"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-top","prop":"color","color":"#5b5ce6"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-top","prop":"backgroundColor","color":"#eef0ff"}}]},{"x":10,"y":2244,"blocks":[{"type":"onClick","args":{"el":"sort-popular"}},{"type":"sortGroup","args":{"el":"products","cls":"reviews","order":"desc"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-popular","prop":"color","color":"#5b5ce6"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-popular","prop":"backgroundColor","color":"#eef0ff"}}]},{"x":10,"y":2446,"blocks":[{"type":"onClick","args":{"el":"sort-discount"}},{"type":"sortGroup","args":{"el":"products","cls":"off","order":"desc"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-discount","prop":"color","color":"#5b5ce6"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-discount","prop":"backgroundColor","color":"#eef0ff"}}]},{"x":10,"y":2648,"blocks":[{"type":"onClick","args":{"el":"sort-price"}},{"type":"sortGroup","args":{"el":"products","cls":"price","order":"asc"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-price","prop":"color","color":"#5b5ce6"}},{"type":"activeOnly","args":{"cls":"sort","el":"sort-price","prop":"backgroundColor","color":"#eef0ff"}}]}],"vars":[],"signals":[]}</script>
+</body>
+</html>

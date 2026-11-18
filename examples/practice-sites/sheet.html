@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample Data — Sheet</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, 'Malgun Gothic', sans-serif;
+      background-color: #f9fbfd;
+      color: #1f1f1f;
+    }
+    .c1 {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .c2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 8px 16px 6px;
+      gap: 10px;
+      white-space: nowrap;
+    }
+    .c3 {
+      width: 28px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      border-radius: 4px;
+      background-color: #188038;
+      color: #ffffff;
+      font-size: 18px;
+    }
+    .c4 {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .c5 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
+    .c6 {
+      font-size: 18px;
+    }
+    .c7 {
+      color: #444746;
+      font-size: 14px;
+    }
+    .c8 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2px;
+      font-size: 14px;
+      color: #444746;
+    }
+    .c9 {
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .c10 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 18px;
+      margin: 0 0 0 auto;
+      color: #444746;
+      font-size: 18px;
+    }
+    .c11 {
+      background-color: #c2e7ff;
+      color: #001d35;
+      border-style: none;
+      border-radius: 20px;
+      padding: 9px 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .c12 {
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #1f1f1f;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .c13 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2px;
+      background-color: #edf2fa;
+      border-radius: 24px;
+      margin: 0 12px 8px;
+      padding: 5px 14px;
+      font-size: 14px;
+      color: #444746;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+    .c14 {
+      padding: 3px 7px;
+      border-radius: 4px;
+      min-width: 24px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .c15 {
+      width: 1px;
+      height: 20px;
+      background-color: #c7c7c7;
+      margin: 0 4px;
+    }
+    .c16 {
+      padding: 3px 7px;
+      border-radius: 4px;
+      min-width: 24px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .c17 {
+      padding: 3px 7px;
+      border-radius: 4px;
+      min-width: 24px;
+      text-align: center;
+      cursor: pointer;
+      font-style: italic;
+    }
+    .c18 {
+      padding: 3px 7px;
+      border-radius: 4px;
+      min-width: 24px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .c19 {
+      padding: 3px 7px;
+      border-radius: 4px;
+      min-width: 24px;
+      text-align: center;
+      cursor: pointer;
+      color: #d93025;
+      font-weight: 700;
+    }
+    .c20 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 12px;
+      border-width: 1px 0;
+      border-style: solid;
+      border-color: #e1e3e1;
+      background-color: #ffffff;
+    }
+    .c21 {
+      width: 80px;
+      font-size: 13px;
+      padding: 2px 6px;
+    }
+    .c22 {
+      color: #9aa0a6;
+      font-style: italic;
+    }
+    .c23 {
+      flex-grow: 1;
+      border-style: none;
+      font-size: 14px;
+      background-color: transparent;
+    }
+    .c24 {
+      overflow: auto;
+      flex-grow: 1;
+      min-height: 0;
+      background-color: #ffffff;
+    }
+    .c25 {
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: #ffffff;
+      color: #1f1f1f;
+    }
+    .c26 {
+      background-color: #f8f9fa;
+      color: #444746;
+      font-weight: 400;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e1e3e1;
+      padding: 4px;
+      text-align: center;
+      width: 46px;
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 20;
+    }
+    .c27 {
+      background-color: #f8f9fa;
+      color: #444746;
+      font-weight: 400;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e1e3e1;
+      padding: 4px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .c28 {
+      background-color: #f8f9fa;
+      color: #444746;
+      font-weight: 400;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e1e3e1;
+      padding: 4px;
+      text-align: center;
+      width: 46px;
+      position: sticky;
+      left: 0;
+      z-index: 5;
+    }
+    .c29 {
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e1e3e1;
+      padding: 3px 8px;
+      height: 28px;
+      min-width: 96px;
+      font-size: 14px;
+      text-align: center;
+      outline: none;
+      font-weight: 700;
+    }
+    .c30 {
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e1e3e1;
+      padding: 3px 8px;
+      height: 28px;
+      min-width: 96px;
+      font-size: 14px;
+      text-align: right;
+      outline: none;
+    }
+    .c31 {
+      border-width: 1px;
+      border-style: solid;
+      border-color: #e1e3e1;
+      padding: 3px 8px;
+      height: 28px;
+      min-width: 96px;
+      font-size: 14px;
+      text-align: right;
+      outline: none;
+      font-weight: 700;
+      background-color: #f1f8e9;
+    }
+    .c32 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+      padding: 6px 16px;
+      background-color: #f9fbfd;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: #e1e3e1;
+      font-size: 18px;
+      color: #444746;
+    }
+    .c33 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0b57d0;
+      background-color: #e1e9f7;
+      padding: 6px 14px;
+      border-radius: 4px;
+    }
+    .c34 {
+      font-size: 12px;
+      color: #80868b;
+      margin: 0 0 0 auto;
+    }
+    [data-hover] {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+    }
+    [data-hover="bright"]:hover {
+      filter: brightness(1.15);
+    }
+    [data-hover="dim"]:hover {
+      opacity: 0.7;
+    }
+    /* 휴대폰 화면 */
+    @media (max-width: 640px) {
+      .c10 {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="c1">
+    <div class="c2">
+      <span class="c3">▦</span>
+      <div class="c4">
+        <div class="c5">
+          <span class="c6">Sample Data</span>
+          <span class="c7">☆ 🗀 ☁</span>
+        </div>
+        <div class="c8">
+          <span class="c9" data-hover="dim">File</span>
+          <span class="c9" data-hover="dim">Edit</span>
+          <span class="c9" data-hover="dim">View</span>
+          <span class="c9" data-hover="dim">Insert</span>
+          <span class="c9" data-hover="dim">Format</span>
+          <span class="c9" data-hover="dim">Data</span>
+          <span class="c9" data-hover="dim">Tools</span>
+          <span class="c9" data-hover="dim">Extensions</span>
+          <span class="c9" data-hover="dim">Help</span>
+        </div>
+      </div>
+      <div class="c10">
+        <span>🕘</span>
+        <span>💬</span>
+        <button class="c11" type="button" id="share" data-hover="bright">🔒 Share</button>
+        <span class="c12">A</span>
+      </div>
+    </div>
+    <div class="c13">
+      <span class="c14" data-hover="dim">🔍</span>
+      <span class="c14" data-hover="dim">↶</span>
+      <span class="c14" data-hover="dim">↷</span>
+      <span class="c14" data-hover="dim">🖨</span>
+      <span class="c15"></span>
+      <span class="c14" data-hover="dim">100% ▾</span>
+      <span class="c15"></span>
+      <span class="c14" data-hover="dim">$</span>
+      <span class="c14" data-hover="dim">%</span>
+      <span class="c14" data-hover="dim">.0</span>
+      <span class="c14" data-hover="dim">.00</span>
+      <span class="c15"></span>
+      <span class="c14" data-hover="dim">Default ▾</span>
+      <span class="c15"></span>
+      <span class="c16" data-hover="dim" id="tool-bold" title="굵게">B</span>
+      <span class="c17" data-hover="dim" id="tool-italic" title="기울임">I</span>
+      <span class="c18" data-hover="dim" id="tool-under" title="밑줄">U</span>
+      <span class="c19" data-hover="dim" id="tool-color" title="글자 빨갛게">A</span>
+      <span class="c14" data-hover="dim" id="tool-fill" title="칸 노랗게 칠하기">🪣</span>
+      <span class="c14" data-hover="dim" id="tool-clear" title="칸 색 지우기">⌫</span>
+      <span class="c15"></span>
+      <span class="c14" data-hover="dim" id="row-add" title="고른 칸 아래에 줄 넣기">+행</span>
+      <span class="c14" data-hover="dim" id="col-add" title="고른 칸 오른쪽에 칸 넣기">+열</span>
+      <span class="c14" data-hover="dim" id="row-del" title="고른 줄 지우기">−행</span>
+      <span class="c14" data-hover="dim" id="col-del" title="고른 세로줄 지우기">−열</span>
+      <span class="c15"></span>
+      <span class="c14" data-hover="dim">Σ</span>
+    </div>
+    <div class="c20">
+      <span class="c21" id="namebox">C2</span>
+      <span class="c22">fx</span>
+      <input class="c23" type="text" id="fx" value="=A2+B2" placeholder="칸을 고르고 수식을 쓰세요 (예: =SUM(A2:A10))">
+    </div>
+    <div class="c24">
+      <table class="c25" id="sheet" data-calc="">
+        <tr>
+          <th class="c26"></th>
+          <th class="c27">A</th>
+          <th class="c27">B</th>
+          <th class="c27">C</th>
+          <th class="c27">D</th>
+          <th class="c27">E</th>
+          <th class="c27">F</th>
+          <th class="c27">G</th>
+          <th class="c27">H</th>
+          <th class="c27">I</th>
+          <th class="c27">J</th>
+          <th class="c27">K</th>
+          <th class="c27">L</th>
+        </tr>
+        <tr>
+          <th class="c28">1</th>
+          <td class="c29 cell" contenteditable="true" spellcheck="false">Item 1</td>
+          <td class="c29 cell" contenteditable="true" spellcheck="false">Item 2</td>
+          <td class="c29 cell" contenteditable="true" spellcheck="false">Sum</td>
+          <td class="c29 cell" contenteditable="true" spellcheck="false">Average</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">2</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">8</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">3</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" id="C2" data-formula="=A2+B2"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A2:B2)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">3</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">2</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">8</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A3+B3"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A3:B3)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">4</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">8</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">4</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A4+B4"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A4:B4)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">5</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">4</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">8</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A5+B5"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A5:B5)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">6</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">5</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">3</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A6+B6"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A6:B6)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">7</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">6</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">7</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A7+B7"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A7:B7)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">8</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">2</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">5</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A8+B8"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A8:B8)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">9</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">3</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">6</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A9+B9"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A9:B9)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">10</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">9</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false">4</td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=A10+B10"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false" data-formula="=AVERAGE(A10:B10)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">11</th>
+          <td class="c31 cell" contenteditable="true" spellcheck="false" data-formula="=SUM(A2:A10)"></td>
+          <td class="c31 cell" contenteditable="true" spellcheck="false" data-formula="=SUM(B2:B10)"></td>
+          <td class="c31 cell" contenteditable="true" spellcheck="false" data-formula="=SUM(C2:C10)"></td>
+          <td class="c31 cell" contenteditable="true" spellcheck="false" data-formula="=SUM(D2:D10)"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">12</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">13</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">14</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">15</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">16</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">17</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">18</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">19</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">20</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">21</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">22</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">23</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">24</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">25</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">26</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">27</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">28</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">29</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">30</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">31</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">32</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">33</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">34</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">35</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">36</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">37</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">38</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">39</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">40</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">41</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">42</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">43</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">44</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">45</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">46</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">47</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">48</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">49</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+        <tr>
+          <th class="c28">50</th>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+          <td class="c30 cell" contenteditable="true" spellcheck="false"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="c32">
+      <span data-hover="dim">+</span>
+      <span data-hover="dim">☰</span>
+      <span class="c33">Sheet1 ▾</span>
+      <span class="c34">칸을 누르고 바로 고치세요 · 엔터/화살표로 이동 · =로 시작하면 수식</span>
+    </div>
+  </div>
+  <script>
+    // 도우미 함수
+    const el = id => (id && typeof id === 'object' ? id : document.getElementById(id));
+    const on = (id, type, fn) => el(id)?.addEventListener(type, fn);
+    const val = id => el(id)?.value ?? '';
+    const setText = (id, v) => { if (el(id)) el(id).textContent = v; };
+    const setValue = (id, v) => { if (el(id)) el(id).value = v; };
+    const setStyle = (id, prop, v) => { if (el(id)) el(id).style[prop] = v; };
+    const PX = new Set(["width","height","borderRadius","padding","left","top","fontSize"]);
+    const css = (id, prop, v) => {
+      const e = el(id);
+      if (!e) return;
+      if (PX.has(prop) && String(v).trim() !== '' && !isNaN(v)) v += 'px'; // 숫자만 쓰면 px
+      e.style[prop] = v;
+    };
+    const toggleCss = (id, prop, a, b) => {
+      const e = el(id);
+      if (!e) return;
+      const now = String(e.style[prop] || getComputedStyle(e)[prop]);
+      css(e, prop, now.startsWith(String(a)) ? b : a);
+    };
+    const pick = id => {
+      const e = el(id);
+      if (!e) return;
+      if (!document.getElementById('wb-pick-style')) document.head.append(Object.assign(document.createElement('style'), { id: 'wb-pick-style', textContent: '[data-picked] { outline: 2px solid #1a73e8; outline-offset: -2px; }' }));
+      picked?.removeAttribute('data-picked');
+      picked = e;
+      e.setAttribute('data-picked', '');
+    };
+    const pickMove = dir => {
+      const e = picked;
+      if (!e) return;
+      const cell = e.closest('td, th');
+      let to;
+      if (cell && (dir === 'up' || dir === 'down')) {
+        const rows = [...cell.closest('table').rows];
+        to = rows[rows.indexOf(cell.parentElement) + (dir === 'up' ? -1 : 1)]?.cells[cell.cellIndex];
+      } else to = dir === 'left' || dir === 'up' ? e.previousElementSibling : e.nextElementSibling;
+      if (!to || (cell && to.tagName !== cell.tagName)) return; // 표에서는 제목 칸으로 넘어가지 않음
+      pick(to);
+      if (to.isContentEditable || to.matches('input, textarea, select')) to.focus();
+    };
+    const colName = n => { let s = ''; for (n++; n > 0; n = Math.floor((n - 1) / 26)) s = String.fromCharCode(65 + ((n - 1) % 26)) + s; return s; };
+    const tableEdit = (id, act) => {
+      const cell = el(id)?.closest('td, th');
+      if (!cell) return;
+      const table = cell.closest('table'), row = cell.parentElement, ci = cell.cellIndex;
+      const blank = c => {
+        const n = c.cloneNode(false);
+        ['id', 'data-picked', 'data-formula'].forEach(a => n.removeAttribute(a));
+        return n;
+      };
+      if (act === 'rowAbove' || act === 'rowBelow') {
+        const nr = row.cloneNode(false);
+        [...row.cells].forEach(c => nr.append(blank(c)));
+        if (act === 'rowAbove') row.before(nr);
+        else row.after(nr);
+      } else if (act === 'colLeft' || act === 'colRight') {
+        [...table.rows].forEach(r => { const c = r.cells[ci]; if (c) c[act === 'colLeft' ? 'before' : 'after'](blank(c)); });
+      } else if (act === 'rowDel' && table.rows.length > 1) {
+        if (row.contains(picked)) picked = null;
+        row.remove();
+      } else if (act === 'colDel') {
+        [...table.rows].forEach(r => { const c = r.cells[ci]; if (c && c.contains(picked)) picked = null; c?.remove(); });
+      }
+      // 제목 줄(A, B, C …)과 번호 칸(1, 2, 3 …)은 다시 매김
+      const rows = [...table.rows];
+      const head = rows[0] && [...rows[0].cells].every(c => c.tagName === 'TH');
+      if (head) {
+        const corner = rows[0].cells[0]?.textContent.trim() === '';
+        [...rows[0].cells].forEach((c, i) => {
+          const n = corner ? i - 1 : i;
+          if (n >= 0 && /^[A-Z]*$/.test(c.textContent.trim())) c.textContent = colName(n);
+        });
+      }
+      rows.forEach((r, i) => {
+        const c = r.cells[0];
+        if (c && c.tagName === 'TH' && (!head || i) && /^[0-9]*$/.test(c.textContent.trim())) c.textContent = head ? i : i + 1;
+      });
+      if (typeof wbCalc === 'function') wbCalc();
+    };
+    const cellAddr = id => {
+      const c = el(id)?.closest('td');
+      if (!c) return '';
+      const rows = [...c.closest('table').rows].filter(r => [...r.cells].some(x => x.tagName === 'TD'));
+      const cols = [...c.parentElement.cells].filter(x => x.tagName === 'TD');
+      return colName(cols.indexOf(c)) + (rows.indexOf(c.parentElement) + 1);
+    };
+    const formulaOf = id => { const e = el(id); return e ? e.dataset.formula || e.textContent : ''; };
+    const setFormula = (id, v) => {
+      const e = el(id);
+      if (!e) return;
+      v = String(v);
+      if (v.startsWith('=')) e.dataset.formula = v;
+      else { delete e.dataset.formula; e.textContent = v; }
+      if (typeof wbCalc === 'function') wbCalc();
+    };
+
+    // 변수 · 대답 · 신호
+    let picked = null, made = null; // 고른 요소 · 방금 복제한 요소
+
+    // 이름표 .cell 요소를 고르기 시작했을 때
+    document.addEventListener("focusin", async (event) => {
+      const thisEl = event.target.closest?.('.' + CSS.escape("cell"));
+      if (!thisEl) return;
+      pick(thisEl);
+      setText("namebox", cellAddr(thisEl));
+      setValue("fx", formulaOf(thisEl));
+    });
+
+    // 엔터 키를 눌렀을 때 (언제나)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      pickMove("down");
+    });
+
+    // 아래쪽 화살표 키를 눌렀을 때 (언제나)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "ArrowDown") return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      pickMove("down");
+    });
+
+    // 위쪽 화살표 키를 눌렀을 때 (언제나)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "ArrowUp") return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      pickMove("up");
+    });
+
+    // 왼쪽 화살표 키를 눌렀을 때 (언제나)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "ArrowLeft") return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      pickMove("left");
+    });
+
+    // 오른쪽 화살표 키를 눌렀을 때 (언제나)
+    addEventListener('keydown', async (event) => {
+      if (event.key !== "ArrowRight") return;
+      event.preventDefault(); // 화면이 스크롤되거나, 버튼이 눌리거나, 칸에 줄바꿈이 들어가지 않게
+      pickMove("right");
+    });
+
+    // #fx 에 입력했을 때
+    on("fx", 'input', async (event) => {
+      setFormula(picked, val("fx"));
+    });
+
+    // #tool-bold 을(를) 클릭했을 때
+    on("tool-bold", 'click', async (event) => {
+      toggleCss(picked, "fontWeight", 400, 700);
+    });
+
+    // #tool-italic 을(를) 클릭했을 때
+    on("tool-italic", 'click', async (event) => {
+      toggleCss(picked, "fontStyle", "normal", "italic");
+    });
+
+    // #tool-under 을(를) 클릭했을 때
+    on("tool-under", 'click', async (event) => {
+      toggleCss(picked, "textDecoration", "none", "underline");
+    });
+
+    // #tool-color 을(를) 클릭했을 때
+    on("tool-color", 'click', async (event) => {
+      setStyle(picked, "color", "#d93025");
+    });
+
+    // #tool-fill 을(를) 클릭했을 때
+    on("tool-fill", 'click', async (event) => {
+      setStyle(picked, "backgroundColor", "#fff2cc");
+    });
+
+    // #tool-clear 을(를) 클릭했을 때
+    on("tool-clear", 'click', async (event) => {
+      setStyle(picked, "backgroundColor", "#ffffff");
+      setStyle(picked, "color", "#1f1f1f");
+    });
+
+    // #row-add 을(를) 클릭했을 때
+    on("row-add", 'click', async (event) => {
+      tableEdit(picked, "rowBelow");
+    });
+
+    // #col-add 을(를) 클릭했을 때
+    on("col-add", 'click', async (event) => {
+      tableEdit(picked, "colRight");
+    });
+
+    // #row-del 을(를) 클릭했을 때
+    on("row-del", 'click', async (event) => {
+      tableEdit(picked, "rowDel");
+    });
+
+    // #col-del 을(를) 클릭했을 때
+    on("col-del", 'click', async (event) => {
+      tableEdit(picked, "colDel");
+    });
+
+    // #share 을(를) 클릭했을 때
+    on("share", 'click', async (event) => {
+      alert("연습용 화면이라 공유는 되지 않아요");
+    });
+
+    // 페이지가 열렸을 때
+    (async () => {
+      pick("C2");
+    })();
+
+    // 표 계산 (=A1+B1, =SUM(A1:A9))
+    function wbCalc(root) {
+        const colIndex = s => { let n = 0; for (const ch of s) n = n * 26 + ch.charCodeAt(0) - 64; return n - 1; };
+        const show = v => (typeof v === 'number' ? (isFinite(v) ? String(Math.round(v * 1e10) / 1e10) : '#0으로 나눔') : String(v));
+        for (const table of (root || document).querySelectorAll('table[data-calc]')) {
+          const grid = [...table.rows].map(r => [...r.cells].filter(c => c.tagName === 'TD')).filter(r => r.length);
+          const at = (col, row) => grid[row]?.[col] || null;
+          const memo = new Map(), busy = new Set();
+          const value = cell => {
+            if (!cell) return 0;
+            if (memo.has(cell)) return memo.get(cell);
+            let v;
+            const f = cell.dataset.formula;
+            if (!f) { const s = cell.textContent.trim(); v = s === '' ? 0 : isNaN(s) ? s : Number(s); }
+            else if (busy.has(cell)) v = '#순환';
+            else { busy.add(cell); v = evaluate(f.slice(1)); busy.delete(cell); }
+            memo.set(cell, v);
+            return v;
+          };
+          const num = v => (typeof v === 'number' ? v : Number(v) || 0);
+          const cellsOf = ref => {
+            const [a, b = a] = ref.split(':').map(x => /^([A-Z]+)(\d+)$/.exec(x));
+            const c1 = colIndex(a[1]), c2 = colIndex(b[1]), r1 = a[2] - 1, r2 = b[2] - 1;
+            const out = [];
+            for (let r = Math.min(r1, r2); r <= Math.max(r1, r2); r++) for (let c = Math.min(c1, c2); c <= Math.max(c1, c2); c++) out.push(at(c, r));
+            return out;
+          };
+          const FN = {
+            SUM: a => a.reduce((s, v) => s + num(v), 0),
+            AVERAGE: a => (a.length ? FN.SUM(a) / a.length : 0),
+            MIN: a => Math.min(...a.map(num)),
+            MAX: a => Math.max(...a.map(num)),
+            COUNT: a => a.filter(v => typeof v === 'number').length,
+          };
+          FN.AVG = FN.AVERAGE;
+          function evaluate(src) {
+            const toks = src.toUpperCase().match(/\d+(?:\.\d+)?|[A-Z]+\d+(?::[A-Z]+\d+)?|[A-Z]+|[-+*/(),%]/g) || [];
+            let i = 0;
+            const peek = () => toks[i], next = () => toks[i++];
+            const primary = () => {
+              const t = next();
+              if (t === '(') { const v = sum(); next(); return v; }
+              if (t === '-') return -num(primary());
+              if (/^\d/.test(t)) return Number(t);
+              if (/^[A-Z]+\d+$/.test(t)) return value(cellsOf(t)[0]);
+              if (FN[t] && next() === '(') {
+                const args = [];
+                while (i < toks.length && peek() !== ')') {
+                  if (/:/.test(peek())) args.push(...cellsOf(next()).map(value));
+                  else args.push(sum());
+                  if (peek() === ',') next();
+                }
+                next();
+                return FN[t](args);
+              }
+              throw new Error(t);
+            };
+            const term = () => {
+              let v = primary();
+              while (['*', '/', '%'].includes(peek())) {
+                const o = next(), r = num(primary());
+                v = o === '*' ? num(v) * r : o === '/' ? num(v) / r : num(v) % r;
+              }
+              return v;
+            };
+            const sum = () => {
+              let v = term();
+              while (peek() === '+' || peek() === '-') v = next() === '+' ? num(v) + num(term()) : num(v) - num(term());
+              return v;
+            };
+            try {
+              const v = sum();
+              return i < toks.length ? '#오류' : v;
+            } catch {
+              return '#오류';
+            }
+          }
+          for (const row of grid) for (const cell of row) {
+            if (cell.dataset.formula && !cell.hasAttribute('data-editing')) cell.textContent = show(value(cell));
+          }
+        }
+      }
+    document.addEventListener('focusin', e => {
+      const c = e.target.closest?.('table[data-calc] td');
+      if (!c || !c.dataset.formula) return;
+      c.setAttribute('data-editing', '');
+      c.textContent = c.dataset.formula; // 고치는 동안에는 수식을 보여 줌
+    });
+    document.addEventListener('focusout', e => {
+      const c = e.target.closest?.('table[data-calc] td');
+      if (!c) return;
+      c.removeAttribute('data-editing');
+      const s = c.textContent.trim();
+      if (s.startsWith('=')) c.dataset.formula = s;
+      else delete c.dataset.formula;
+      wbCalc();
+    });
+    document.addEventListener('input', e => { if (e.target.closest?.('table[data-calc]')) wbCalc(); });
+    wbCalc();
+  </script>
+  <script type="application/json" id="wb-blocks">{"scripts":[{"x":10,"y":10,"blocks":[{"type":"onLoad","args":{}},{"type":"pick","args":{"el":"C2"}}]},{"x":10,"y":136,"blocks":[{"type":"onGroup","args":{"cls":"cell","ev":"focusin"}},{"type":"pick","args":{"el":"@this"}},{"type":"setText","args":{"el":"namebox","v":{"type":"cellAddr","args":{"el":"@this"}}}},{"type":"setValue","args":{"el":"fx","v":{"type":"getFormula","args":{"el":"@this"}}}}]},{"x":10,"y":338,"blocks":[{"type":"onKey","args":{"key":"Enter","when":"always"}},{"type":"pickMove","args":{"dir":"down"}}]},{"x":10,"y":464,"blocks":[{"type":"onKey","args":{"key":"ArrowDown","when":"always"}},{"type":"pickMove","args":{"dir":"down"}}]},{"x":10,"y":590,"blocks":[{"type":"onKey","args":{"key":"ArrowUp","when":"always"}},{"type":"pickMove","args":{"dir":"up"}}]},{"x":10,"y":716,"blocks":[{"type":"onKey","args":{"key":"ArrowLeft","when":"always"}},{"type":"pickMove","args":{"dir":"left"}}]},{"x":10,"y":842,"blocks":[{"type":"onKey","args":{"key":"ArrowRight","when":"always"}},{"type":"pickMove","args":{"dir":"right"}}]},{"x":10,"y":968,"blocks":[{"type":"onInput","args":{"el":"fx"}},{"type":"setFormula","args":{"el":"@picked","v":{"type":"getValue","args":{"el":"fx"}}}}]},{"x":10,"y":1094,"blocks":[{"type":"onClick","args":{"el":"tool-bold"}},{"type":"toggleCss","args":{"el":"@picked","prop":"fontWeight","a":"400","b":"700"}}]},{"x":10,"y":1220,"blocks":[{"type":"onClick","args":{"el":"tool-italic"}},{"type":"toggleCss","args":{"el":"@picked","prop":"fontStyle","a":"normal","b":"italic"}}]},{"x":10,"y":1346,"blocks":[{"type":"onClick","args":{"el":"tool-under"}},{"type":"toggleCss","args":{"el":"@picked","prop":"textDecoration","a":"none","b":"underline"}}]},{"x":10,"y":1472,"blocks":[{"type":"onClick","args":{"el":"tool-color"}},{"type":"setColor","args":{"el":"@picked","prop":"color","color":"#d93025"}}]},{"x":10,"y":1598,"blocks":[{"type":"onClick","args":{"el":"tool-fill"}},{"type":"setColor","args":{"el":"@picked","prop":"backgroundColor","color":"#fff2cc"}}]},{"x":10,"y":1724,"blocks":[{"type":"onClick","args":{"el":"tool-clear"}},{"type":"setColor","args":{"el":"@picked","prop":"backgroundColor","color":"#ffffff"}},{"type":"setColor","args":{"el":"@picked","prop":"color","color":"#1f1f1f"}}]},{"x":10,"y":1888,"blocks":[{"type":"onClick","args":{"el":"row-add"}},{"type":"tableEdit","args":{"el":"@picked","act":"rowBelow"}}]},{"x":10,"y":2014,"blocks":[{"type":"onClick","args":{"el":"col-add"}},{"type":"tableEdit","args":{"el":"@picked","act":"colRight"}}]},{"x":10,"y":2140,"blocks":[{"type":"onClick","args":{"el":"row-del"}},{"type":"tableEdit","args":{"el":"@picked","act":"rowDel"}}]},{"x":10,"y":2266,"blocks":[{"type":"onClick","args":{"el":"col-del"}},{"type":"tableEdit","args":{"el":"@picked","act":"colDel"}}]},{"x":10,"y":2392,"blocks":[{"type":"onClick","args":{"el":"share"}},{"type":"alert","args":{"msg":"연습용 화면이라 공유는 되지 않아요"}}]}],"vars":[],"signals":[]}</script>
+</body>
+</html>
