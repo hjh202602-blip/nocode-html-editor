@@ -14,6 +14,7 @@
     const pane = $(sel);
     const gutter = h('pre', { class: 'blk-code-gutter' }, '1');
     const ta = h('textarea', { class: 'blk-code', spellcheck: 'false' });
+    WB.codeKeys?.(ta, mode); // Ctrl+/ 주석 · Alt+↑↓ 줄 옮기기 · Shift+Alt+F 정리 …
     const status = h('span', { class: 'cv-status' });
     const apply = h('button', { class: 'btn small primary', title: '고친 코드를 페이지에 반영 (Ctrl+Enter)' }, '적용');
     const reset = h('button', { class: 'btn small', title: '고치던 것을 버리고 지금 페이지의 코드로 다시' }, '되돌리기');

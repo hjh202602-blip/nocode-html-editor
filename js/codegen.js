@@ -495,7 +495,7 @@ ${body}${scripts}
     }
     for (const e of d.querySelectorAll('link, meta, base')) {
       if (e.tagName === 'META' && (e.hasAttribute('charset') || /^(viewport|generator)$/i.test(e.getAttribute('name') || ''))) continue;
-      if (e.hasAttribute('data-wb')) continue; // 편집기가 만든 웹 글꼴 링크 (저장할 때 다시 만듦)
+      if (e.hasAttribute('data-wb')) { WB.registerFontsURL?.(e.getAttribute('href')); continue; } // 편집기가 만든 웹 글꼴 링크 (저장할 때 다시 만듦)
       head.push(e.outerHTML);
     }
 

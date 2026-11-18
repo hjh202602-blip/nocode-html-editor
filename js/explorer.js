@@ -161,6 +161,7 @@
   ex.showProjects = closeRoot;
 
   /* ---------- zip 내보내기 · 가져오기 ---------- */
+  WB.exportZip = () => exportZip();
   async function exportZip() {
     if (!ex.root) return WB.toast('먼저 프로젝트를 열어 주세요');
     for (const d of WB.state.docs) if (d.dirty && d.handle) await WB.saveDoc(d); // 저장 안 한 것부터 저장
@@ -201,24 +202,6 @@
     };
     input.click();
   }
-  /** 편집기와 함께 있는 예제를 프로젝트로 (서버에 examples 폴더가 있을 때) */
-  const EXAMPLES = ['portal/index.html', 'portal/login.html', 'practice-sites/shop.html', 'practice-sites/dashboard.html', 'practice-sites/portfolio.html', 'practice-sites/sheet.html', 'practice-sites/video-editor.html', 'practice-sites/offcut.html', 'practice-sites/settings.html'];
-  async function addExamples() {
-    try {
-      const files = [];
-      for (const path of EXAMPLES) {
-        const r = await fetch('examples/' + path);
-        if (r.ok) files.push({ path, blob: await r.blob() });
-      }
-      if (!files.length) throw new Error('예제 파일이 없어요');
-      const p = await WB.projects.create('연습 예제', files);
-      await openProject(p.id);
-      WB.toast(`예제 ${files.length}개로 프로젝트를 만들었어요`, 'ok');
-    } catch (e) {
-      WB.toast('예제를 불러오지 못했어요: ' + e.message, 'error');
-    }
-  }
-
   /** 프로젝트 메뉴 (탭1 위쪽 버튼 · 프로젝트 이름 클릭) */
   function projectMenu(x, y) {
     const items = [
@@ -367,7 +350,7 @@
       h('button', { class: 'btn primary', onclick: newProject, html: icon('plus', 15) + ' 새 프로젝트' }),
       h('div', { class: 'ex-two' },
         h('button', { class: 'btn', onclick: importFiles, title: 'zip 은 새 프로젝트로, 페이지 · 그림은 지금 프로젝트로', html: icon('upload', 14) + ' 가져오기' }),
-        h('button', { class: 'btn', onclick: addExamples, title: '포털 · 쇼핑몰 · 대시보드 · 포트폴리오 · 스프레드시트 · 영상 편집 예제', html: icon('file', 14) + ' 예제' })),
+        h('button', { class: 'btn', onclick: () => WB.openAssets(), title: '포털 · 쇼핑몰 · 대시보드 · 소개 · 게임 같은 완성된 페이지로 시작', html: icon('box', 14) + ' 에셋' })),
       h('p', { class: 'ex-sec' }, '내 프로젝트'));
     const listEl = h('div', { class: 'ex-projects' }, h('p', { class: 'hint' }, '불러오는 중…'));
     box.append(listEl);
@@ -388,7 +371,7 @@
         h('span', { class: 'pj-txt' }, h('b', {}, p.name), h('small', {}, `페이지 ${p.pages}개 · ${when(p.updated)}`)));
       card.onclick = () => openProject(p.id);
       return card;
-    }) : [h('p', { class: 'hint' }, '아직 프로젝트가 없어요. [새 프로젝트]로 시작하거나 [예제]를 불러와 보세요.')]));
+    }) : [h('p', { class: 'hint' }, '아직 프로젝트가 없어요. [새 프로젝트]로 시작하거나 [에셋]에서 완성된 페이지를 골라 보세요.')]));
   }
 
   /* ---------- 만들기 · 이름 바꾸기 · 지우기 ---------- */

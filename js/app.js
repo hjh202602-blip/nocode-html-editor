@@ -129,6 +129,7 @@
   const tabsEl = $('#doc-tabs');
   const views = { page: $('#canvas-scroll'), text: $('#text-editor'), image: $('#image-view'), empty: $('#empty-view') };
   const textEditor = views.text;
+  WB.codeKeys?.(textEditor, () => ({ css: 'css', html: 'html', htm: 'html' })[WB.extOf(WB.activeDoc()?.name || '')] || 'js');
   const TEXT_EXT = new Set(['css', 'js', 'mjs', 'json', 'txt', 'md', 'xml', 'svg', 'csv', 'log', 'yml', 'yaml', 'ts']);
   const IMAGE_EXT = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'avif']);
 
@@ -157,6 +158,7 @@
     document.title = (WB.activeDoc() ? WB.activeDoc().name + ' — ' : '') + '블록 웹 편집기';
   }
 
+  WB.activateDoc = id => activate(id);
   function activate(id) {
     S.activeId = id;
     const d = WB.activeDoc();
@@ -568,6 +570,7 @@
   $('#btn-convert').onclick = () => showCode();
   $('#btn-settings').onclick = () => showSettings();
 
+  WB.showCode = () => showCode();
   function showCode() {
     const doc = WB.canvasDoc();
     if (!doc) return WB.toast('HTML 페이지를 열었을 때 쓸 수 있어요');
@@ -632,19 +635,16 @@
       <label class="frow"><span>요소 윤곽선</span><span class="inline"><input type="checkbox" name="guides" ${WB.settings.guides ? 'checked' : ''}> 캔버스에서 요소마다 점선 테두리 보기</span></label>
       <div class="frow"><span>탭 배치</span><span class="inline"><button class="btn small" type="button" data-reset>처음 크기로 되돌리기</button></span></div>
       <hr>
-      <h4>단축키</h4>
-      <p class="hint" style="line-height:2">
-        <kbd>Ctrl</kbd>+<kbd>S</kbd> 저장 · <kbd>Ctrl</kbd>+<kbd>Z</kbd> 되돌리기 · <kbd>Ctrl</kbd>+<kbd>Y</kbd> 다시 하기 · <kbd>Delete</kbd> 삭제 ·
-        <kbd>Ctrl</kbd>+<kbd>D</kbd> 복제 · <kbd>Ctrl</kbd>+<kbd>C</kbd>/<kbd>V</kbd> 요소 복사·붙여넣기 · <kbd>Alt</kbd>+<kbd>↑↓</kbd> 순서 바꾸기 ·
-        <kbd>Enter</kbd> 글자 고치기 · <kbd>Esc</kbd> 바깥 상자 선택 · <kbd>Ctrl</kbd>+<kbd>B</kbd> 프로젝트 탭 열기/닫기 · <kbd>Ctrl</kbd>+<kbd>J</kbd> 도구 탭 열기/닫기 ·
-        <kbd>Ctrl</kbd>+<kbd>1</kbd> HTML 태그 · <kbd>Ctrl</kbd>+<kbd>2</kbd> CSS 디자인 · <kbd>Ctrl</kbd>+<kbd>3</kbd> JS 동작 (<kbd>Alt</kbd>+<kbd>1</kbd>~<kbd>3</kbd> 도 같아요)
-      </p>`;
+      <h4>단축키 <button class="btn small" type="button" data-shortcuts style="margin-left:8px">전체 표 보기 (Ctrl+/)</button></h4>
+      <div data-keymap></div>`;
     form.querySelector('[name=theme]').value = WB.settings.theme;
     form.querySelector('[name=lang]').value = WB.lang;
     form.querySelector('[name=lang]').onchange = e => WB.setLang(e.target.value);
     form.querySelector('[name=theme]').onchange = e => { WB.settings.theme = e.target.value; WB.saveSettings(); applyTheme(); };
     form.querySelector('[name=guides]').onchange = e => { WB.settings.guides = e.target.checked; WB.saveSettings(); WB.renderCanvas(); renderTools(); };
     form.querySelector('[data-reset]').onclick = () => WB.resetLayout();
+    WB.renderKeymap?.(form.querySelector('[data-keymap]'));
+    form.querySelector('[data-shortcuts]').onclick = () => WB.openShortcuts();
     // 색 팔레트 자동으로: 페이지에서 세 번 이상 쓰인 색을 많이 쓴 순서로
     form.querySelector('[data-findcolors]')?.addEventListener('click', () => {
       const count = new Map();
@@ -749,14 +749,17 @@
     if (digit && (mod || e.altKey) && !e.shiftKey) { e.preventDefault(); WB.setTool(TOOL_MODES[digit - 1]); return; }
     if (isTyping(e) || !WB.canvasDoc() || $('.modal-overlay') || e.target.closest?.('#tab1')) return;
 
+    if (WB.multiKey?.(e, mod, key)) return; // 여러 개 고른 상태 · Ctrl+A · Ctrl+G
+    if (WB.extraKey?.(e, mod, key)) return; // 피그마 · 캔바 단축키 (shortcuts.js)
+    if (WB.siteKey?.(e, mod, key)) return; // 웹사이트 빌더 · 코드 편집기 단축키 (sitekeys.js)
     const id = WB.selectedId();
     if (mod && key === 'z' && !e.shiftKey) { e.preventDefault(); WB.undo(); }
     else if (mod && (key === 'y' || (key === 'z' && e.shiftKey))) { e.preventDefault(); WB.redo(); }
     else if (!id || id === 'root') {
       if (e.key === 'Escape') WB.select(null);
-      if (mod && key === 'v' && clipboard) { e.preventDefault(); pasteNode(); }
+      if (mod && key === 'v') queuePaste();
     }
-    else if (e.key.startsWith('Arrow') && !e.altKey && WB.selectedNode()?.style.position === 'absolute') {
+    else if (e.key.startsWith('Arrow') && !e.altKey && WB.selectedNode()?.style.position === 'absolute' && WB.selectedNode().attrs?.['data-lock'] == null) {
       // 자유 배치 요소는 화살표로 1px (Shift: 10px) 씩 옮김
       e.preventDefault();
       const st = WB.selectedNode().style, step = e.shiftKey ? 10 : 1;
@@ -773,7 +776,7 @@
     else if (mod && key === 'd') { e.preventDefault(); WB.duplicateNode(id); }
     else if (mod && key === 'c') { clipboard = JSON.parse(JSON.stringify(WB.selectedNode())); WB.toast('요소를 복사했어요'); }
     else if (mod && key === 'x') { clipboard = JSON.parse(JSON.stringify(WB.selectedNode())); WB.removeNode(id); }
-    else if (mod && key === 'v' && clipboard) { e.preventDefault(); pasteNode(); }
+    else if (mod && key === 'v') queuePaste();
     else if (e.altKey && e.key === 'ArrowUp') { e.preventDefault(); WB.moveSibling(id, -1); }
     else if (e.altKey && e.key === 'ArrowDown') { e.preventDefault(); WB.moveSibling(id, 1); }
     else if (e.key === 'Enter' || e.key === 'F2') { e.preventDefault(); WB.startEditSelected(); }
@@ -798,6 +801,11 @@
   WB.copyNode = id => { clipboard = JSON.parse(JSON.stringify(WB.find(WB.canvasDoc().root, id).node)); WB.toast('요소를 복사했어요'); };
   WB.cutNode = id => { clipboard = JSON.parse(JSON.stringify(WB.find(WB.canvasDoc().root, id).node)); WB.removeNode(id); };
   WB.hasClipboard = () => !!clipboard;
+  /** Ctrl+V: 브라우저의 paste 이벤트에 복사한 이미지가 오면 그것을 넣고(images.js), 아니면 잠깐 뒤에 편집기에서 복사한 요소를 붙여넣음 */
+  function queuePaste() {
+    clearTimeout(WB.pendingPaste);
+    WB.pendingPaste = setTimeout(() => { WB.pendingPaste = null; if (clipboard) pasteNode(); }, 120);
+  }
   WB.pasteNode = () => clipboard && pasteNode();
   WB.copyStyleReady = () => !!styleClip;
   function pasteNode() {

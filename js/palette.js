@@ -114,7 +114,7 @@
         key: 'page-' + t.key, name: `${WB.assetKindName(t.kind)} · ${t.name}`, icon: '', desc: t.desc + ' — 누르면 이 에셋으로 새 페이지',
         iconHTML: `<span class="pi-swatch" style="background:${t.swatch[0]};color:${t.swatch[1]}">Aa</span>`,
         page: t.key,
-        make: () => { const p = t.build(); const { margin, ...st } = p.style; return N('div', { style: st, children: p.children }); },
+        make: () => { const p = t.build ? t.build() : (WB.buildAssetDoc(t.key)?.root || { style: {}, children: [] }); const { margin, ...st } = p.style; return N('div', { style: st, children: p.children }); },
       })),
       ...WB.ASSET_ILLUST.map(a => ({
         key: 'art-' + a.key, name: '그림 · ' + a.name, icon: '', desc: a.desc + ' — 편집기 무료 그림',

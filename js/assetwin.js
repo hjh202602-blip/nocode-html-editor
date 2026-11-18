@@ -104,8 +104,10 @@
     box.dataset.done = '1';
     const { kind, key } = box.dataset;
     let a;
-    if (kind === 'page') a = WB.buildAssetDoc(key);
-    else if (kind === 'section') a = WB.sectionPreviewDoc(key);
+    if (kind === 'page') {
+      a = WB.buildAssetDoc(key);
+      if (!a) { delete box.dataset.done; WB.pageAssetsReady.then(() => WB.PAGE_ASSETS.find(x => x.key === key)?.html && fillPreview(box)); return; }
+    } else if (kind === 'section') a = WB.sectionPreviewDoc(key);
     else {
       const m = load().find(x => x.id === key);
       if (!m) return;
@@ -125,7 +127,8 @@
     const search = h('input', { type: 'text', class: 'aw-search', placeholder: '에셋 찾기 (예: 가격, 문의, 꼬리말, 게임)', spellcheck: 'false' });
     const tools = h('div', { class: 'aw-tools' });
     const grid = h('div', { class: 'aw-grid' });
-    const content = h('div', { class: 'aw' }, h('div', { class: 'aw-bar' }, tabs, search), tools, grid);
+    const libsBtn = h('button', { class: 'btn small', title: 'Font Awesome Free 같은 무료 아이콘 · Google 무료 글꼴 가져오기, 유료 글꼴 검사' }, '아이콘 · 글꼴 가져오기');
+    const content = h('div', { class: 'aw' }, h('div', { class: 'aw-bar' }, tabs, search, libsBtn), tools, grid);
     let io = null;
     const m = WB.modal({
       title: '에셋 가져오기', sub: '편집기가 주는 무료 섹션 · 페이지 · 그림 · 배경, 그리고 직접 저장한 내 에셋', wide: true, content,
@@ -133,6 +136,7 @@
     });
     m.box.classList.add('aw-modal');
     const close = () => { io?.disconnect(); m.close(); };
+    libsBtn.onclick = () => { close(); WB.openLibs(); };
 
     function render() {
       tabs.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
@@ -176,12 +180,12 @@
       }
       // 페이지
       if (tab === 'all' || WB.ASSET_KINDS.some(([k]) => k === tab)) for (const a of WB.PAGE_ASSETS) {
-        if ((tab !== 'all' && a.kind !== tab) || !hit(`${a.name} ${a.desc} ${WB.assetKindName(a.kind)}`)) continue;
+        if (a.missing || (tab !== 'all' && a.kind !== tab) || !hit(`${a.name} ${a.desc} ${WB.assetKindName(a.kind)}`)) continue;
         const pv = previewBox('page', a.key, a.swatch[0]);
         grid.append(card(pv, a.name, `${WB.assetKindName(a.kind)} · ${a.desc}`, [
           h('button', { class: 'btn small primary', 'data-open': a.key }, '새 페이지로 열기'),
-          h('button', { class: 'btn small', 'data-insert': a.key, disabled: !doc || null, title: '지금 페이지 맨 아래에 통째로 넣어요 (게임 · 로그인의 움직임 코드는 빼고)' }, '지금 페이지에 넣기'),
-        ]));
+          a.file ? null : h('button', { class: 'btn small', 'data-insert': a.key, disabled: !doc || null, title: '지금 페이지 맨 아래에 통째로 넣어요 (게임 · 로그인의 움직임 코드는 빼고)' }, '지금 페이지에 넣기'),
+        ].filter(Boolean)));
         io.observe(pv);
       }
       if (show('art')) for (const a of WB.ASSET_ILLUST) {

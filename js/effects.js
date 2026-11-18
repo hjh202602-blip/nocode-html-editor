@@ -327,6 +327,27 @@ html:not(.wb-present) .wb-deck-bar > :not([data-act="play"]), .wb-present .wb-de
   WB.fontsURL = names => 'https://fonts.googleapis.com/css2?' + [...new Set(names)].sort().map(n => 'family=' + n.replace(/ /g, '+') + (FONT_SPEC.get(n.toLowerCase())[1] ? ':' + FONT_SPEC.get(n.toLowerCase())[1] : '')).join('&') + '&display=swap';
   /** 탭2 글꼴 목록용 [값, 이름] */
   WB.webFontOptions = () => WB.WEB_FONTS.map(([n, , fb]) => [`'${n}', ${fb}`, n + ' (웹)']);
+  /** 사용자가 더 가져온 Google 웹 글꼴 (모두 공개 라이선스) — 이 브라우저에 기억, 글꼴 목록에 바로 추가 */
+  const MY_FONTS = 'wb.webFonts';
+  const myFonts = () => { try { return JSON.parse(localStorage.getItem(MY_FONTS) || '[]'); } catch { return []; } };
+  WB.addWebFont = (name, spec = '', fallback = 'sans-serif', remember = true) => {
+    if (FONT_SPEC.has(name.toLowerCase())) return false;
+    WB.WEB_FONTS.push([name, spec, fallback]);
+    FONT_SPEC.set(name.toLowerCase(), [name, spec]);
+    if (remember) try { localStorage.setItem(MY_FONTS, JSON.stringify([...myFonts().filter(f => f[0] !== name), [name, spec, fallback]])); } catch { /* 저장 못 해도 이번에는 씀 */ }
+    WB.emit('webfonts', [name, spec, fallback]);
+    return true;
+  };
+  for (const [n, s, fb] of myFonts()) if (typeof n === 'string') WB.addWebFont(n, s || '', fb || 'sans-serif', false);
+  /** 저장된 페이지의 Google Fonts 링크에서 글꼴 이름을 읽어 등록 (다른 브라우저에서 열어도 글꼴이 이어지게) */
+  WB.registerFontsURL = href => {
+    if (!/^https:\/\/fonts\.googleapis\.com\/css2\?/.test(href || '')) return;
+    for (const m of href.matchAll(/family=([^&:]+)(?::([^&]+))?/g)) {
+      const name = decodeURIComponent(m[1].replace(/\+/g, ' '));
+      if (/^Material Symbols/.test(name)) continue;
+      WB.addWebFont(name, m[2] ? decodeURIComponent(m[2]) : '', 'sans-serif', false);
+    }
+  };
 
   /* ---------- 부품: 스위치 (data-ui="switch") — <label><input type="checkbox"><span></span></label>
      JS 없이 CSS :checked 로 켜고 끔. 색은 요소의 --switch-on · --switch-off 로 */

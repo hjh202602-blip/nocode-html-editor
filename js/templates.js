@@ -569,13 +569,31 @@ document.getElementById('login-form').addEventListener('submit', e => {
     { key: 'festival', kind: 'free', name: '페스티벌', desc: '어두운 바탕 · 네온 — 라인업 · 티켓', swatch: ['#0a0a12', '#ff2e88'], build: festival },
     { key: 'recipe', kind: 'free', name: '레시피', desc: '초록 · 체크 목록 — 재료 · 만드는 순서', swatch: ['#f6f8f1', '#3f7d4e'], build: recipe },
     { key: 'travel', kind: 'free', name: '여행 일기', desc: '종이 질감 · 손글씨 · 기울어진 사진', swatch: ['#fbf6ec', '#c2703d'], build: travel },
+    // 파일로 된 큰 페이지 (assets/pages/) — 화면 하나를 통째로 꾸민 것
+    { key: 'designer', kind: 'intro', name: '디자이너 소개', desc: '흰 바탕 · 파랑 — 작업 카드 · 경력 · 연락', swatch: ['#ffffff', '#2563eb'], file: 'assets/pages/designer.html' },
+    { key: 'studio', kind: 'intro', name: '스튜디오 보드', desc: '종이색 · 주황 · 큰 글자 — 작업 · 팀 · 문의', swatch: ['#f4f1ea', '#e4572e'], file: 'assets/pages/studio.html' },
+    { key: 'portal-login', kind: 'login', name: '포털 로그인', desc: '청록 · 둥근 카드 — 아이디 · 비밀번호 칸 (연습용)', swatch: ['#f5f7f7', '#0f766e'], file: 'assets/pages/portal-login.html' },
+    { key: 'portal', kind: 'general', name: '포털 첫 화면', desc: '청록 — 검색창 · 바로가기 · 뉴스 · 날씨', swatch: ['#f5f7f7', '#0f766e'], file: 'assets/pages/portal.html' },
+    { key: 'shop', kind: 'general', name: '쇼핑몰 목록', desc: '분홍 · 고운돋움 — 분류 · 상품 카드 · 장바구니', swatch: ['#fdf2f8', '#db2777'], file: 'assets/pages/shop.html' },
+    { key: 'dashboard', kind: 'general', name: '관리자 대시보드', desc: '남보라 · 노랑 — 옆 메뉴 · 숫자 카드 · 표', swatch: ['#e0e7ff', '#6366f1'], file: 'assets/pages/dashboard.html' },
+    { key: 'settings', kind: 'general', name: '설정 화면', desc: '청록 — 알림 켜기 · 끄기 목록', swatch: ['#effaf8', '#0f766e'], file: 'assets/pages/settings.html' },
+    { key: 'sheet', kind: 'free', name: '스프레드시트', desc: '회색 칸 · 도구 막대 — 표 계산 화면 모양', swatch: ['#f5f7fb', '#3c4454'], file: 'assets/pages/sheet.html' },
+    { key: 'video-editor', kind: 'free', name: '영상 편집 화면', desc: '어두운 바탕 · 파랑 — 미리보기 · 타임라인', swatch: ['#141417', '#3b82f6'], file: 'assets/pages/video-editor.html' },
   ];
+  /** 파일로 된 에셋은 처음에 한 번 읽어 둠 (그래야 미리보기 · 열기가 바로 됨) */
+  WB.pageAssetsReady = Promise.all(WB.PAGE_ASSETS.filter(t => t.file).map(t =>
+    fetch(t.file).then(r => r.ok ? r.text() : Promise.reject(new Error(r.status))).then(html => { t.html = html; }).catch(() => { t.missing = true; })));
   WB.PAGE_TEMPLATES = WB.PAGE_ASSETS; // 예전 이름
   WB.assetKindName = k => (WB.ASSET_KINDS.find(x => x[0] === k) || [, ''])[1];
   /** 에셋 → 문서 조각 { title, root, blocks } */
   WB.buildAssetDoc = key => {
     const t = WB.PAGE_ASSETS.find(x => x.key === key);
     if (!t) return null;
+    if (t.file) {
+      if (!t.html) return null;
+      const p = WB.parseHTML(t.html);
+      return { title: p.title || t.name, root: p.root, blocks: WB.reIdBlocks(p.blocks), extra: p.extra, formats: p.formats || {}, name: t.name };
+    }
     const page = t.build();
     const root = WB.newRoot();
     root.style = page.style;
@@ -583,14 +601,17 @@ document.getElementById('login-form').addEventListener('submit', e => {
     return { title: page.title, root, blocks: WB.reIdBlocks({ code: page.code || '' }), name: t.name };
   };
   /** 에셋으로 새 페이지 열기 */
-  WB.openTemplate = key => {
+  WB.openTemplate = async key => {
+    await WB.pageAssetsReady;
     const a = WB.buildAssetDoc(key);
-    if (!a) return;
+    if (!a) return WB.toast('에셋 파일을 읽지 못했어요', 'error');
     WB.newPage();
     WB.commit(d => {
       d.title = a.title;
       d.root = a.root;
       d.blocks = a.blocks;
+      if (a.extra) d.extra = a.extra;
+      if (a.formats) d.formats = a.formats;
     }, `template:${Date.now()}`);
     WB.select(null);
     WB.setZoom('fit');

@@ -35,6 +35,7 @@
     [data-wb-drop] { outline: 2px dashed #2563eb !important; outline-offset: -2px; background-color: rgba(37, 99, 235, .08) !important; }
     [data-wb-editing] { outline: 2px solid #f59e0b !important; outline-offset: 1px; cursor: text; }
     [data-wb-dragging] { opacity: .35; }
+    [data-lock][data-wb-selected] { outline-style: dashed !important; outline-color: #f59e0b !important; }
     [data-wb-noptr] { pointer-events: none; }
     [data-layout="free"] { outline: 1px dashed #a78bfa; outline-offset: -1px; }
     [data-layout="free"]:empty::before { content: '자유 배치 — 요소를 아무 곳에나 끌어다 놓으세요' !important; min-height: 100% !important; position: absolute; inset: 0; border: 0 !important; }
@@ -113,7 +114,7 @@
       if (!node.children.length && (st.height || st['min-height'] || st['aspect-ratio'])) el.setAttribute('data-wb-decor', '');
     } else if (kind === 'text') fillText(el, node.text);
     if (NOPTR.has(node.tag)) el.setAttribute('data-wb-noptr', '');
-    el.draggable = true;
+    el.draggable = node.attrs?.['data-lock'] == null; // 잠근 요소는 끌어 옮기지 않음 (Ctrl+L)
     return el;
   }
 
@@ -123,6 +124,7 @@
     page.removeAttribute('style');
     extraStyle.textContent = canvasExtraCSS(doc.extra) + '\n' + hoverRulesCSS(doc) + '\n' + paletteCSS(doc);
     loadWebFonts(doc);
+    WB.syncLibLinks?.(doc, shadow, page);
     applyStyle(page, viewStyle(doc.root));
     page.replaceChildren(...doc.root.children.map(build));
     // 표 계산: =로 시작하는 칸은 계산한 값으로 보여 줌 (두 번 클릭하면 수식이 보임)
@@ -209,6 +211,7 @@
     const id = WB.selectedId();
     const el = id && elFor(id);
     if (el && el !== page) el.setAttribute('data-wb-selected', '');
+    WB.applyMulti?.();
     positionBar();
     renderCrumbs();
   }
@@ -232,7 +235,7 @@
   const rsLabel = rsBox.querySelector('.rs-label');
   let resizing = null;
   function positionRS(el) {
-    if (!el || editingId || WB.drag || !WB.canvasDoc()) { if (!resizing) rsBox.hidden = true; return; }
+    if (!el || editingId || WB.drag || !WB.canvasDoc() || el.hasAttribute('data-lock')) { if (!resizing) rsBox.hidden = true; return; }
     const r = el.getBoundingClientRect(), s = scroller.getBoundingClientRect();
     Object.assign(rsBox.style, { left: r.left - s.left + scroller.scrollLeft + 'px', top: r.top - s.top + scroller.scrollTop + 'px', width: r.width + 'px', height: r.height + 'px' });
     const abs = ['absolute', 'fixed'].includes(getComputedStyle(el).position);
@@ -257,12 +260,13 @@
     rsLabel.hidden = false;
     const move = ev => {
       let dx = (ev.clientX - e.clientX) / z, dy = (ev.clientY - e.clientY) / z;
-      const snap = v => (ev.altKey ? v : Math.round(v / (ev.shiftKey && dir.length === 1 ? 10 : 1)) * (ev.shiftKey && dir.length === 1 ? 10 : 1));
+      const snap = v => Math.round(v / (ev.shiftKey && dir.length === 1 ? 10 : 1)) * (ev.shiftKey && dir.length === 1 ? 10 : 1);
+      const k = ev.altKey ? 2 : 1; // Alt: 가운데를 기준으로 양쪽이 함께 늘어남
       let w = s0.w, h = s0.h;
-      if (dir.includes('e')) w = s0.w + dx;
-      if (dir.includes('w')) w = s0.w - dx;
-      if (dir.includes('s')) h = s0.h + dy;
-      if (dir.includes('n')) h = s0.h - dy;
+      if (dir.includes('e')) w = s0.w + dx * k;
+      if (dir.includes('w')) w = s0.w - dx * k;
+      if (dir.includes('s')) h = s0.h + dy * k;
+      if (dir.includes('n')) h = s0.h - dy * k;
       if (ev.shiftKey && dir.length === 2) h = w * s0.h / s0.w; // 모서리 + Shift: 비율 그대로
       w = Math.max(8, snap(w));
       h = Math.max(8, snap(h));
@@ -271,10 +275,15 @@
       if (/[ns]/.test(dir)) { out.height = Math.round(h) + 'px'; el.style.height = out.height; el.style.minHeight = '0'; }
       if (abs) {
         // 왼쪽 · 위 손잡이는 반대쪽 끝이 그대로 있게 위치도 옮김 (오른쪽 · 아래 기준이면 반대로)
-        if (dir.includes('w') && !byRight) out.left = Math.round(s0.l + s0.w - w) + 'px';
-        if (dir.includes('e') && byRight) out.right = Math.round(s0.rr - (w - s0.w)) + 'px';
-        if (dir.includes('n') && !byBottom) out.top = Math.round(s0.t + s0.h - h) + 'px';
-        if (dir.includes('s') && byBottom) out.bottom = Math.round(s0.bb - (h - s0.h)) + 'px';
+        if (ev.altKey) { // 가운데 기준: 늘어난 만큼의 절반씩 왼쪽 · 위로
+          if (/[ew]/.test(dir)) { if (byRight) out.right = Math.round(s0.rr - (w - s0.w) / 2) + 'px'; else out.left = Math.round(s0.l - (w - s0.w) / 2) + 'px'; }
+          if (/[ns]/.test(dir)) { if (byBottom) out.bottom = Math.round(s0.bb - (h - s0.h) / 2) + 'px'; else out.top = Math.round(s0.t - (h - s0.h) / 2) + 'px'; }
+        } else {
+          if (dir.includes('w') && !byRight) out.left = Math.round(s0.l + s0.w - w) + 'px';
+          if (dir.includes('e') && byRight) out.right = Math.round(s0.rr - (w - s0.w)) + 'px';
+          if (dir.includes('n') && !byBottom) out.top = Math.round(s0.t + s0.h - h) + 'px';
+          if (dir.includes('s') && byBottom) out.bottom = Math.round(s0.bb - (h - s0.h)) + 'px';
+        }
         for (const k of ['left', 'right', 'top', 'bottom']) if (out[k]) el.style[k] = out[k];
       }
       resizing.out = out;
@@ -401,7 +410,9 @@
     const editing = editingId && elFor(editingId);
     if (editing && editing.contains(e.composedPath()[0])) return;
     e.preventDefault(); // 링크 이동 · 양식 제출 막기
+    if (WB._cv.skipClick) return; // 방금 끌어서 사각형으로 골랐음
     const el = hitEl(e);
+    if (el && e.shiftKey && el !== page) return WB.toggleMulti(el.dataset.wbId); // Shift+클릭: 여러 개 고르기에 더하기 · 빼기
     if (el) WB.select(el.dataset.wbId);
   });
   shadow.addEventListener('submit', e => e.preventDefault());
@@ -425,6 +436,8 @@
       { label: '잘라내기', icon: 'x', kbd: 'Ctrl+X', disabled: root, action: () => WB.cutNode(id) },
       { label: '복사', icon: 'copy', kbd: 'Ctrl+C', disabled: root, action: () => WB.copyNode(id) });
     if (WB.hasClipboard()) items.push({ label: kind === 'container' ? '안에 붙여넣기' : '뒤에 붙여넣기', icon: 'paste', kbd: 'Ctrl+V', action: () => WB.pasteNode() });
+    items.push({ label: '이미지 넣기… (끌어다 놓기 · Ctrl+V 도)', icon: 'image', action: () => WB.pickImages() });
+    if (node.tag === 'img') items.push({ label: '이미지 바꾸기…', icon: 'image', action: () => WB.replaceImage(id) });
     items.push(
       { label: '복제', icon: 'copy', kbd: 'Ctrl+D', disabled: root, action: () => WB.duplicateNode(id) },
       { label: '삭제', icon: 'trash', kbd: 'Delete', danger: true, disabled: root, action: () => WB.removeNode(id) },
@@ -452,6 +465,8 @@
       'sep');
     if (root) items.push({ label: '바탕화면 CSS', icon: 'brush', action: () => { WB.select('root'); WB.setCodeMode?.('css', false); WB.setTool('css'); } });
     items.push({ label: '에셋 가져오기…', icon: 'box', action: () => WB.openAssets() });
+    items.push({ label: '아이콘 · 글꼴 가져오기…', icon: 'download', action: () => WB.openLibs() });
+    if (root) items.push({ label: '단축키 보기', icon: 'code', kbd: 'Ctrl+/', action: () => WB.openShortcuts() });
     WB.menu(x, y, items.filter((it, i, a) => !(it === 'sep' && (i === 0 || a[i - 1] === 'sep'))));
   }
   async function nameElement(id, old) {
@@ -491,6 +506,7 @@
     e.preventDefault();
     if (el === page) { backgroundMenu(e.clientX, e.clientY); return; } // 페이지 바탕(빈 곳)
     const id = el.dataset.wbId;
+    if (WB.multiIds().includes(id)) return WB.multiMenu(e.clientX, e.clientY); // 여러 개 고른 상태
     WB.select(id);
     elementMenu(id, e.clientX, e.clientY);
   });
@@ -507,8 +523,11 @@
     elementMenu('root', x, y);
   }
   scroller.addEventListener('click', e => {
+    if (WB._cv.skipClick) return;
     if (e.target === scroller || e.target === frame) WB.select(null);
   });
+  /** 여러 개 고르기(multisel.js)가 캔버스 안을 볼 수 있게 */
+  WB._cv = { shadow, scroller, frame, host, page, elFor, hitEl, Z, editing: () => !!editingId, skipClick: false };
 
   shadow.addEventListener('dblclick', e => {
     const el = hitEl(e);
@@ -561,12 +580,14 @@
 
   /* ---------- 끌어서 놓기 ---------- */
   shadow.addEventListener('dragstart', e => {
+    if (WB._cv.marquee) { e.preventDefault(); return; } // 사각형으로 고르는 중
     const el = editingId ? null : hitEl(e);
     if (!el || el === page) { e.preventDefault(); return; }
     const r = el.getBoundingClientRect();
     // gx, gy: 요소 안에서 잡은 위치 (자유 배치에서 놓을 좌표 계산용)
-    WB.drag = { type: 'move', id: el.dataset.wbId, tag: nodeOf(el).tag, gx: e.clientX - r.left, gy: e.clientY - r.top };
-    e.dataTransfer.effectAllowed = 'move';
+    // Alt 를 누르고 끌기 시작하면 복제해서 놓기 (웹플로우 · 피그마처럼). sx, sy: Shift 로 한 방향만 움직일 때의 기준
+    WB.drag = { type: 'move', id: el.dataset.wbId, tag: nodeOf(el).tag, gx: e.clientX - r.left, gy: e.clientY - r.top, copy: e.altKey, sx: e.clientX, sy: e.clientY };
+    e.dataTransfer.effectAllowed = e.altKey ? 'copyMove' : 'move';
     e.dataTransfer.setData('text/plain', 'wb-move');
     // 아무 곳에나 놓기에서는 놓일 자리에 실제 모습을 그리므로 브라우저의 끌기 그림은 투명하게
     if (WB.anywhereMode()) e.dataTransfer.setDragImage(WB.BLANK_IMG, 0, 0);
@@ -574,7 +595,7 @@
     setHover(null);
     selBar.hidden = true;
     rsBox.hidden = true;
-    requestAnimationFrame(() => el.setAttribute('data-wb-dragging', ''));
+    if (!WB.drag.copy) requestAnimationFrame(() => el.setAttribute('data-wb-dragging', ''));
   });
 
   const accepts = (el, tag) => {
@@ -646,7 +667,7 @@
     if (!moving && !WB.drag.size) WB.drag.size = measureNew(WB.drag.key, el); // 새 요소는 한 번 그려 보고 크기를 잼
     const w = mr ? mr.width / z : WB.drag.size.w, h = mr ? mr.height / z : WB.drag.size.h;
     d.anywhere = true;
-    d.guides = e.shiftKey ? [] : snapDrop(d, el, moving, w, h); // Shift: 스냅 없이
+    d.guides = e.ctrlKey || e.metaKey ? [] : snapDrop(d, el, moving, w, h); // Ctrl 을 누르는 동안: 스냅 없이
     d.size = { w: mr ? w : 0, h, boxH: el.getBoundingClientRect().height / z };
     d.pw = w * z;
     d.ph = h * z;
@@ -788,8 +809,14 @@
   }
 
   function computeDrop(e) {
+    // Shift: 처음 잡은 자리에서 가로나 세로 한 방향으로만
+    if (e.shiftKey && WB.drag?.sx != null) {
+      const dx = e.clientX - WB.drag.sx, dy = e.clientY - WB.drag.sy, o = e;
+      const cx = Math.abs(dx) >= Math.abs(dy) ? o.clientX : WB.drag.sx, cy = Math.abs(dx) >= Math.abs(dy) ? WB.drag.sy : o.clientY;
+      e = { clientX: cx, clientY: cy, altKey: o.altKey, shiftKey: true, ctrlKey: o.ctrlKey, metaKey: o.metaKey, target: o.target, composedPath: () => o.composedPath() };
+    }
     if (slideDrag()) return slideDrop(e);
-    if (WB.anywhereMode() !== !!e.altKey) return anywhereDrop(e);
+    if (WB.anywhereMode() !== (!!e.altKey && !WB.drag?.copy)) return anywhereDrop(e);
     const d = computeFlowDrop(e);
     // 결과가 자유 배치 상자 안이면 순서 대신 좌표로 놓기
     if (d && !d.free && d.parentId !== 'root' && isFreeEl(elFor(d.parentId))) return freeDrop(elFor(d.parentId), e);
@@ -908,15 +935,18 @@
     positionBar();
   }
 
-  scroller.addEventListener('dragenter', e => { if (WB.drag) e.preventDefault(); });
+  // 내 컴퓨터에서 끌어온 이미지 파일: 「이미지」 요소를 놓는 것처럼 자리를 보여 줌 (images.js)
+  const fileDrag = e => !WB.drag && e.dataTransfer?.types?.includes('Files') && WB.canvasDoc() && (WB.drag = { type: 'new', key: 'img', files: true });
+  scroller.addEventListener('dragenter', e => { fileDrag(e); if (WB.drag) e.preventDefault(); });
   scroller.addEventListener('dragover', e => {
+    fileDrag(e);
     if (!WB.drag || !WB.canvasDoc()) return;
     e.preventDefault();
-    e.dataTransfer.dropEffect = WB.drag.type === 'move' ? 'move' : 'copy';
+    e.dataTransfer.dropEffect = WB.drag.type === 'move' && !WB.drag.copy ? 'move' : 'copy';
     showDrop(computeDrop(e));
   });
   scroller.addEventListener('dragleave', e => {
-    if (!e.relatedTarget || !scroller.contains(e.relatedTarget)) { clearMarks(); drawGuides(null); showGhost(null); dropLine.hidden = true; }
+    if (!e.relatedTarget || !scroller.contains(e.relatedTarget)) { clearMarks(); drawGuides(null); showGhost(null); dropLine.hidden = true; if (WB.drag?.files) WB.drag = null; }
   });
   scroller.addEventListener('drop', e => {
     if (!WB.drag) return;
@@ -925,22 +955,35 @@
     const d = computeDrop(e);
     endDrag();
     if (!d) return;
+    if (drag.files) { // 끌어다 놓은 이미지 파일
+      const files = [...e.dataTransfer.files].filter(f => /^image\//.test(f.type));
+      if (!files.length) return WB.toast('이미지 파일(png · jpg · gif · webp · svg)만 놓을 수 있어요', 'error');
+      drag.node = WB.imageNodeFor(files[0]);
+      queueMicrotask(() => WB.dropImages(drag.node, files)); // 첫 장이 놓인 뒤 나머지 · 진짜 주소
+    }
+    if (drag.copy && drag.type === 'move') { // Alt+끌기: 복제본을 새 요소처럼 놓음
+      const src = WB.find(WB.canvasDoc().root, drag.id)?.node;
+      if (!src) return;
+      const copy = WB.cloneNode(src);
+      Object.assign(drag, { type: 'new', node: copy });
+    }
+    const make = () => drag.node || WB.paletteItem(drag.key).make();
     if (d.anywhere) {
       // 아무 곳에나: 놓은 자리에 그대로
-      const node = drag.type === 'new' ? WB.paletteItem(drag.key).make() : drag.id;
+      const node = drag.type === 'new' ? make() : drag.id;
       WB.placeAnywhere(node, d.parentId, d.x, d.y, d.size);
       WB.select(typeof node === 'string' ? node : node.id);
       return;
     }
     if (d.side) {
       // 옆에 놓기: 세로로 쌓이던 자리를 가로 배치로 바꿔서 나란히
-      const node = drag.type === 'new' ? WB.paletteItem(drag.key).make() : drag.id;
+      const node = drag.type === 'new' ? make() : drag.id;
       WB.placeBeside(node, d.refId, d.side);
       WB.select(typeof node === 'string' ? node : node.id);
       return;
     }
     if (drag.type === 'new') {
-      const node = WB.paletteItem(drag.key).make();
+      const node = make();
       if (d.free) WB.placeFree(node, d.parentId, d.x, d.y);
       else WB.insertNode(node, d.parentId, d.index);
       WB.select(node.id);

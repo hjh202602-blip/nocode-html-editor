@@ -218,7 +218,26 @@ WB.select = id => {
   const doc = WB.canvasDoc();
   if (!doc) return;
   doc.selectedId = id;
+  doc.multiIds = [];
   WB.emit('select', id);
+};
+/** 여러 요소 고르기 (끌어서 사각형 · Shift+클릭). 하나뿐이면 보통 선택과 같음 */
+WB.multiIds = () => {
+  const doc = WB.canvasDoc();
+  return (doc?.multiIds || []).filter(id => WB.find(doc.root, id));
+};
+WB.selectMany = ids => {
+  const doc = WB.canvasDoc();
+  if (!doc) return;
+  // 바깥 상자와 그 안의 요소가 함께 골라지면 바깥 상자만
+  const set = new Set(ids.filter(id => id !== 'root' && WB.find(doc.root, id)));
+  const inside = id => { for (let f = WB.find(doc.root, id); f && f.parent && f.parent.id !== 'root'; f = WB.find(doc.root, f.parent.id)) if (set.has(f.parent.id)) return true; return false; };
+  const order = [];
+  WB.walk(doc.root, n => { if (set.has(n.id) && !inside(n.id)) order.push(n.id); });
+  if (order.length < 2) return WB.select(order[0] || null);
+  doc.selectedId = null;
+  doc.multiIds = order;
+  WB.emit('select', null);
 };
 
 /* ---------- 변경 · 실행 취소 ----------
@@ -230,8 +249,10 @@ WB.commit = function (mutate, key) {
   const now = Date.now();
   if (!(key && key === doc.lastKey && now - doc.lastTime < 1200)) {
     doc.undo.push(snapshot(doc));
-    if (doc.undo.length > 200) doc.undo.shift();
+    (doc.undoInfo ||= []).push({ key: key || '', time: now }); // 실행 기록 창에 보일 이름 · 시각
+    if (doc.undo.length > 200) { doc.undo.shift(); doc.undoInfo.shift(); }
     doc.redo = [];
+    doc.redoInfo = [];
   }
   doc.lastKey = key || null;
   doc.lastTime = now;
@@ -244,6 +265,8 @@ function travel(from, to) {
   const doc = WB.canvasDoc();
   if (!doc || !doc[from].length) return;
   doc[to].push(snapshot(doc));
+  const info = (doc[from + 'Info'] ||= []).pop() || { key: '', time: Date.now() };
+  (doc[to + 'Info'] ||= []).push(info);
   const s = JSON.parse(doc[from].pop());
   doc.title = s.title;
   doc.root = s.root;
@@ -390,6 +413,10 @@ WB.unwrapNode = id => WB.commit(d => {
   if (!f?.parent || !f.node.children) return;
   const kids = f.node.children;
   if (!WB.isFree(f.parent)) kids.forEach(unfree);
+  else if (WB.isFree(f.node)) { // 자유 배치 안의 묶음을 풀면: 묶음 위치만큼 더해서 제자리에
+    const dx = parseFloat(f.node.style.left) || 0, dy = parseFloat(f.node.style.top) || 0;
+    for (const k of kids) if (k.style.position === 'absolute') { k.style.left = (parseFloat(k.style.left) || 0) + dx + 'px'; k.style.top = (parseFloat(k.style.top) || 0) + dy + 'px'; }
+  }
   f.parent.children.splice(f.index, 1, ...kids);
 }, `unwrap:${Date.now()}`);
 /** 태그만 바꾸기 (글자 ↔ 글자, 상자 ↔ 상자끼리). 스타일 · 속성 · 안의 내용은 그대로 */

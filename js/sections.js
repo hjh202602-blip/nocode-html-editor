@@ -143,41 +143,6 @@
       ]),
     ])]));
 
-  /* ---------- 팀 · 숫자 · 로고 ---------- */
-  add('team', 'team-4', '팀 소개 4명', '동그란 얼굴 · 이름 · 역할', () =>
-    section({}, [col({ gap: '40px', 'max-width': '1080px', margin: '0 auto' }, [
-      head('함께하는 사람들'),
-      grid(4, { gap: '24px', 'text-align': 'center' }, [['김', '#f97316', '김도윤', '대표'], ['이', '#8b5cf6', '이서아', '디자인'], ['박', '#14b8a6', '박지호', '개발'], ['최', '#ec4899', '최유나', '마케팅']].map(([a, c, n, r]) =>
-        col({ gap: '10px', 'align-items': 'center' }, [E('span', { display: 'inline-flex', 'align-items': 'center', 'justify-content': 'center', width: '96px', height: '96px', 'border-radius': '50%', 'background-color': c, color: '#ffffff', 'font-size': '32px', 'font-weight': '800' }, a), E('strong', { color: INK, 'font-size': '18px' }, n), E('span', { color: MUTED }, r)])), { 'grid-template-columns': 'repeat(2, 1fr)' }),
-    ])]));
-  add('stats', 'stats-4', '숫자 4개', '크게 보여 주는 성과 숫자', () =>
-    section({ 'background-color': '#f8fafc' }, [grid(4, { gap: '24px', 'text-align': 'center', 'max-width': '1080px', margin: '0 auto' }, [['12만', '사용자'], ['98%', '만족도'], ['24시간', '상담'], ['5년', '운영']].map(([n, l]) =>
-      col({ gap: '4px' }, [E('strong', { 'font-size': 'clamp(32px, 4vw, 44px)', color: BLUE }, n), E('span', { color: MUTED }, l)])), { 'grid-template-columns': 'repeat(2, 1fr)' })]));
-  add('stats', 'logo-cloud', '함께하는 곳', '로고 자리 여섯 개 (실제 로고 그림으로 바꿔 쓰기)', () =>
-    section({ padding: '40px 48px', 'text-align': 'center' }, [col({ gap: '20px', 'max-width': '1080px', margin: '0 auto' }, [
-      E('p', { margin: '0', color: MUTED, 'font-size': '14px', 'letter-spacing': '1px' }, '이미 많은 팀이 쓰고 있어요'),
-      row({ 'justify-content': 'center', 'align-items': 'center', gap: '40px', 'flex-wrap': 'wrap' }, ['LOGO A', 'LOGO B', 'LOGO C', 'LOGO D', 'LOGO E', 'LOGO F'].map(t => E('strong', { 'font-size': '22px', color: '#94a3b8', 'letter-spacing': '1px' }, t)), { gap: '20px' }),
-    ])], { padding: '28px 20px' }));
-
-  /* ---------- 글 · 그림 · 연혁 ---------- */
-  add('content', 'blog-3', '글 목록 3개', '그림 · 분류 · 제목 · 날짜 카드', () =>
-    section({}, [col({ gap: '32px', 'max-width': '1120px', margin: '0 auto' }, [
-      row({ 'justify-content': 'space-between', 'align-items': 'flex-end', 'flex-wrap': 'wrap', gap: '12px' }, [h2('최근 글'), link('모두 보기 →', { color: BLUE, 'font-weight': '700' })]),
-      grid(3, { gap: '24px' }, [['book', '이야기', '처음 웹사이트를 만들 때 알아 둘 다섯 가지'], ['idea', '팁', '방문자가 오래 머무는 첫 화면 만들기'], ['chat', '소식', '11월 업데이트: 새로 생긴 기능 모음']].map(([a, c, t], i) =>
-        col({ gap: '10px' }, [E('img', { width: '100%', 'aspect-ratio': '16 / 10', 'object-fit': 'cover', 'border-radius': '14px' }, null, { src: art(a), alt: t }), E('span', { color: BLUE, 'font-size': '14px', 'font-weight': '700' }, c), E('h3', { margin: '0', 'font-size': '20px', 'line-height': '1.4', color: INK }, t), E('span', { color: MUTED, 'font-size': '14px' }, `2026. 11. ${12 - i * 3}`)]))),
-    ])]));
-  add('content', 'gallery', '사진 모음', '그림 6장 격자, 휴대폰 2칸', () =>
-    section({}, [col({ gap: '28px', 'max-width': '1120px', margin: '0 auto' }, [
-      head('사진으로 보기'),
-      grid(3, { gap: '12px' }, ['ocean', 'forest', 'city', 'mountain', 'space', 'globe'].map(a => E('img', { width: '100%', 'aspect-ratio': '1', 'object-fit': 'cover', 'border-radius': '12px' }, null, { src: art(a), alt: '사진' })), { 'grid-template-columns': 'repeat(2, 1fr)' }),
-    ])]));
-  add('content', 'timeline', '연혁', '세로선 · 연도 · 한 줄 설명', () =>
-    section({}, [col({ gap: '28px', 'max-width': '720px', margin: '0 auto' }, [
-      head('걸어온 길', null, false),
-      col({ gap: '0' }, [['2022', '작은 팀으로 첫 서비스를 시작했어요'], ['2023', '사용자 1만 명을 넘었어요'], ['2024', '부산 · 대구에 사무실을 열었어요'], ['2026', '해외 서비스를 시작해요']].map(([y, t]) =>
-        row({ gap: '20px' }, [E('strong', { width: '64px', 'flex-shrink': '0', color: BLUE, 'font-size': '18px' }, y), E('p', { margin: '0', padding: '0 0 28px 20px', 'border-left': '2px solid ' + LINE, color: '#334155', 'font-size': '17px' }, t)]))),
-    ])]));
-
   /* ---------- 알림 줄 · 꼬리말 ---------- */
   add('etc', 'notice-bar', '알림 줄', '페이지 맨 위 한 줄 공지 · 링크', () =>
     E('div', { display: 'flex', 'justify-content': 'center', 'align-items': 'center', gap: '10px', padding: '10px 16px', 'background-color': INK, color: '#ffffff', 'font-size': '14px', 'flex-wrap': 'wrap' }, [E('span', {}, '연말 맞이 모든 요금제 20% 할인 중'), link('자세히 →', { color: '#93c5fd', 'font-weight': '700' })]));
@@ -189,13 +154,8 @@
       ], {}, { 'grid-template-columns': 'repeat(2, 1fr)' }),
       E('p', { margin: '40px auto 0', 'max-width': '1120px', 'padding-top': '20px', 'border-top': '1px solid #1e293b', 'font-size': '13px', color: '#64748b' }, '© 2026 브랜드. All rights reserved.'),
     ], {}, { padding: '40px 20px 24px' }));
-  add('footer', 'footer-simple', '간단한 꼬리말', '가운데 링크 한 줄 · 저작권', () =>
-    E('footer', { display: 'flex', 'flex-direction': 'column', 'align-items': 'center', gap: '12px', padding: '32px 24px', 'border-top': '1px solid ' + LINE, color: MUTED, 'font-size': '14px' }, [
-      row({ gap: '20px', 'flex-wrap': 'wrap', 'justify-content': 'center' }, ['이용 약관', '개인정보 처리방침', '문의'].map(t => link(t, { color: '#334155' }))),
-      E('span', {}, '© 2026 브랜드'),
-    ]));
 
-  WB.SECTION_KINDS = [['nav', '머리말'], ['hero', '첫 화면'], ['feature', '기능 소개'], ['pricing', '가격'], ['review', '후기'], ['faq', '자주 묻는 질문'], ['cta', '행동 유도'], ['contact', '문의'], ['team', '팀'], ['stats', '숫자 · 로고'], ['content', '글 · 사진'], ['etc', '알림'], ['footer', '꼬리말']];
+  WB.SECTION_KINDS = [['nav', '머리말'], ['hero', '첫 화면'], ['feature', '기능 소개'], ['pricing', '가격'], ['review', '후기'], ['faq', '자주 묻는 질문'], ['cta', '행동 유도'], ['contact', '문의'], ['etc', '알림'], ['footer', '꼬리말']];
   WB.SECTION_ASSETS = S;
   WB.sectionKindName = k => (WB.SECTION_KINDS.find(x => x[0] === k) || [, ''])[1];
   /** 섹션을 지금 페이지에: 고른 요소가 들어 있는 맨 바깥 구역 바로 아래 (없으면 맨 끝) */

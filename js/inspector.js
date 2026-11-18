@@ -10,6 +10,18 @@
     ['Georgia, serif', 'Georgia'], ["'Courier New', monospace", 'Courier New'],
     ...WB.webFontOptions(), // Google 웹 글꼴: 저장한 페이지와 캔버스에서 자동으로 불러옴
   ];
+  // 「아이콘 · 글꼴 가져오기」로 더한 글꼴도 목록에 (같은 배열을 쓰는 글꼴 · 강조 글꼴 칸 모두)
+  WB.on('webfonts', ([n, , fb]) => {
+    const v = `'${n}', ${fb}`;
+    if (FONTS.some(f => f[0] === v)) return;
+    FONTS.push([v, n + ' (웹)']);
+    // 이미 그려 둔 글꼴 칸에도 바로 (목록에 없던 값으로 임시로 붙은 것은 이름을 고쳐 줌)
+    insp.querySelectorAll('select[data-prop="font-family"], select[data-prop="--hl-font"]').forEach(s => {
+      const o = [...s.options].find(x => x.value === v);
+      if (o) o.textContent = n + ' (웹)';
+      else s.append(new Option(n + ' (웹)', v));
+    });
+  });
   const SHADOWS = [
     ['', '없음'], ['0 1px 3px rgba(0, 0, 0, 0.15)', '약하게'],
     ['0 4px 12px rgba(0, 0, 0, 0.15)', '보통'], ['0 12px 32px rgba(0, 0, 0, 0.22)', '강하게'],

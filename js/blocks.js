@@ -663,6 +663,7 @@
   const foot = panel.querySelector('.blk-foot');
   const codeBox = panel.querySelector('.blk-codebox');
   const ta = panel.querySelector('.blk-code');
+  WB.codeKeys?.(ta, 'js');
   const gutter = panel.querySelector('.blk-code-gutter');
   const errEl = panel.querySelector('.blk-code-err');
   const modeBtns = panel.querySelectorAll('[data-mode]');
