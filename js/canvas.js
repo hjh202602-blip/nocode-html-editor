@@ -29,10 +29,10 @@
       color: #9aa4b2; font: 12px 'Malgun Gothic', sans-serif;
     }
     .wb-page[data-wb-guides] [data-wb-id] { outline: 1px dashed rgba(100, 116, 139, .35); outline-offset: -1px; }
-    [data-wb-drop-parent] { outline: 1px dashed #2563eb !important; outline-offset: -1px; }
-    [data-wb-hover] { outline: 1px solid #60a5fa !important; outline-offset: -1px; }
-    [data-wb-selected] { outline: 2px solid #2563eb !important; outline-offset: -2px; }
-    [data-wb-drop] { outline: 2px dashed #2563eb !important; outline-offset: -2px; background-color: rgba(37, 99, 235, .08) !important; }
+    [data-wb-drop-parent] { outline: 1px dashed var(--accent-strong, #2563eb) !important; outline-offset: -1px; }
+    [data-wb-hover] { outline: 1px solid var(--accent, #60a5fa) !important; outline-offset: -1px; }
+    [data-wb-selected] { outline: 2px solid var(--accent-strong, #2563eb) !important; outline-offset: -2px; }
+    [data-wb-drop] { outline: 2px dashed var(--accent-strong, #2563eb) !important; outline-offset: -2px; background-color: var(--accent-soft, rgba(37, 99, 235, .08)) !important; }
     [data-wb-editing] { outline: 2px solid #f59e0b !important; outline-offset: 1px; cursor: text; }
     [data-wb-dragging] { opacity: .35; }
     [data-lock][data-wb-selected] { outline-style: dashed !important; outline-color: #f59e0b !important; }
